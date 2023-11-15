@@ -19,15 +19,7 @@
 }
 /* inter-400 and inter-600 italic*/
 @import url("https://fonts.cdnfonts.com/css/inter?styles=29134,29141");
-/**/
-/* html {
-  box-sizing: border-box;
-}
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-} */
+
 html {
   margin: 0;
   padding: 0;
@@ -149,7 +141,8 @@ a:visited {
   align-self: stretch;
   border-radius: 40px;
   overflow: hidden;
-  background: url(/img/img-hero.png), lightgray 50% / cover no-repeat;
+  background: url(/img/img-hero1.png), lightgray 50% / cover no-repeat;
+  background-size: cover;
 }
 /* .hero-container img {
   width: 100%;
@@ -176,21 +169,6 @@ h1 .accent {
   font-style: italic;
   color: var(--text-accent, #b0907a);
 }
-h2 .accent {
-  font-style: italic;
-  color: var(--text-accent, #b0907a);
-}
-h2 {
-  align-self: stretch;
-  color: var(--text-dark, #403f3d);
-  text-align: center;
-  font-family: Inter;
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 125%;
-  margin: 0;
-}
 h4 {
   align-self: stretch;
   color: var(--text-light, #e1d4c9);
@@ -199,6 +177,7 @@ h4 {
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
+  margin: 0;
 }
 .favorite-coffee {
   display: flex;
@@ -215,4 +194,144 @@ h4 {
   gap: 40px;
   align-self: stretch;
   padding: 0;
+}
+.button-primary {
+  cursor: pointer;
+  display: flex;
+  width: 200px;
+  padding: 20px 78px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 100px;
+  background: var(--background-body, #e1d4c9);
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: var(--text-dark, #403f3d);
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+.hidden-cup {
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+}
+.button-primary:hover > .hidden-cup {
+  opacity: 1;
+  visibility: visible;
+  overflow: visible;
+  transition: 0.5s opacity, 0.5s visibility, 0.5s overflow;
+}
+h2 .accent {
+  font-style: italic;
+  color: var(--text-accent, #b0907a);
+}
+h2 {
+  align-self: stretch;
+  color: var(--text-dark, #403f3d);
+  text-align: center;
+  font-family: Inter;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  margin: 0;
+}
+.slideshow {
+  position: relative;
+  display: flex;
+  width: 1360px;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.button-icon-dark {
+  display: flex;
+  align-self: flex-start;
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  border: 1px solid var(--border-dark, #665f55);
+}
+.row-slider {
+  display: flex;
+  min-width: 480px;
+  max-width: 1152px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex: 1 0 0;
+}
+.slide-1 {
+  display: flex;
+  width: 1152px;
+  min-width: 480px;
+  max-width: 1162px;
+  flex-direction: column;
+  align-items: center;
+}
+.slide-1 img {
+  width: 480px;
+  height: 480px;
+}
+.content {
+  display: flex;
+  width: 480px;
+  max-width: 480px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.description {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  align-self: center;
+}
+h3 {
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  align-self: stretch;
+  text-align: center;
+  margin: 0;
+}
+.description h4 {
+  color: var(--text-dark, #403f3d);
+  text-align: center;
+}
+.controls {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.control {
+  width: 40px;
+  height: 4px;
+  border-radius: 100px;
+  background: var(--border-dark, #665f55);
+}
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  align-self: stretch;
+}
+.about .container {
+  max-width: 1360px;
+  padding: 0 40px;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  align-self: stretch;
 }
