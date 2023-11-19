@@ -94,13 +94,19 @@ ul:first-child {
 a {
   cursor: pointer;
 }
-a:link {
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.menu-item:link {
   text-decoration: none;
   color: var(--text-dark, #403f3d);
   display: inline-block;
   position: relative;
 }
-a:after {
+.menu-item:after {
   content: "";
   display: block;
   height: 2px;
@@ -111,22 +117,40 @@ a:after {
   width: 0;
   opacity: 0;
 }
-a:hover:after {
+.menu-item:hover:after {
   width: 100%;
   left: 0;
   opacity: 1;
 }
-a:visited {
+.menu-item:visited {
   color: var(--text-dark, #403f3d);
+}
+.menu-item-non-active a {
+  text-decoration: none;
+  color: var(--text-dark, #403f3d);
+  pointer-events: none;
 }
 .coffee-menu {
   display: flex;
+  flex-direction: column;
   height: 28px;
   justify-content: flex-end;
   align-items: center;
 }
 .coffee-menu img {
   vertical-align: middle;
+}
+.link,
+.link-contact {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+.line {
+  width: 72px;
+  height: 2px;
+  background: #403f3d;
 }
 .enjoy {
   display: flex;
@@ -144,11 +168,12 @@ a:visited {
   align-items: flex-start;
   align-self: stretch;
   border-radius: 40px;
-  overflow: hidden;
-  background: url(/img/img-hero1.png), lightgray 50% / cover no-repeat;
+  background: url(/img/img-hero1.png);
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: local;
 }
-
 .offer {
   display: flex;
   width: 530px;
@@ -181,6 +206,9 @@ h4 {
   line-height: 150%;
   margin: 0;
   text-align: justify;
+}
+.offer h4 {
+  text-align: left;
 }
 .favorite-coffee {
   display: flex;
@@ -218,6 +246,7 @@ h4 {
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
+  border-width: 0;
 }
 .hidden-cup {
   opacity: 0;
@@ -246,7 +275,6 @@ h2 {
   margin: 0;
 }
 .slideshow {
-  /* position: relative; */
   display: flex;
   width: 1360px;
   flex-direction: column;
@@ -285,6 +313,7 @@ svg path {
   transition: 0.7s background-color, 0.7s stroke, 0.7s fill;
 }
 .button-icon-dark:hover {
+  cursor: pointer;
   background-color: #665f55;
   stroke: #e1d4c9;
   fill: #665f55;
@@ -471,16 +500,37 @@ h3 {
   border-radius: 100px;
   border: 1px solid var(--border-dark, #665f55);
   background-color: #e1d4c9;
-  stroke: #665f55;
-  fill: #665f55;
-  transition: 0.7s background-color, 0.7s stroke, 0.7s fill;
+  fill: #403f3d;
+  transition: 0.7s background-color, 0.7s fill;
 }
 .button:hover {
+  cursor: pointer;
   background-color: #665f55;
-  stroke: #e1d4c9;
   fill: #e1d4c9;
-  transition: 0.7s background-color, 0.7s stroke, 0.7s fill, 0.7s color;
   color: #e1d4c9;
+  transition: 0.7s background-color, 0.7s fill, 0.7s color;
+}
+.button-span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.button-span span {
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  margin: 0;
+}
+.button-span .lc {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  margin: 0;
 }
 footer {
   display: flex;
@@ -521,6 +571,7 @@ h2 span {
   transition: 0.7s background-color, 0.7s stroke, 0.7s fill;
 }
 .button-icon-light:hover {
+  cursor: pointer;
   background-color: #e1d4c9;
   stroke: #403f3d;
   fill: #e1d4c9;
@@ -547,32 +598,33 @@ h2 span {
   gap: 16px;
 }
 .link-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  position: relative;
   gap: 4px;
   background-color: #665f55;
   stroke: #e1d4c9;
   fill: #665f55;
 }
 .link-item a {
+  text-decoration: none;
   color: var(--text-light, #e1d4c9);
 }
-.link-item a:after {
-  content: "";
-  display: block;
-  height: 2px;
-  left: 50%;
+.link-item::after {
   position: absolute;
-  background: #e1d4c9;
-  transition: width 0.5s ease 0s, left 0.5s ease 0s, opacity 0.5s ease 0s;
-  width: 0;
-  opacity: 0;
-}
-.link-item a:hover:after {
+  content: "";
+  left: 50%;
+  bottom: -4px;
+  display: block;
   width: 100%;
-  left: 0;
-  opacity: 1;
+  height: 2px;
+  background: #e1d4c9;
+  transform: translateX(-50%);
+}
+.link-item::after {
+  width: 0;
+  transition: 0.5s;
+}
+.link-item:hover:after {
+  width: 100%;
 }
 body .menu {
   gap: 40px;
@@ -639,6 +691,7 @@ body .menu {
   align-items: center;
 }
 .tab-item-active {
+  pointer-events: none;
   background: var(--background-container, #665f55);
   color: var(--text-light, #e1d4c9);
 }
