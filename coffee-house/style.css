@@ -484,7 +484,7 @@ h3 {
   width: 630px;
   height: 630px;
   background: #e1d4c9;
-  background: url(/img/mobile-screens.png), lightgray 50% / cover no-repeat;
+  background: url(./img/mobile-screens.png), lightgray 50% / cover no-repeat;
 }
 .buttons {
   display: flex;
