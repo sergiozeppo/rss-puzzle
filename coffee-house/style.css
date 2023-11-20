@@ -7,7 +7,7 @@
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/inter-v13-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("./fonts/inter-v13-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 /* inter-600 - latin */
 @font-face {
@@ -15,7 +15,7 @@
   font-family: "Inter";
   font-style: normal;
   font-weight: 600;
-  src: url("../fonts/inter-v13-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("./fonts/inter-v13-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 /* inter-400 and inter-600 italic*/
 @import url("https://fonts.cdnfonts.com/css/inter?styles=29134,29141");
@@ -168,7 +168,7 @@ a {
   align-items: flex-start;
   align-self: stretch;
   border-radius: 40px;
-  background: url(/img/img-hero1.png);
+  background: url(./img/img-hero1.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -484,7 +484,7 @@ h3 {
   width: 630px;
   height: 630px;
   background: #e1d4c9;
-  background: url(/img/mobile-screens.png), lightgray 50% / cover no-repeat;
+  background: url(./img/mobile-screens.png), lightgray 50% / cover no-repeat;
 }
 .buttons {
   display: flex;
