@@ -1,0 +1,174 @@
+* {
+  border: 3px solid red;
+}
+@media (any-hover: hover) {
+  .button-primary a svg {
+    fill: none;
+    stroke: #403f3d;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+  }
+}
+/* @media (max-width: 1439px) {
+  .adaptive {
+    display: flex;
+    width: 1200px;
+    padding: 20px 0px 40px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+}
+@media (max-width: 1199px) {
+  .adaptive {
+    display: flex;
+    width: 1024px;
+    padding: 20px 0px 40px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+} */
+@media (max-width: 1023px) {
+  body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .adaptive {
+    display: flex;
+    width: 768px;
+    padding: 20px 0px 40px 0px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+  .container {
+    padding: 0;
+  }
+  .header-menu {
+    display: flex;
+    padding: 0px 40px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+  }
+  nav {
+    display: none;
+  }
+  .coffee-menu {
+    display: none;
+  }
+  .coffee-menu-ad {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    line-height: 100%;
+    border: 1px solid var(--border-dark, #665f55);
+  }
+  .enjoy-container {
+    padding: 100px 60px;
+  }
+  .menu-svg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .menu-svg svg {
+    width: 16px;
+    height: 2px;
+    stroke-width: 1.5px;
+    stroke: var(--text-dark, #403f3d);
+    fill: none;
+  }
+  .button-primary a svg {
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+  }
+  .favorite-coffee {
+    width: auto;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .favorite-coffee .container {
+    max-width: 100%;
+  }
+  .favorite-coffee .container h2 {
+    align-self: center;
+    margin: auto;
+  }
+  /* .button-icon-dark {
+      f
+    } */
+  .about {
+    width: 100%;
+  }
+  .about .container h2 {
+    align-self: center;
+  }
+  .images {
+    flex-direction: column;
+    align-items: center;
+  }
+  #about-2,
+  #about-3 {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .adaptive {
+    display: flex;
+    width: 425px;
+    padding: 20px 0px 40px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+  .header-menu {
+    display: flex;
+    padding: 0px 40px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+  }
+  nav {
+    display: none;
+  }
+  .coffee-menu {
+    display: none;
+  }
+  .coffee-menu-ad {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    border: 1px solid var(--border-dark, #665f55);
+  }
+}
+@media (max-width: 424px) {
+  .adaptive {
+    display: flex;
+    width: 380px;
+    padding: 20px 0px 40px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+}
+@media (max-width: 379px) {
+  .adaptive {
+    /* width: 100%; */
+  }
+}
