@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link type="Image/x-icon" href="./img/favicon.ico" rel="icon" />
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./media.css" />
     <title>▶ Design - Coffee House</title>
   </head>
   <body>
-    <header>
-      <div class="container">
+    <div class="adaptive">
+      <header>
         <div class="header-menu">
           <div class="logo non-active">
             <a href="home.html">
@@ -63,155 +64,159 @@
               ></span>
             </a>
           </div>
-        </div>
-      </div>
-      <div class="enjoy">
-        <div class="enjoy-container">
-          <div class="offer">
-            <h1>
-              <span class="accent">Enjoy</span> premium coffee at our charming
-              cafe
-            </h1>
-            <h4>
-              With its inviting atmosphere and delicious coffee options, the
-              Coffee House Resource is a popular destination for coffee lovers
-              and those seeking a warm and inviting space to enjoy their
-              favorite beverage.
-            </h4>
-            <div class="button-primary">
-              <a href="menu.html">
-                <p>Menu</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M14.166 9.76667V11.6667C14.166 14.8883 11.5543 17.5 8.33268 17.5C5.11102 17.5 2.49935 14.8883 2.49935 11.6667V9.76667C2.49935 9.4353 2.76798 9.16667 3.09935 9.16667H13.566C13.8974 9.16667 14.166 9.4353 14.166 9.76667Z"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M9.99935 7.49996C9.99935 6.66663 10.5946 5.83329 11.7851 5.83329V5.83329C13.1 5.83329 14.166 4.7673 14.166 3.45234V2.91663"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M6.66732 7.5V7.08333C6.66732 5.70262 7.78661 4.58333 9.16732 4.58333V4.58333C10.0878 4.58333 10.834 3.83714 10.834 2.91667V2.5"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M13.334 9.16663H15.4173C16.5679 9.16663 17.5007 10.0994 17.5007 11.25C17.5007 12.4006 16.5679 13.3333 15.4173 13.3333H14.1673"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </a>
-            </div>
+          <div class="burger-menu">
+            <a href="menu.html">
+              <span class="burger-menu-img"></span>
+            </a>
           </div>
         </div>
-      </div>
-    </header>
-    <main>
-      <div class="favorite-coffee" id="favorite-coffee">
-        <div class="container">
-          <h2>Choose your <span class="accent">favorite</span> coffee</h2>
-          <div class="slideshow">
-            <div class="slider">
-              <button class="button-icon-dark" id="arrow-left">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <use xlink:href="data:image/png"></use>
-                  <path
-                    d="M18.5 12H6M6 12L12 6M6 12L12 18"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-              <div class="row-slider">
-                <div class="slide" id="slide-1">
-                  <div class="content">
-                    <img
-                      src="./img/coffee-slider-1.png"
-                      alt="S’mores Frappuccino"
+      </header>
+      <main>
+        <div class="enjoy">
+          <div class="enjoy-container">
+            <div class="offer">
+              <h1>
+                <span class="accent">Enjoy</span> premium coffee at our charming
+                cafe
+              </h1>
+              <h4>
+                With its inviting atmosphere and delicious coffee options, the
+                Coffee House Resource is a popular destination for coffee lovers
+                and those seeking a warm and inviting space to enjoy their
+                favorite beverage.
+              </h4>
+              <div class="button-primary">
+                <a href="menu.html">
+                  <p>Menu</p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M14.166 9.76667V11.6667C14.166 14.8883 11.5543 17.5 8.33268 17.5C5.11102 17.5 2.49935 14.8883 2.49935 11.6667V9.76667C2.49935 9.4353 2.76798 9.16667 3.09935 9.16667H13.566C13.8974 9.16667 14.166 9.4353 14.166 9.76667Z"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
-                    <div class="description">
-                      <h3>S’mores Frappuccino</h3>
-                      <h4>
-                        This new drink takes an espresso and mixes it with brown
-                        sugar and cinnamon before being topped with oat milk.
-                      </h4>
-                      <h3>$5.50</h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="slide" id="slide-2">
-                  <div class="content">
-                    <img
-                      src="./img/coffee-slider-2.png"
-                      alt="Caramel Macchiato"
+                    <path
+                      d="M9.99935 7.49996C9.99935 6.66663 10.5946 5.83329 11.7851 5.83329V5.83329C13.1 5.83329 14.166 4.7673 14.166 3.45234V2.91663"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
-                    <div class="description">
-                      <h3>Caramel Macchiato</h3>
-                      <h4>
-                        Fragrant and unique classic espresso with rich
-                        caramel-peanut syrup, with cream under whipped thick
-                        foam.
-                      </h4>
-                      <h3>$5.00</h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="slide" id="slide-3">
-                  <div class="content">
-                    <img src="./img/coffee-slider-3.png" alt="Ice coffee" />
-                    <div class="description">
-                      <h3>Ice coffee</h3>
-                      <h4>
-                        A popular summer drink that tones and invigorates.
-                        Prepared from coffee, milk and ice.
-                      </h4>
-                      <h3>$4.50</h3>
-                    </div>
-                  </div>
-                </div>
+                    <path
+                      d="M6.66732 7.5V7.08333C6.66732 5.70262 7.78661 4.58333 9.16732 4.58333V4.58333C10.0878 4.58333 10.834 3.83714 10.834 2.91667V2.5"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.334 9.16663H15.4173C16.5679 9.16663 17.5007 10.0994 17.5007 11.25C17.5007 12.4006 16.5679 13.3333 15.4173 13.3333H14.1673"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
               </div>
-              <button class="button-icon-dark" id="arrow-right">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M6 12H18.5M18.5 12L12.5 6M18.5 12L12.5 18"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="controls">
-              <span class="control active"></span>
-              <span class="control"></span>
-              <span class="control"></span>
             </div>
           </div>
         </div>
-      </div>
-      <div class="about" id="about">
-        <div class="container">
+        <div class="favorite-coffee" id="favorite-coffee">
+          <div class="container">
+            <h2>Choose your <span class="accent">favorite</span> coffee</h2>
+            <div class="slideshow">
+              <div class="slider">
+                <button class="button-icon-dark" id="arrow-left">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <use xlink:href="data:image/png"></use>
+                    <path
+                      d="M18.5 12H6M6 12L12 6M6 12L12 18"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+                <div class="row-slider">
+                  <div class="slide" id="slide-1">
+                    <div class="content">
+                      <img
+                        src="./img/coffee-slider-1.png"
+                        alt="S’mores Frappuccino"
+                      />
+                      <div class="description">
+                        <h3>S’mores Frappuccino</h3>
+                        <h4>
+                          This new drink takes an espresso and mixes it with
+                          brown sugar and cinnamon before being topped with oat
+                          milk.
+                        </h4>
+                        <h3>$5.50</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slide" id="slide-2">
+                    <div class="content">
+                      <img
+                        src="./img/coffee-slider-2.png"
+                        alt="Caramel Macchiato"
+                      />
+                      <div class="description">
+                        <h3>Caramel Macchiato</h3>
+                        <h4>
+                          Fragrant and unique classic espresso with rich
+                          caramel-peanut syrup, with cream under whipped thick
+                          foam.
+                        </h4>
+                        <h3>$5.00</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slide" id="slide-3">
+                    <div class="content">
+                      <img src="./img/coffee-slider-3.png" alt="Ice coffee" />
+                      <div class="description">
+                        <h3>Ice coffee</h3>
+                        <h4>
+                          A popular summer drink that tones and invigorates.
+                          Prepared from coffee, milk and ice.
+                        </h4>
+                        <h3>$4.50</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="button-icon-dark" id="arrow-right">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M6 12H18.5M18.5 12L12.5 6M18.5 12L12.5 18"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="controls">
+                <span class="control active"></span>
+                <span class="control"></span>
+                <span class="control"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about" id="about">
           <h2>
             Resource is
             <span class="accent">the perfect and cozy place</span> where you can
@@ -237,9 +242,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="mobile" id="mobile">
-        <div class="container">
+        <div class="mobile" id="mobile">
           <div class="offer">
             <h2>
               <span class="accent">Download</span> our apps to start ordering
@@ -295,12 +298,14 @@
               </button>
             </div>
           </div>
-          <div class="mobile-screens"></div>
+          <div class="mobile-screens">
+            <figure>
+              <img src="./img/mobile-screens.png" alt="mobile screens" />
+            </figure>
+          </div>
         </div>
-      </div>
-    </main>
-    <footer id="footer">
-      <div class="container">
+      </main>
+      <footer id="footer">
         <div class="offer">
           <h2 style="display: flex; flex-direction: column">
             <span>Sip, Savor, Smile.</span>
@@ -449,7 +454,7 @@
             </span>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   </body>
 </html>
