@@ -72,6 +72,7 @@ body {
 }
 
 a {
+  color: #403f3d;
   text-decoration: none;
 }
 
@@ -126,9 +127,6 @@ ul:first-child {
   padding: 0;
 }
 
-a {
-  cursor: pointer;
-}
 .menu-item {
   display: flex;
   flex-direction: column;
