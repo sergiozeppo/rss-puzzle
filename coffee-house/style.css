@@ -65,6 +65,7 @@ body {
   margin: auto;
   padding: 2rem 4rem 4rem 4rem;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   background: #e1d4c9;
   color: #403f3d;
@@ -275,7 +276,6 @@ h4 {
   visibility: hidden;
   overflow: hidden;
 }
-
 h2 .accent {
   font-style: italic;
   color: #b0907a;
