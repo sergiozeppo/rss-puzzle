@@ -115,6 +115,10 @@
   .mobile {
     flex-direction: column;
     max-width: 100%;
+    gap: 0;
+  }
+  .mobile-screens {
+    margin-top: 100px;
   }
   .mobile .offer {
     max-width: 100%;
@@ -135,9 +139,6 @@
     flex-direction: column;
     flex-wrap: wrap;
     align-content: center;
-  }
-  .box {
-    width: 100%;
   }
   .item-grid-container {
     grid-template-columns: repeat(2, 1fr);
@@ -172,7 +173,17 @@
     padding: 10rem 6rem;
   }
   footer {
-    padding: 10rem 6rem;
+    margin: -7px 0;
+    padding: 10.5rem 6rem;
+    align-content: flex-start;
+  }
+  .offer h2 span {
+    text-align: left;
+  }
+  .link-item a {
+    display: flex;
+    line-height: 150%;
+    gap: 8px;
   }
 }
 /*16*48 = 768 px Tablet*/
@@ -221,6 +232,13 @@
     visibility: visible;
     overflow: visible;
   }
+  .about h2 {
+    text-align: left;
+  }
+  .item-grid-container {
+    margin: 0 13px;
+    grid-template-rows: repeat(2, 50.5rem);
+  }
 }
 @media (max-width: 767px) {
   .adaptive {
@@ -235,22 +253,22 @@
   .menu .offer h1 {
     font-size: clamp(3.2rem, 7.8vw, 6rem);
   }
-  .about h2 {
-    text-align: left;
-  }
-  .content img {
-    max-width: 348px;
-    max-height: 348px;
-  }
-  .slider {
-    gap: 0;
-  }
+}
+.content img {
+  max-width: 348px;
+  max-height: 348px;
+}
+.slider {
+  gap: 0;
 }
 @media (max-width: 730px) {
   .item-grid-container {
     grid-template-rows: repeat(2, 50rem);
     gap: 3rem;
     row-gap: 3rem;
+  }
+  .box {
+    aspect-ratio: 68/59;
   }
 }
 @media (max-width: 620px) {
@@ -287,5 +305,34 @@
   footer {
     padding: 6rem 1.6rem;
     gap: 4rem;
+  }
+}
+@media (max-width: 380px) {
+  h1 {
+    line-height: 115%;
+  }
+  .column {
+    object-fit: cover;
+  }
+  .box {
+    height: 590px;
+    width: 348px;
+    position: relative;
+    overflow: hidden;
+  }
+  .box img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 348px;
+    height: 590px;
+    object-fit: cover;
+  }
+  .mobile-screens {
+    margin-top: 40px;
+  }
+  .offer h2 span {
+    text-align: left;
   }
 }
