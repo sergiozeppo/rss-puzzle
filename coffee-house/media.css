@@ -253,13 +253,13 @@
   .menu .offer h1 {
     font-size: clamp(3.2rem, 7.8vw, 6rem);
   }
-}
-.content img {
-  max-width: 348px;
-  max-height: 348px;
-}
-.slider {
-  gap: 0;
+  .content img {
+    max-width: 348px;
+    max-height: 348px;
+  }
+  .slider {
+    gap: 0;
+  }
 }
 @media (max-width: 730px) {
   .item-grid-container {
@@ -334,5 +334,14 @@
   }
   .offer h2 span {
     text-align: left;
+  }
+  .button-primary p {
+    margin-right: 15px;
+  }
+  .button-primary a svg {
+    margin-right: 20px;
+  }
+  footer {
+    margin-top: -2px;
   }
 }
