@@ -186,6 +186,20 @@
     gap: 8px;
   }
 }
+@media (min-width: 769px) {
+  nav {
+    display: flex;
+  }
+  .coffee-menu {
+    display: flex;
+  }
+  .burger-menu {
+    display: none;
+  }
+  .burger-menu-container {
+    display: none;
+  }
+}
 /*16*48 = 768 px Tablet*/
 @media (max-width: 48em) {
   nav {
@@ -196,36 +210,94 @@
   }
   .burger-menu {
     display: flex;
+  }
+  .burger-menu-icon {
     position: relative;
+    z-index: 30;
     width: 44px;
     height: 44px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    line-height: 100%;
+    gap: 5px;
     border-radius: 50%;
-    border: 1px solid #403f3d;
+    border: 1px solid #665f55;
   }
-  .burger-menu-img,
-  .burger-menu-img::before,
-  .burger-menu-img::after {
+  .burger-menu-icon-line {
     position: absolute;
-    width: 18px;
+    width: 16px;
     height: 2px;
-    background-color: #403f3d;
-  }
-  .burger-menu-img {
+    line-height: 100%;
+    background-color: #665f55;
+    transition: transform 0.3s ease-out;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: transparent;
   }
-  .burger-menu-img::after {
-    content: "";
-    top: 4px;
+  .first-line {
+    transform: translateY(-0.4rem);
   }
-  .burger-menu-img::before {
-    content: "";
-    top: -4px;
+  .second-line {
+    transform: translateY(0.4rem);
+  }
+  .active-burger .first-line {
+    transform: rotate(45deg);
+  }
+  .active-burger .second-line {
+    transform: rotate(-45deg);
+  }
+  .burger-menu-container.active-burger {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  .burger-menu-container {
+    display: flex;
+    opacity: 0;
+    position: fixed;
+    top: 8rem;
+    left: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: calc(100dvh - 60px);
+    padding: 60px 40px;
+    z-index: 10;
+    background: #e1d4c9;
+    transform: translateX(100%);
+    transition: all 0.7s ease-out;
+  }
+  .burger-nav {
+    display: flex;
+    text-align: center;
+    font-size: 3.2rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 125%;
+  }
+  .burger-ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+  }
+  ul {
+    gap: 6rem;
+  }
+  .coffee-menu-burger {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    font-size: 3.2rem;
+    align-content: flex-start;
+    height: 2.8rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .coffee-menu-burger svg {
+    height: 4rem;
+    width: 4rem;
+    vertical-align: middle;
+    fill: none;
+    stroke: #403f3d;
   }
   .button-primary a svg {
     opacity: 1;
@@ -238,6 +310,9 @@
   .item-grid-container {
     margin: 0 13px;
     grid-template-rows: repeat(2, 50.5rem);
+  }
+  .no-scroll {
+    overflow: hidden;
   }
 }
 @media (max-width: 767px) {
