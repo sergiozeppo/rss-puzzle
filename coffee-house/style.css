@@ -364,8 +364,7 @@ h2 {
 .content img {
   max-width: 480px;
 }
-#slide-2,
-#slide-3 {
+.hidden {
   display: none;
 }
 .content {
@@ -400,15 +399,51 @@ h3 {
   gap: 1.2rem;
 }
 .control {
-  cursor: pointer;
   width: 4rem;
   height: 0.4rem;
   border-radius: 10rem;
   background: #c1b6ad;
 }
 .active {
+  /* width: 0%;
+  height: 100%; */
   border-radius: 10rem;
+  /* background: #665f55; */
+}
+.fill {
+  width: 0%;
+  height: 100%;
   background: #665f55;
+}
+.control.active .fill {
+  /* transition: all 5s; */
+  animation-name: fill;
+  animation-fill-mode: forwards;
+  animation-duration: 5s;
+  /* width: 100%; */
+}
+.control.rotated .fill {
+  transition: all 0.7s;
+  animation-name: rotated;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  width: 0%;
+}
+@keyframes fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes rotated {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
 .about {
   display: flex;
@@ -689,15 +724,16 @@ body .menu {
 
 .item-grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 31rem);
-  grid-template-rows: repeat(2, 50.6rem);
-  grid-auto-rows: 0;
+  grid-template-columns: repeat(auto-fill, 31rem);
+  grid-template-rows: repeat(auto-fill, 50.6rem);
+  grid-auto-rows: auto;
   gap: 4rem;
   row-gap: 4rem;
 }
 .item-card {
   cursor: pointer;
   position: relative;
+  height: 506px;
   border-radius: 4rem;
   border: 0.1rem solid #c1b6ad;
 }
@@ -762,4 +798,13 @@ body .menu {
 .refresh svg {
   fill: none;
   stroke: #403f3d;
+}
+.smooth-appear {
+  opacity: 0;
+  animation: 1s linear 0s 1 forwards appeared;
+}
+@keyframes appeared {
+  to {
+    opacity: 1;
+  }
 }

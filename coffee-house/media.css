@@ -400,7 +400,6 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     width: 348px;
     height: 590px;
     object-fit: cover;
@@ -419,5 +418,8 @@
   }
   footer {
     margin-top: -2px;
+  }
+  .burger-menu-container {
+    padding: 60px 16px;
   }
 }
