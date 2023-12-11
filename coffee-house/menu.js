@@ -21,7 +21,7 @@ function createCard(product) {
   const description = product.description;
   const price = product.price;
   const category = product.category;
-  const imageURL = "/img/menu/" + product.name.split(" ").join("-") + ".png";
+  const imageURL = "./img/menu/" + product.name.split(" ").join("-") + ".png";
   const card = document.createElement("div");
   card.classList.add("item-card", "hidden");
   card.dataset.category = category;
