@@ -198,7 +198,7 @@
                     />
                   </svg>
                 </button>
-                <div class="row-slider">
+                <div class="row-slider" id="row-slider">
                   <div class="slide" id="slide-1">
                     <div class="content">
                       <img
@@ -263,14 +263,14 @@
                 </button>
               </div>
               <div class="controls">
-                <div class="control active">
-                  <div class="fill"></div>
+                <div class="control">
+                  <div class="fill" id="fill1"></div>
                 </div>
                 <div class="control">
-                  <div class="fill"></div>
+                  <div class="fill" id="fill2"></div>
                 </div>
                 <div class="control">
-                  <div class="fill"></div>
+                  <div class="fill" id="fill3"></div>
                 </div>
               </div>
             </div>
@@ -518,6 +518,7 @@
         </div>
       </footer>
     </div>
-    <script src="./script.js"></script>
+    <script src="./script.js" type="module"></script>
+    <script src="./slider.js" type="module"></script>
   </body>
 </html>
