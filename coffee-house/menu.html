@@ -13,26 +13,22 @@
       <header>
         <div class="header-menu">
           <div class="logo">
-            <a href="home.html">
+            <a href="./home.html">
               <img src="./img/svg/logo.svg" alt="▶ Design - Coffee House" />
             </a>
           </div>
           <nav>
             <ul>
               <li>
-                <a class="menu-item" href="./home.html#favorite-coffee"
-                  >Favorite coffee</a
-                >
+                <a class="menu-item" href="./home.html#favorite-coffee">Favorite coffee</a>
               </li>
               <li><a class="menu-item" href="./home.html#about">About</a></li>
-              <li>
-                <a class="menu-item" href="./home.html#mobile">Mobile app</a>
-              </li>
+              <li><a class="menu-item" href="./home.html#mobile">Mobile app</a></li>
               <li><a class="menu-item" href="#footer">Contact us</a></li>
             </ul>
           </nav>
           <div class="coffee-menu menu-item-non-active">
-            <a class="link" href="./menu.html">
+            <a class="menu-item link" href="menu.html">
               Menu
               <span
                 ><svg
@@ -70,10 +66,61 @@
             <span class="line"></span>
           </div>
           <div class="burger-menu">
-            <a href="menu.html">
-              <span class="burger-menu-img"></span>
-            </a>
+            <div class="burger-menu-icon">
+              <div class="burger-menu-icon-line first-line"></div>
+              <div class="burger-menu-icon-line second-line"></div>
+            </div>
           </div>
+        </div>
+        <div class="burger-menu-container">
+          <nav class="burger-nav">
+            <ul class="burger-ul">
+              <li>
+                <a class="menu-item" href="./home.html#favorite-coffee">Favorite coffee</a>
+              </li>
+              <li><a class="menu-item" href="./home.html#about">About</a></li>
+              <li><a class="menu-item" href="./home.html#mobile">Mobile app</a></li>
+              <li><a class="menu-item" href="#footer">Contact us</a></li>
+              <li></li><div class="coffee-menu-burger">
+                <a class="menu-item link" href="#">
+                  Menu
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M14.167 9.76667V11.6667C14.167 14.8883 11.5553 17.5 8.33366 17.5C5.112 17.5 2.50033 14.8883 2.50033 11.6667V9.76667C2.50033 9.4353 2.76896 9.16667 3.10033 9.16667H13.567C13.8984 9.16667 14.167 9.4353 14.167 9.76667Z"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10.0003 7.50008C10.0003 6.66675 10.5956 5.83341 11.786 5.83341V5.83341C13.101 5.83341 14.167 4.76743 14.167 3.45246V2.91675"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.66634 7.5V7.08333C6.66634 5.70262 7.78563 4.58333 9.16634 4.58333V4.58333C10.0868 4.58333 10.833 3.83714 10.833 2.91667V2.5"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M13.333 9.16675H15.4163C16.5669 9.16675 17.4997 10.0995 17.4997 11.2501C17.4997 12.4007 16.5669 13.3334 15.4163 13.3334H14.1663"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      /></svg
+                  ></span>
+                </a>
+              </div>
+            </li>
+            </ul>
+          </nav>
         </div>
       </header>
       <main>
@@ -84,19 +131,19 @@
               <span class="accent">amazing surprise</span>
             </h1>
             <div class="tabs">
-              <button class="tab-item tab-item-active">
+              <button class="tab-item tab-item-active" data-category="coffee">
                 <span class="round-tab"
                   ><img src="./img/svg/tabs-coffee.svg" alt="Coffee"
                 /></span>
                 <span>Coffee</span>
               </button>
-              <button class="tab-item">
+              <button class="tab-item" data-category="tea">
                 <span class="round-tab"
                   ><img src="./img/svg/tabs-tea.svg" alt="Tea"
                 /></span>
                 <span>Tea</span>
               </button>
-              <button class="tab-item">
+              <button class="tab-item" data-category="dessert">
                 <span class="round-tab"
                   ><img src="./img/svg/tabs-dessert.svg" alt="Dessert"
                 /></span>
@@ -104,114 +151,84 @@
               </button>
             </div>
           </div>
+          <div class="modal-overlay hidden">
+          </div>
+  
+            <div class="modal-container hidden">
+              <div class="item-box">
+                <img id="modal-product" src="./img/menu/ginger.png" alt="">
+              </div>
+
+              <div class="modal-item">
+                <div class="modal-item-name">
+                  <h3 id="modal-item-name">Irish coffee</h3>
+                  <p id="modal-item-description">Fragrant black coffee with Jameson Irish whiskey and whipped milk</p>
+                </div>
+
+                <div class="modal-item-size">
+                  <p>Size</p>
+                  <div class="modal-tabs">
+                    <div class="modal-tab-item modal-tab-item-active" id="small-size">
+                      <span class="modal-round-tab"><p>S</p></span>
+                      <span class="menu-selection" id="size1">200 ml</span>
+                    </div>
+                    <div class="modal-tab-item" id="medium-size">
+                      <span class="modal-round-tab"><p>M</p></span>
+                      <span class="tab-selection" id="size2">300 ml</span>
+                    </div>
+                    <div class="modal-tab-item" id="large-size">
+                      <span class="modal-round-tab"><p>L</p></span>
+                      <span class="tab-selection" id="size3">400 ml</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="modal-item-additives">
+                  <p>Additives</p>
+                  <div class="modal-tabs">
+                    <div class="modal-tab-item" id="additive1">
+                      <span class="modal-round-tab"><p>1</p></span>
+                      <span class="menu-selection" id="option1">Sugar</span>
+                    </div>
+                    <div class="modal-tab-item" id="additive2">
+                      <span class="modal-round-tab"><p>2</p></span>
+                      <span class="tab-selection" id="option2">Cinnamon</span>
+                    </div>
+                    <div class="modal-tab-item" id="additive3">
+                      <span class="modal-round-tab"><p>3</p></span>
+                      <span class="tab-selection" id="option3">Syrup</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="modal-total">
+                  <h3>Total:</h3>
+                  <h3 id="modal-total">$7.00</h3>
+                </div>
+  
+                <div class="modal-item-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                      <g clip-path="url(#clip0_268_9737)">
+                        <path d="M8 7.66663V11" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 5.00667L8.00667 4.99926" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.00016 14.6667C11.6821 14.6667 14.6668 11.6819 14.6668 8.00004C14.6668 4.31814 11.6821 1.33337 8.00016 1.33337C4.31826 1.33337 1.3335 4.31814 1.3335 8.00004C1.3335 11.6819 4.31826 14.6667 8.00016 14.6667Z" stroke-linecap="round" stroke-linejoin="round"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_268_9737">
+                          <rect width="16" height="16" fill="white"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  <p>The cost is not final. Download our mobile app to see the final price and place your order. Earn loyalty points and enjoy your favorite coffee with up to 20% discount.</p>
+                </div>
+  
+                <div class="modal-item-close">
+                  <button type="button" class="close-button">Close</button>
+                </div>
+              </div>
+            </div>
+
           <div class="item-grid-container">
-            <div class="item-card">
-              <div class="item-box">
-                <img src="./img/coffee-1.png" alt="Irish coffee" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Irish coffee</h3>
-                  <h4>
-                    Fragrant black coffee with Jameson Irish whiskey and whipped
-                    milk
-                  </h4>
-                </div>
-                <h3 class="price">$7.00</h3>
-              </div>
-            </div>
-            <div class="item-card">
-              <div class="item-box">
-                <img src="./img/coffee-2.png" alt="Kahlua coffee" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Kahlua coffee</h3>
-                  <h4>
-                    Classic coffee with milk and Kahlua liqueur under a cap of
-                    frothed milk
-                  </h4>
-                </div>
-                <h3 class="price">$7.00</h3>
-              </div>
-            </div>
-            <div class="item-card">
-              <div class="item-box">
-                <img src="./img/coffee-3.png" alt="Honey raf" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Honey raf</h3>
-                  <h4>Espresso with frothed milk, cream and aromatic honey</h4>
-                </div>
-                <h3 class="price">$5.50</h3>
-              </div>
-            </div>
-            <div class="item-card">
-              <div class="item-box">
-                <img src="./img/coffee-4.png" alt="Ice cappuccino" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Ice cappuccino</h3>
-                  <h4>
-                    Cappuccino with soft thick foam in summer version with ice
-                  </h4>
-                </div>
-                <h3 class="price">$5.00</h3>
-              </div>
-            </div>
-            <div class="item-card" id="coffee-5">
-              <div class="item-box">
-                <img src="./img/coffee-5.png" alt="Espresso" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Espresso</h3>
-                  <h4>Classic black coffee</h4>
-                </div>
-                <h3 class="price">$4.50</h3>
-              </div>
-            </div>
-            <div class="item-card" id="coffee-6">
-              <div class="item-box">
-                <img src="./img/coffee-6.png" alt="Latte" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Latte</h3>
-                  <h4>
-                    Espresso coffee with the addition of steamed milk and dense
-                    milk foam
-                  </h4>
-                </div>
-                <h3 class="price">$5.50</h3>
-              </div>
-            </div>
-            <div class="item-card" id="coffee-7">
-              <div class="item-box">
-                <img src="./img/coffee-7.png" alt="Latte macchiato" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Latte macchiato</h3>
-                  <h4>Espresso with frothed milk and chocolate</h4>
-                </div>
-                <h3 class="price">$5.50</h3>
-              </div>
-            </div>
-            <div class="item-card" id="coffee-8">
-              <div class="item-box">
-                <img src="./img/coffee-8.png" alt="Coffee with cognac" />
-              </div>
-              <div class="item-description">
-                <div class="item-title">
-                  <h3>Coffee with cognac</h3>
-                  <h4>Fragrant black coffee with cognac and whipped cream</h4>
-                </div>
-                <h3 class="price">$6.50</h3>
-              </div>
-            </div>
           </div>
           <div class="button-refresh">
             <button class="refresh">
@@ -389,5 +406,8 @@
         </div>
       </footer>
     </div>
+    <script src="./script.js" type="module"></script>
+    <script src="./menu.js" type="module"></script>
+    <script src="./modal.js" type="module"></script>
   </body>
 </html>
