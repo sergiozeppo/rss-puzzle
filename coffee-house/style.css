@@ -708,11 +708,9 @@ body .menu {
 }
 .tab-item-active,
 .modal-tab-item-active {
-  pointer-events: none;
   background: #665f55;
   color: #e1d4c9;
 }
-
 .item-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, 31rem);
@@ -861,6 +859,18 @@ body .menu {
   text-align: left;
 }
 .modal-item-name p {
+  text-align: left;
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+.modal-item-additives {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+.modal-item-additives p {
   text-align: left;
   font-weight: normal;
   font-size: 1.6rem;
