@@ -930,3 +930,6 @@ body .menu {
   gap: 20px;
   align-self: stretch;
 }
+.no-scroll {
+    overflow: hidden;
+  }
