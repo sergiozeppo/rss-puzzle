@@ -98,7 +98,7 @@ header {
 .logo {
   max-width: 10rem;
   max-height: 6rem;
-  z-index: 11;
+  z-index: 3;
 }
 svg path {
   stroke: inherit;
