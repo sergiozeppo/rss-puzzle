@@ -213,7 +213,7 @@
   }
   .burger-menu-icon {
     position: relative;
-    z-index: 30;
+    z-index: 3;
     width: 44px;
     height: 44px;
     display: flex;
@@ -261,7 +261,7 @@
     width: 100%;
     height: calc(100dvh - 60px);
     padding: 60px 40px;
-    z-index: 10;
+    z-index: 2;
     background: #e1d4c9;
     transform: translateX(100%);
     transition: all 0.7s ease-out;
