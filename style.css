@@ -10,17 +10,28 @@ html {
 }
 body {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #a148db;
+  background: url(./images/background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-attachment: local;
+}
+.no-scroll {
+  overflow: hidden;
 }
 .wrapper {
   display: flex;
-  align-items: flex-end;
-  gap: 8rem;
-  max-width: 83.5rem;
-  background-color: #fff;
+  position: fixed;
+  top: 15rem;
+  left: 0;
+  align-items: center;
+  gap: 15rem;
+  /* max-width: 83.5rem; */
+
   border-radius: 1rem;
   padding: 5rem;
 }
@@ -29,8 +40,8 @@ body {
   text-align: center;
 }
 .gallows-part img {
-  max-width: 27rem;
-  max-height: 30rem;
+  max-width: 77rem;
+  max-height: 55rem;
 }
 .answer-hide {
   display: flex;
@@ -51,6 +62,16 @@ body {
 .answer-hide .letter.correct {
   margin: -4rem 0 3.5rem 0;
   border: none;
+}
+.quiz-wrapper {
+  background-color: #fff;
+  display: flex;
+  /* align-items: flex-end; */
+  gap: 8rem;
+  /* max-width: 83.5rem; */
+
+  border-radius: 1rem;
+  padding: 5rem;
 }
 .quiz-part h3 {
   text-align: center;
@@ -73,7 +94,7 @@ body {
 }
 .virtual-keyboard button {
   color: #fff;
-  background-color: #a148db;
+  background-color: #1f558b;
   text-transform: uppercase;
   width: calc(100% / 10 - 0.5rem);
   border-radius: 0.5rem;
@@ -84,12 +105,12 @@ body {
   border: none;
 }
 .virtual-keyboard button:hover {
-  background-color: #7635a1;
+  background-color: #4d79a5;
   cursor: pointer;
 }
 .modal {
   position: fixed;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
@@ -97,6 +118,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 3;
 }
 .modal .result {
   background-color: #fff;
@@ -119,13 +141,13 @@ body {
   font-weight: 500;
 }
 .modal p b {
-  color: #a148db;
+  color: #1f558b;
   font-weight: 700;
 }
 .modal .retry {
   padding: 1rem 2rem;
   color: #fff;
-  background-color: #a148db;
+  background-color: #1f558b;
   text-transform: uppercase;
   border-radius: 0.5rem;
   outline: none;
@@ -134,6 +156,6 @@ body {
   border: none;
 }
 .modal .retry:hover {
-  background-color: #7635a1;
+  background-color: #4d79a5;
   cursor: pointer;
 }
