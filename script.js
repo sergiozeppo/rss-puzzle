@@ -1,6 +1,7 @@
 const body = document.querySelector("body");
 
 let currentAnswer;
+let previousAnswer;
 let wrongTry = 0;
 let maxTry = 6;
 let lettersCorrect = [];
@@ -100,12 +101,14 @@ function reset() {
   virtualKeyboard
     .querySelectorAll("button")
     .forEach((button) => (button.disabled = false));
+  previousAnswer = currentAnswer;
 }
 
 // First in-game function to get random question
 function randomiser() {
   const { answer, hint } = questions[~~(Math.random() * questions.length)];
   currentAnswer = answer;
+  if (currentAnswer === previousAnswer) randomiser();
   console.log(currentAnswer);
   document.querySelector(".hint-part b").innerText = hint;
   reset();
