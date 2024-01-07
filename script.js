@@ -5,6 +5,7 @@ let wrongTry = 0;
 let maxTry = 6;
 let lettersCorrect = [];
 
+// Initialization game function
 function initGame() {
   body.classList.add("no-scroll");
 
@@ -69,6 +70,7 @@ function initGame() {
 }
 initGame();
 
+// Declaring variables after generating
 const virtualKeyboard = document.querySelector(".virtual-keyboard");
 const guess = document.querySelector(".guess-part b");
 const answerHidden = document.querySelector(".answer-hide");
@@ -80,6 +82,7 @@ const modalGreet = modal.querySelector("h3");
 const modalText = modal.querySelector("p");
 const retryButton = document.querySelector(".retry");
 
+// Reset game function
 function reset() {
   wrongTry = 0;
   lettersCorrect = [];
@@ -99,6 +102,7 @@ function reset() {
     .forEach((button) => (button.disabled = false));
 }
 
+// First in-game function to get random question
 function randomiser() {
   const { answer, hint } = questions[~~(Math.random() * questions.length)];
   currentAnswer = answer;
@@ -106,6 +110,8 @@ function randomiser() {
   document.querySelector(".hint-part b").innerText = hint;
   reset();
 }
+
+// gameOver function which shows MODAL after end
 function gameOver(isWin) {
   setTimeout(() => {
     modal.classList.add("visible");
@@ -116,6 +122,8 @@ function gameOver(isWin) {
     } <b>${currentAnswer}</b>`;
   }, 250);
 }
+
+// Function for check clicked button
 function buttonCheck(button, letterClicked) {
   if (currentAnswer.includes(letterClicked)) {
     let current = answerHidden.querySelectorAll("li");
@@ -135,13 +143,18 @@ function buttonCheck(button, letterClicked) {
   if (wrongTry === maxTry) return gameOver(false);
   if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
 }
-for (i = 97; i <= 122; i++) {
-  const button = document.createElement("button");
-  button.innerText = String.fromCharCode(i);
-  virtualKeyboard.appendChild(button);
-  button.addEventListener("click", (e) =>
-    buttonCheck(e.target, button.innerText.toLowerCase())
-  );
+
+// Function for generating letters of virtual Keyboard
+function generateLetters() {
+  for (i = 97; i <= 122; i++) {
+    const button = document.createElement("button");
+    button.innerText = String.fromCharCode(i);
+    virtualKeyboard.appendChild(button);
+    button.addEventListener("click", (e) =>
+      buttonCheck(e.target, button.innerText.toLowerCase())
+    );
+  }
 }
 randomiser();
+generateLetters();
 retryButton.addEventListener("click", randomiser);
