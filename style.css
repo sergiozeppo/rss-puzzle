@@ -102,6 +102,10 @@ body {
   background-color: #4d79a5;
   cursor: pointer;
 }
+button[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
 .modal {
   position: fixed;
   display: none;
