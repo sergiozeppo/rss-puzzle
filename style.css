@@ -35,10 +35,6 @@ body {
   margin-top: 2rem;
   text-align: center;
 }
-/* .gallows-part img {
-  width: auto;
-  height: auto;
-} */
 .answer-hide {
   display: flex;
   align-items: center;

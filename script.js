@@ -1,6 +1,11 @@
 const virtualKeyboard = document.querySelector(".virtual-keyboard");
+const guess = document.querySelector(".guess-part b");
 const answerHidden = document.querySelector(".answer-hide");
+const alienHangman = document.querySelector(".gallows-part img");
+
 let currentQuestion;
+let wrongTry = 0;
+let maxTry = 6;
 
 function randomiser() {
   const { answer, hint } = questions[~~(Math.random() * questions.length)];
@@ -23,8 +28,10 @@ function buttonCheck(button, letterClicked) {
       }
   });
   } else {
-      console.log(letterClicked, "Letter is NOT in the word");
+    wrongTry++;
+    alienHangman.src = `./images/gallows-${wrongTry}.png`;
   }
+  guess.innerText = `${wrongTry} / ${maxTry}`;
   button.disabled = true;
 }
 for (i = 97; i <= 122; i++) {
