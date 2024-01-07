@@ -8,29 +8,44 @@ const modalImg = modal.querySelector("img");
 const modalGreet = modal.querySelector("h3");
 const modalText = modal.querySelector("p");
 const modalAnswer = modalText.querySelector("b");
+const retryButton = document.querySelector(".retry");
 
 let currentAnswer;
 let wrongTry = 0;
 let maxTry = 6;
-const lettersCorrect = [];
+let lettersCorrect = [];
+
+function reset() {
+  wrongTry = 0;
+  lettersCorrect = [];
+  answerHidden.querySelectorAll("li").forEach(function(elem){
+      elem.parentNode.removeChild(elem);
+    });
+  for (i=0; i<currentAnswer.length; i++) {
+    const hiddenLetter = document.createElement("li");
+    answerHidden.appendChild(hiddenLetter);
+    hiddenLetter.classList.add("letter");
+  };
+  modal.classList.remove("visible");
+  alienHangman.src = `./images/gallows-${wrongTry}.png`;
+  guess.innerText = `${wrongTry} / ${maxTry}`;
+  virtualKeyboard.querySelectorAll("button").forEach(button => button.disabled = false);
+}
 
 function randomiser() {
   const { answer, hint } = questions[~~(Math.random() * questions.length)];
-  console.log(answer);
   currentAnswer = answer;
   console.log(currentAnswer);
   document.querySelector(".hint-part b").innerText = hint;
-  answerHidden.innerHTML = answer
-    .split("")
-    .map(() => `<li class="letter"></li>`)
-    .join("");
+  reset();
 }
 function gameOver(isWin) {
   setTimeout(()=> {
     modal.classList.add("visible");
     modalImg.src = `./images/${isWin? "victory" : "lost"}.png`;
     modalGreet.innerText = `${isWin? "You WIN!" : "You lost!"}`;
-    modalText.innerHTML = `${isWin? "You guessed the word correctly: " : "The correct answer was: "} <b>${currentAnswer}</b>`;}, 250)
+    modalText.innerHTML = `${isWin? "You guessed the word correctly: " : "The correct answer was: "} <b>${currentAnswer}</b>`;}, 250);
+    // answerHidden.querySelectorAll(".letter").remove();
 }
 function buttonCheck(button, letterClicked) {
   if (currentAnswer.includes(letterClicked)) {
@@ -58,3 +73,4 @@ for (i = 97; i <= 122; i++) {
   button.addEventListener("click", (e) => buttonCheck(e.target, button.innerText.toLowerCase()));
 }
 randomiser();
+retryButton.addEventListener("click",randomiser);
