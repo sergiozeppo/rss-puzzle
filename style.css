@@ -114,6 +114,9 @@ button[disabled] {
   height: 100%;
   z-index: 3;
 }
+.modal.visible {
+  display: flex;
+}
 .modal .result {
   background-color: #fff;
   max-width: 42rem;
@@ -136,7 +139,7 @@ button[disabled] {
 }
 .modal p b {
   color: #1f558b;
-  font-weight: 700;
+  font-weight: 900;
 }
 .modal .retry {
   padding: 1rem 2rem;
