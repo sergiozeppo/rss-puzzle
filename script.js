@@ -144,6 +144,34 @@ function buttonCheck(button, letterClicked) {
   if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
 }
 
+// Function for check keyboard keys pressed
+function keyboardCheck(event) {
+  buttons = virtualKeyboard.querySelectorAll("button");
+  for (i = 0; i < buttons.length; i++) {
+    if (buttons[i].innerHTML === event.key.toLowerCase()) {
+      if (buttons[i].disabled === false) {
+        buttons[i].disabled = true;
+        if (currentAnswer.includes(event.key.toLowerCase())) {
+          let current = answerHidden.querySelectorAll("li");
+          [...currentAnswer].forEach((letter, index) => {
+            if (letter === event.key.toLowerCase()) {
+              current[index].innerText = letter;
+              current[index].classList.add("correct");
+              lettersCorrect.push(letter);
+            }
+          });
+        } else {
+          wrongTry++;
+          alienHangman.src = `./images/gallows-${wrongTry}.png`;
+        }
+        guess.innerText = `${wrongTry} / ${maxTry}`;
+      }
+    }
+  }
+  if (wrongTry === maxTry) return gameOver(false);
+  if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
+}
+
 // Function for generating letters of virtual Keyboard
 function generateLetters() {
   for (i = 97; i <= 122; i++) {
@@ -155,6 +183,8 @@ function generateLetters() {
     );
   }
 }
+
 randomiser();
 generateLetters();
+document.addEventListener("keypress", keyboardCheck);
 retryButton.addEventListener("click", randomiser);
