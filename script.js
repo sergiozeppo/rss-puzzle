@@ -14,6 +14,7 @@ function initGame() {
   const modalCreate = document.createElement("div");
   const resultCreate = document.createElement("div");
   const alienCreate = document.createElement("img");
+  const alienCryCreate = document.createElement("audio");
   const greetCreate = document.createElement("h3");
   const textCreate = document.createElement("p");
   const buttonCreate = document.createElement("button");
@@ -30,6 +31,8 @@ function initGame() {
   wrapperCreate.classList.add("wrapper");
   gallowsCreate.classList.add("gallows-part");
   gallowsCreate.innerHTML = `<img alt="Gallows"/>`;
+  alienCryCreate.innerHTML = `<source type="audio/mpeg">`;
+  alienCryCreate.setAttribute("autoplay", "true");
 
   quizWrapperCreate.classList.add("quiz-wrapper");
   quizCreate.classList.add("quiz-part");
@@ -54,6 +57,7 @@ function initGame() {
   // Generating the HTML-page
   body.appendChild(wrapperCreate);
   wrapperCreate.appendChild(gallowsCreate);
+  gallowsCreate.appendChild(alienCryCreate);
   wrapperCreate.appendChild(quizWrapperCreate);
   quizWrapperCreate.appendChild(quizCreate);
   quizCreate.appendChild(answerHideCreate);
@@ -123,6 +127,7 @@ function gameOver(isWin) {
     modalText.innerHTML = `${
       isWin ? "You guessed the word correctly: " : "The correct answer was: "
     } <b>${currentAnswer}</b>`;
+    if (isWin) alienTaDaaa();
   }, 250);
 }
 
@@ -140,6 +145,7 @@ function buttonCheck(button, letterClicked) {
   } else {
     wrongTry++;
     alienHangman.src = `./images/gallows-${wrongTry}.png`;
+    alienCry();
   }
   guess.innerText = `${wrongTry} / ${maxTry}`;
   button.disabled = true;
@@ -166,6 +172,7 @@ function keyboardCheck(event) {
         } else {
           wrongTry++;
           alienHangman.src = `./images/gallows-${wrongTry}.png`;
+          alienCry();
         }
         guess.innerText = `${wrongTry} / ${maxTry}`;
       }
@@ -185,6 +192,29 @@ function generateLetters() {
       buttonCheck(e.target, button.innerText.toLowerCase())
     );
   }
+}
+
+function alienCry() {
+  const gallows = document.querySelector(".gallows-part");
+  const alien = gallows.querySelector("audio");
+  if (alien) gallows.removeChild(alien);
+  const newAlien = document.createElement("audio");
+  newAlien.setAttribute("autoplay", "true");
+  newAlien.innerHTML = `<source src="sounds/audio-${~~(
+    Math.random() * 12 +
+    1
+  )}.mp3" type="audio/mpeg">`;
+  gallows.appendChild(newAlien);
+}
+
+function alienTaDaaa() {
+  const modal = document.querySelector(".modal");
+  const alienHappy = modal.querySelector("audio");
+  if (alienHappy) modal.removeChild(alienHappy);
+  const newAlienHappy = document.createElement("audio");
+  newAlienHappy.setAttribute("autoplay", "true");
+  newAlienHappy.innerHTML = `<source src="sounds/tada.mp3" type="audio/mpeg">`;
+  modal.appendChild(newAlienHappy);
 }
 
 randomiser();
