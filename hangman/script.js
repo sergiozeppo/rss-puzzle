@@ -194,6 +194,7 @@ function generateLetters() {
   }
 }
 
+// Function for playing sounds after alien's hits
 function alienCry() {
   const gallows = document.querySelector(".gallows-part");
   const alien = gallows.querySelector("audio");
@@ -207,6 +208,7 @@ function alienCry() {
   gallows.appendChild(newAlien);
 }
 
+// Function for happy ending xD
 function alienTaDaaa() {
   const modal = document.querySelector(".modal");
   const alienHappy = modal.querySelector("audio");
