@@ -15,6 +15,7 @@ function initGame() {
   const resultCreate = document.createElement("div");
   const alienCreate = document.createElement("img");
   const alienCryCreate = document.createElement("audio");
+  const alienBackCreate = document.createElement("audio");
   const greetCreate = document.createElement("h3");
   const textCreate = document.createElement("p");
   const buttonCreate = document.createElement("button");
@@ -26,6 +27,12 @@ function initGame() {
   const hintCreate = document.createElement("h3");
   const guessCreate = document.createElement("h3");
   const virtualKeyboardCreate = document.createElement("div");
+
+  // Adding background music
+  alienBackCreate.innerHTML = `<source src="sounds/back.mp3" type="audio/mpeg">`;
+  alienBackCreate.setAttribute("autoplay", "true");
+  alienBackCreate.setAttribute("loop", "true");
+  body.appendChild(alienBackCreate);
 
   // Adding classes to QUIZ section
   wrapperCreate.classList.add("wrapper");
