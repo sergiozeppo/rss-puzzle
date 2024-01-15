@@ -157,3 +157,9 @@ button[disabled] {
   background-color: #4d79a5;
   cursor: pointer;
 }
+.alien-icon {
+  width: 80px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
