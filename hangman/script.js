@@ -5,6 +5,7 @@ let previousAnswer;
 let wrongTry = 0;
 let maxTry = 6;
 let lettersCorrect = [];
+let sound = false;
 
 // Initialization game function
 function initGame() {
@@ -16,6 +17,7 @@ function initGame() {
   const alienCreate = document.createElement("img");
   const alienCryCreate = document.createElement("audio");
   const alienBackCreate = document.createElement("audio");
+  const alienIconCreate = document.createElement("img");
   const greetCreate = document.createElement("h3");
   const textCreate = document.createElement("p");
   const buttonCreate = document.createElement("button");
@@ -28,11 +30,11 @@ function initGame() {
   const guessCreate = document.createElement("h3");
   const virtualKeyboardCreate = document.createElement("div");
 
-  // Adding background music
-  alienBackCreate.innerHTML = `<source src="sounds/back.mp3" type="audio/mpeg">`;
-  alienBackCreate.setAttribute("autoplay", "true");
-  alienBackCreate.setAttribute("loop", "true");
+  // Adding background music and icon
+  alienIconCreate.src = `images/off.png`;
+  alienIconCreate.classList.add("alien-icon");
   body.appendChild(alienBackCreate);
+  body.appendChild(alienIconCreate);
 
   // Adding classes to QUIZ section
   wrapperCreate.classList.add("wrapper");
@@ -87,6 +89,7 @@ const virtualKeyboard = document.querySelector(".virtual-keyboard");
 const guess = document.querySelector(".guess-part b");
 const answerHidden = document.querySelector(".answer-hide");
 const alienHangman = document.querySelector(".gallows-part img");
+const alienIcon = document.querySelector(".alien-icon");
 
 const modal = document.querySelector(".modal");
 const modalImg = modal.querySelector("img");
@@ -226,7 +229,28 @@ function alienTaDaaa() {
   modal.appendChild(newAlienHappy);
 }
 
+function checkSound(event) {
+  let alienBack = document.querySelector("audio");
+  if (sound === true) {
+    sound = false;
+    event.src = `images/off.png`;
+    alienBack.innerHTML = ``;
+    alienBack.removeAttribute("autoplay");
+    alienBack.removeAttribute("loop");
+    alienBack.currentTime = 0;
+    alienBack.pause();
+  } else {
+    sound = true;
+    event.src = `images/on.png`;
+    alienBack.innerHTML = `<source src="sounds/back.mp3" type="audio/mpeg">`;
+    alienBack.setAttribute("autoplay", "true");
+    alienBack.setAttribute("loop", "true");
+    alienBack.currentTime = 0;
+    alienBack.play();
+  }
+}
 randomiser();
 generateLetters();
 document.addEventListener("keypress", keyboardCheck);
 retryButton.addEventListener("click", randomiser);
+alienIcon.addEventListener("click", (e) => checkSound(e.target));
