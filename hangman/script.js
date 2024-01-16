@@ -155,7 +155,9 @@ function buttonCheck(button, letterClicked) {
   } else {
     wrongTry++;
     alienHangman.src = `./images/gallows-${wrongTry}.png`;
-    alienCry();
+    if (sound === true) {
+      alienCry();
+    }
   }
   guess.innerText = `${wrongTry} / ${maxTry}`;
   button.disabled = true;
@@ -182,7 +184,9 @@ function keyboardCheck(event) {
         } else {
           wrongTry++;
           alienHangman.src = `./images/gallows-${wrongTry}.png`;
-          alienCry();
+          if (sound === true) {
+            alienCry();
+          }
         }
         guess.innerText = `${wrongTry} / ${maxTry}`;
       }
