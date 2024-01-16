@@ -6,6 +6,7 @@ let wrongTry = 0;
 let maxTry = 6;
 let lettersCorrect = [];
 let sound = false;
+let isGameOver = false;
 
 // Initialization game function
 function initGame() {
@@ -101,6 +102,7 @@ const retryButton = document.querySelector(".retry");
 function reset() {
   wrongTry = 0;
   lettersCorrect = [];
+  isGameOver = false;
   modal.classList.remove("visible");
   answerHidden.querySelectorAll("li").forEach(function (elem) {
     elem.parentNode.removeChild(elem);
@@ -130,6 +132,7 @@ function randomiser() {
 
 // gameOver function which shows MODAL after end
 function gameOver(isWin) {
+  isGameOver = true;
   setTimeout(() => {
     modal.classList.add("visible");
     modalImg.src = `./images/${isWin ? "victory" : "lost"}.png`;
@@ -143,53 +146,61 @@ function gameOver(isWin) {
 
 // Function for check clicked button
 function buttonCheck(button, letterClicked) {
-  if (currentAnswer.includes(letterClicked)) {
-    let current = answerHidden.querySelectorAll("li");
-    [...currentAnswer].forEach((letter, index) => {
-      if (letter === letterClicked) {
-        current[index].innerText = letter;
-        current[index].classList.add("correct");
-        lettersCorrect.push(letter);
+  if (isGameOver === false) {
+    if (currentAnswer.includes(letterClicked)) {
+      let current = answerHidden.querySelectorAll("li");
+      [...currentAnswer].forEach((letter, index) => {
+        if (letter === letterClicked) {
+          current[index].innerText = letter;
+          current[index].classList.add("correct");
+          lettersCorrect.push(letter);
+        }
+      });
+    } else {
+      wrongTry++;
+      alienHangman.src = `./images/gallows-${wrongTry}.png`;
+      if (sound === true) {
+        alienCry();
       }
-    });
-  } else {
-    wrongTry++;
-    alienHangman.src = `./images/gallows-${wrongTry}.png`;
-    alienCry();
+    }
+    guess.innerText = `${wrongTry} / ${maxTry}`;
+    button.disabled = true;
+    if (wrongTry === maxTry) return gameOver(false);
+    if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
   }
-  guess.innerText = `${wrongTry} / ${maxTry}`;
-  button.disabled = true;
-  if (wrongTry === maxTry) return gameOver(false);
-  if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
 }
 
 // Function for check keyboard keys pressed
 function keyboardCheck(event) {
-  buttons = virtualKeyboard.querySelectorAll("button");
-  for (i = 0; i < buttons.length; i++) {
-    if (buttons[i].innerHTML === event.key.toLowerCase()) {
-      if (buttons[i].disabled === false) {
-        buttons[i].disabled = true;
-        if (currentAnswer.includes(event.key.toLowerCase())) {
-          let current = answerHidden.querySelectorAll("li");
-          [...currentAnswer].forEach((letter, index) => {
-            if (letter === event.key.toLowerCase()) {
-              current[index].innerText = letter;
-              current[index].classList.add("correct");
-              lettersCorrect.push(letter);
+  if (isGameOver === false) {
+    buttons = virtualKeyboard.querySelectorAll("button");
+    for (i = 0; i < buttons.length; i++) {
+      if (buttons[i].innerHTML === event.key.toLowerCase()) {
+        if (buttons[i].disabled === false) {
+          buttons[i].disabled = true;
+          if (currentAnswer.includes(event.key.toLowerCase())) {
+            let current = answerHidden.querySelectorAll("li");
+            [...currentAnswer].forEach((letter, index) => {
+              if (letter === event.key.toLowerCase()) {
+                current[index].innerText = letter;
+                current[index].classList.add("correct");
+                lettersCorrect.push(letter);
+              }
+            });
+          } else {
+            wrongTry++;
+            alienHangman.src = `./images/gallows-${wrongTry}.png`;
+            if (sound === true) {
+              alienCry();
             }
-          });
-        } else {
-          wrongTry++;
-          alienHangman.src = `./images/gallows-${wrongTry}.png`;
-          alienCry();
+          }
+          guess.innerText = `${wrongTry} / ${maxTry}`;
         }
-        guess.innerText = `${wrongTry} / ${maxTry}`;
       }
     }
+    if (wrongTry === maxTry) return gameOver(false);
+    if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
   }
-  if (wrongTry === maxTry) return gameOver(false);
-  if (lettersCorrect.length === currentAnswer.length) return gameOver(true);
 }
 
 // Function for generating letters of virtual Keyboard
