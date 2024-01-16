@@ -118,6 +118,13 @@ function reset() {
     .querySelectorAll("button")
     .forEach((button) => (button.disabled = false));
   previousAnswer = currentAnswer;
+  if (isTablet === true) {
+    body.classList.remove("no-scroll");
+    body.classList.add("adapt-scroll");
+  } else {
+    body.classList.add("no-scroll");
+    body.classList.remove("adapt-scroll");
+  }
 }
 
 // First in-game function to get random question
@@ -133,6 +140,8 @@ function randomiser() {
 // gameOver function which shows MODAL after end
 function gameOver(isWin) {
   isGameOver = true;
+  body.classList.add("no-scroll");
+  body.classList.remove("adapt-scroll");
   setTimeout(() => {
     modal.classList.add("visible");
     modalImg.src = `./images/${isWin ? "victory" : "lost"}.png`;
@@ -260,8 +269,27 @@ function checkSound(event) {
     alienBack.play();
   }
 }
+
+// determining adaptive screen or not
+let isTablet = window.innerWidth > 800 ? false : true;
+
+function resizeNumber() {
+  if (isTablet != window.innerWidth <= 800) {
+    if (!(window.innerWidth > 800 === true)) {
+      isTablet = true;
+      body.classList.remove("no-scroll");
+      body.classList.add("adapt-scroll");
+    } else {
+      isTablet = false;
+      body.classList.add("no-scroll");
+      body.classList.remove("adapt-scroll");
+    }
+  }
+}
+
 randomiser();
 generateLetters();
 document.addEventListener("keypress", keyboardCheck);
 retryButton.addEventListener("click", randomiser);
 alienIcon.addEventListener("click", (e) => checkSound(e.target));
+window.addEventListener("resize", resizeNumber, true);
