@@ -1,3 +1,5 @@
+@import url("https://fonts.cdnfonts.com/css/japan-rich");
+@import url("https://fonts.cdnfonts.com/css/japan-version");
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,6 +14,7 @@
 }
 
 html {
+  font-family: "Japan Rich", sans-serif;
   font-size: 62.5%;
 }
 
@@ -21,6 +24,11 @@ body {
   align-items: center;
 }
 
+h1 {
+  font-family: "Japan Version", sans-serif;
+  font-size: 5rem;
+  font-weight: 400;
+}
 .container {
   margin: auto;
   text-align: center;
@@ -33,6 +41,7 @@ body {
   border: 1px solid black;
   user-select: none;
   margin: auto;
+  font-size: 1.5rem;
 }
 
 td,
