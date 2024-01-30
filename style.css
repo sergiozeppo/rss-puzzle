@@ -79,6 +79,55 @@ th {
   border-left: 1px dotted #aaa;
 }
 .cell:hover {
+  cursor: pointer;
   opacity: 0.8;
-  background-color: #f3f3f3;
+}
+.levels {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+}
+.level-item {
+  display: flex;
+  padding: 0.8rem 1.6rem 0.8rem 0.8rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: 10rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 150%;
+  color: #403f3d;
+  background: #e1d4c9;
+  border: 0.1rem solid #c1b6ad;
+}
+.round-tab {
+  border-radius: 10rem;
+  background: #c1b6ad;
+  display: flex;
+  overflow: hidden;
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+}
+.level-item img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.level-item-active {
+  background: #665f55;
+  color: #e1d4c9;
+}
+.crossed {
+  background-image: url("./img/x.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.filled {
+  background-color: #000;
 }
