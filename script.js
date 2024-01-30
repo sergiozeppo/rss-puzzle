@@ -76,6 +76,43 @@ function fillCross() {
 //     }
 //   }
 // }
+const levels = document.querySelectorAll(".level-item");
+levels.forEach((level) => {
+  level.addEventListener("click", switchLevel);
+});
+function switchLevel(e) {
+  const currentLevel = e.target.closest(".level-item");
+  let draft;
+  levels.forEach((level) => {
+    if (level === currentLevel) {
+      level.classList.add("level-item-active");
+      draft = level.dataset.level;
+      console.log(draft);
+    } else if (level.classList.contains("level-item-active")) {
+      level.classList.remove("level-item-active");
+    }
+  });
+  loadDraft(draft);
+}
+
+function loadDraft(draft) {
+  const game = document.querySelector(".game");
+  const createTable = document.createElement("table");
+  const createRows = document.createElement("tr");
+  const createCells = document.createElement("td");
+  const createClues = document.createElement("th");
+  if (draft === "Easy") {
+    game.appendChild(createTable);
+    for (let i = 0; i < 5; i++) {
+      game.appendChild(createRows);
+      for (let j = 0; j < 5; j++) {
+        // if (j > 0) {
+        createRows.appendChild(createCells);
+      }
+    }
+  }
+}
+
 function disablecontext() {
   return false;
 }
