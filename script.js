@@ -96,23 +96,93 @@ function switchLevel(e) {
 }
 
 function loadDraft(draft) {
-  const game = document.querySelector(".game");
+  const container = document.querySelector(".container");
   const createTable = document.createElement("table");
-  const createRows = document.createElement("tr");
-  const createCells = document.createElement("td");
-  const createClues = document.createElement("th");
-  if (draft === "Easy") {
-    game.appendChild(createTable);
-    for (let i = 0; i < 5; i++) {
-      game.appendChild(createRows);
-      for (let j = 0; j < 5; j++) {
-        // if (j > 0) {
-        createRows.appendChild(createCells);
+  const createTbody = document.createElement("tbody");
+  createTable.appendChild(createTbody);
+  createTable.classList.add("game");
+  if (draft === "easy") {
+    if (document.querySelector(".game")) {
+      container.removeChild(document.querySelector(".game"));
+    }
+    container.appendChild(createTable);
+    for (let i = 0; i < 6; i++) {
+      if (i === 0) {
+        const tr = parent.document.createElement("tr");
+        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        createTbody.appendChild(tr);
+      } else {
+        const tr = parent.document.createElement("tr");
+
+        for (let j = 0; j < 6; j++) {
+          if (j === 0) {
+            const th = parent.document.createElement("th");
+            tr.appendChild(th);
+          } else {
+            const td = parent.document.createElement("td");
+            td.classList.add("cell");
+            tr.appendChild(td);
+          }
+        }
+        createTbody.appendChild(tr);
+      }
+    }
+  } else if (draft === "normal") {
+    if (document.querySelector(".game")) {
+      container.removeChild(document.querySelector(".game"));
+    }
+    container.appendChild(createTable);
+    // createTbody.appendChild(createHead);
+    for (let i = 0; i < 11; i++) {
+      if (i === 0) {
+        const tr = parent.document.createElement("tr");
+        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        createTbody.appendChild(tr);
+      } else {
+        const tr = parent.document.createElement("tr");
+        for (let j = 0; j < 11; j++) {
+          if (j === 0) {
+            const th = parent.document.createElement("th");
+            tr.appendChild(th);
+          } else {
+            const td = parent.document.createElement("td");
+            td.classList.add("cell");
+            tr.appendChild(td);
+          }
+        }
+        createTbody.appendChild(tr);
+      }
+    }
+  } else if (draft === "hard") {
+    if (document.querySelector(".game")) {
+      container.removeChild(document.querySelector(".game"));
+    }
+    container.appendChild(createTable);
+    // createTbody.appendChild(createHead);
+    for (let i = 0; i < 16; i++) {
+      if (i === 0) {
+        const tr = parent.document.createElement("tr");
+        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        createTbody.appendChild(tr);
+      } else {
+        const tr = parent.document.createElement("tr");
+        for (let j = 0; j < 16; j++) {
+          if (j === 0) {
+            const th = parent.document.createElement("th");
+            tr.appendChild(th);
+          } else {
+            const td = parent.document.createElement("td");
+            td.classList.add("cell");
+            tr.appendChild(td);
+          }
+        }
+        createTbody.appendChild(tr);
       }
     }
   }
 }
 
+loadDraft("easy");
 function disablecontext() {
   return false;
 }
