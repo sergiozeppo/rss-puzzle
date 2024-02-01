@@ -1,3 +1,6 @@
+import matrix from "./matrix.js";
+import matrixNames from "./matrixNames.js";
+
 let currentType = "";
 let down = false;
 let rmb = false;
@@ -88,6 +91,7 @@ function switchLevel(e) {
       level.classList.add("level-item-active");
       draft = level.dataset.level;
       console.log(draft);
+      loadPuzzles(draft);
     } else if (level.classList.contains("level-item-active")) {
       level.classList.remove("level-item-active");
     }
@@ -109,7 +113,12 @@ function loadDraft(draft) {
     for (let i = 0; i < 6; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        tr.classList.add(`${i}_0`);
+        for (let j = 0; j < 6; j++) {
+          const th = parent.document.createElement("th");
+          th.classList.add(`${i}_${j}`);
+          tr.appendChild(th);
+        }
         createTbody.appendChild(tr);
       } else {
         const tr = parent.document.createElement("tr");
@@ -117,10 +126,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 6; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
+            th.classList.add(`${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell");
+            td.classList.add("cell", `${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -136,17 +146,23 @@ function loadDraft(draft) {
     for (let i = 0; i < 11; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        tr.classList.add(`${i}_0`);
+        for (let j = 0; j < 11; j++) {
+          const th = parent.document.createElement("th");
+          th.classList.add(`${i}_${j}`);
+          tr.appendChild(th);
+        }
         createTbody.appendChild(tr);
       } else {
         const tr = parent.document.createElement("tr");
         for (let j = 0; j < 11; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
+            th.classList.add(`${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell");
+            td.classList.add("cell", `${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -158,21 +174,27 @@ function loadDraft(draft) {
       container.removeChild(document.querySelector(".game"));
     }
     container.appendChild(createTable);
-    // createTbody.appendChild(createHead);
     for (let i = 0; i < 16; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.innerHTML = `<tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>`;
+        tr.classList.add(`${i}_0`);
+        for (let j = 0; j < 16; j++) {
+          const th = parent.document.createElement("th");
+          th.classList.add(`${i}_${j}`);
+          tr.appendChild(th);
+        }
         createTbody.appendChild(tr);
       } else {
         const tr = parent.document.createElement("tr");
+        tr.classList.add(`${i}_0`);
         for (let j = 0; j < 16; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
+            th.classList.add(`${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell");
+            td.classList.add("cell", `${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -180,6 +202,75 @@ function loadDraft(draft) {
       }
     }
   }
+}
+
+function loadPuzzles(draft) {
+  const levels = document.querySelector(".levels");
+  const createPuzzleList = parent.document.createElement("ul");
+  if (draft === "easy") {
+    if (document.querySelector(".menu")) {
+      levels.removeChild(document.querySelector(".menu"));
+    }
+
+    for (let i = 0; i < matrixNames[0].length; i++) {
+      const puzzleItem = parent.document.createElement("li");
+      createPuzzleList.appendChild(puzzleItem);
+      puzzleItem.dataset.level = 0;
+      puzzleItem.dataset.puzzle = i;
+      puzzleItem.textContent = matrixNames[0][i];
+    }
+
+    createPuzzleList.classList.add("menu");
+    levels.appendChild(createPuzzleList);
+  }
+  if (draft === "normal") {
+    if (document.querySelector(".menu")) {
+      levels.removeChild(document.querySelector(".menu"));
+    }
+
+    for (let i = 0; i < matrixNames[1].length; i++) {
+      const puzzleItem = parent.document.createElement("li");
+      createPuzzleList.appendChild(puzzleItem);
+      puzzleItem.dataset.level = 1;
+      puzzleItem.dataset.puzzle = i;
+      puzzleItem.textContent = matrixNames[1][i];
+    }
+
+    createPuzzleList.classList.add("menu");
+    levels.appendChild(createPuzzleList);
+  }
+  if (draft === "hard") {
+    if (document.querySelector(".menu")) {
+      levels.removeChild(document.querySelector(".menu"));
+    }
+
+    for (let i = 0; i < matrixNames[2].length; i++) {
+      const puzzleItem = parent.document.createElement("li");
+      createPuzzleList.appendChild(puzzleItem);
+      puzzleItem.dataset.level = 2;
+      puzzleItem.dataset.puzzle = i;
+      puzzleItem.textContent = matrixNames[2][i];
+    }
+
+    createPuzzleList.classList.add("menu");
+    levels.appendChild(createPuzzleList);
+  }
+  document.querySelectorAll("li").forEach((el) => {
+    // console.log(el);
+    el.addEventListener("click", fillDraft);
+  });
+}
+// function readMatrix() {}
+// console.log(matrix[0]);
+// console.log(matrix[1]);
+// console.log(matrix[2]);
+
+function fillDraft(e) {
+  const currentLevel = e.target.closest("li");
+  const chosenPuzzle =
+    matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle];
+  console.log(chosenPuzzle);
+  const game = document.querySelector(".game");
 }
 
 loadDraft("easy");
