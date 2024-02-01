@@ -18,12 +18,23 @@ function clearCells() {
   }
 }
 
+function clearClues() {
+  const clues = document.querySelectorAll(".clue");
+  for (let i = 0; i < clues.length; i++) {
+    clues[i].textContent = "";
+    // cell.onclick = fillCell;
+    // cell.oncontextmenu = fillCross;
+    // cell.onmousedown = dragCells;
+    // cell.addEventListener("click", fillCell);
+    // cell.addEventListener("contextmenu", fillCross);
+  }
+}
+
 function fillCell() {
   down = true;
   lmb = true;
   if (this.classList.contains("filled")) {
     this.classList?.remove("filled");
-    //   this.classList.add("crossed");
     currentType = "";
   } else if (this.classList.contains("crossed")) {
     this.classList?.remove("crossed");
@@ -113,10 +124,10 @@ function loadDraft(draft) {
     for (let i = 0; i < 6; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.classList.add(`${i}_0`);
+        tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 6; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add(`${i}_${j}`);
+          th.classList.add("clue", `th_${i}_${j}`);
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
@@ -126,11 +137,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 6; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add(`${i}_${j}`);
+            th.classList.add("clue", `th_${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell", `${i}_${j}`);
+            td.classList.add("cell", `td_${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -142,14 +153,13 @@ function loadDraft(draft) {
       container.removeChild(document.querySelector(".game"));
     }
     container.appendChild(createTable);
-    // createTbody.appendChild(createHead);
     for (let i = 0; i < 11; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.classList.add(`${i}_0`);
+        tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 11; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add(`${i}_${j}`);
+          th.classList.add("clue", `th_${i}_${j}`);
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
@@ -158,11 +168,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 11; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add(`${i}_${j}`);
+            th.classList.add("clue", `th_${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell", `${i}_${j}`);
+            td.classList.add("cell", `td_${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -177,24 +187,24 @@ function loadDraft(draft) {
     for (let i = 0; i < 16; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
-        tr.classList.add(`${i}_0`);
+        tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 16; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add(`${i}_${j}`);
+          th.classList.add("clue", `th_${i}_${j}`);
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
       } else {
         const tr = parent.document.createElement("tr");
-        tr.classList.add(`${i}_0`);
+        tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 16; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add(`${i}_${j}`);
+            th.classList.add("clue", `th_${i}_${j}`);
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
-            td.classList.add("cell", `${i}_${j}`);
+            td.classList.add("cell", `td_${i}_${j}`);
             tr.appendChild(td);
           }
         }
@@ -202,6 +212,9 @@ function loadDraft(draft) {
       }
     }
   }
+  clearCells();
+  clearClues();
+  disableRMB();
 }
 
 function loadPuzzles(draft) {
@@ -256,27 +269,48 @@ function loadPuzzles(draft) {
     levels.appendChild(createPuzzleList);
   }
   document.querySelectorAll("li").forEach((el) => {
-    // console.log(el);
     el.addEventListener("click", fillDraft);
   });
 }
-// function readMatrix() {}
-// console.log(matrix[0]);
-// console.log(matrix[1]);
-// console.log(matrix[2]);
 
 function fillDraft(e) {
+  clearClues();
   const currentLevel = e.target.closest("li");
   const chosenPuzzle =
     matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle];
   console.log(chosenPuzzle);
   const game = document.querySelector(".game");
+  console.log(game);
+  console.log("chose" + chosenPuzzle[0][2]);
+  for (let i = 0; i < chosenPuzzle.length; i++) {
+    const clueSum = [];
+    let clue = 0;
+    for (let j = 0; j < chosenPuzzle.length; j++) {
+      if (chosenPuzzle[i][j] === 1) {
+        clue += 1;
+      }
+      if (chosenPuzzle[i][j] === 0 || j === chosenPuzzle.length - 1) {
+        if (clue !== 0) {
+          console.log(clue, i, j);
+          clueSum.push(clue);
+          clue = 0;
+          console.log(clueSum, i, j);
+          const span = document.createElement("span");
+          span.textContent = clueSum[clueSum.length - 1];
+          game.querySelector(`.th_${i + 1}_0`).appendChild(span);
+        }
+      }
+    }
+  }
 }
 
 loadDraft("easy");
 function disablecontext() {
   return false;
 }
-const game = document.querySelector(".game");
-game.oncontextmenu = disablecontext;
+function disableRMB() {
+  const game = document.querySelector(".game");
+  game.oncontextmenu = disablecontext;
+}
+disableRMB();
 clearCells();
