@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nonograms by @sergiozeppo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>Nonograms</h1>
+    <main>
+      <div class="container">
+        <div class="settings">
+          <div class="levels">
+            <button class="level-item level-item-active" data-level="easy">
+              <span class="round-tab">
+                <!-- <img src="./img/svg/tabs-coffee.svg" alt="Coffee"
+              /> -->
+              </span>
+              <span>Easy</span>
+            </button>
+            <button class="level-item" data-level="normal">
+              <span class="round-tab">
+                <!-- <img src="./img/svg/tabs-tea.svg" alt="Tea"
+              /> -->
+              </span>
+              <span>Normal</span>
+            </button>
+            <button class="level-item" data-level="hard">
+              <span class="round-tab">
+                <!-- <img src="./img/svg/tabs-dessert.svg" alt="Dessert"
+              /> -->
+              </span>
+              <span>Hard</span>
+            </button>
+          </div>
+          <div>
+            <button>Save Game</button>
+          </div>
+          <div>
+            <button>Solution</button>
+          </div>
+          <div>
+            <button>Random</button>
+          </div>
+          <div>
+            <button id="clear">Clear</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="./script.js" defer></script>
+    <script src="./matrix.js" defer></script>
+  </body>
+</html>
