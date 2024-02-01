@@ -10,6 +10,7 @@ function clearCells() {
   const cells = document.querySelectorAll(".cell");
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
+    cell.classList?.remove("filled", "crossed");
     cell.onclick = fillCell;
     cell.oncontextmenu = fillCross;
     // cell.onmousedown = dragCells;
@@ -275,6 +276,7 @@ function loadPuzzles(draft) {
 
 function fillDraft(e) {
   clearClues();
+  clearCells();
   const currentLevel = e.target.closest("li");
   const chosenPuzzle =
     matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle];
