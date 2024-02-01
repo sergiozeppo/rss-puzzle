@@ -304,6 +304,31 @@ function fillDraft(e) {
       }
     }
   }
+  const chosenPuzzleRev = chosenPuzzle[0].map((_, indexCol) =>
+    chosenPuzzle.map((row) => row[indexCol])
+  );
+  for (let i = 0; i < chosenPuzzleRev.length; i++) {
+    const clueSum = [];
+    let clue = 0;
+    for (let j = 0; j < chosenPuzzleRev.length; j++) {
+      if (chosenPuzzleRev[i][j] === 1) {
+        clue += 1;
+      }
+      if (chosenPuzzleRev[i][j] === 0 || j === chosenPuzzleRev.length - 1) {
+        if (clue !== 0) {
+          console.log(clue, i, j);
+          clueSum.push(clue);
+          clue = 0;
+          console.log(clueSum, i, j);
+          const span = document.createElement("span");
+          const br = document.createElement("br");
+          span.textContent = clueSum[clueSum.length - 1];
+          game.querySelector(`.th_0_${i + 1}`).appendChild(span);
+          game.querySelector(`.th_0_${i + 1}`).appendChild(br);
+        }
+      }
+    }
+  }
 }
 
 loadDraft("easy");
