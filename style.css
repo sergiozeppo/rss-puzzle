@@ -54,6 +54,11 @@ th {
   vertical-align: bottom;
 }
 
+span::after {
+  content: "";
+  margin-left: 10px;
+}
+
 td:nth-child(5n + 1),
 th:nth-child(5n + 1) {
   border-right: 3px solid black;
