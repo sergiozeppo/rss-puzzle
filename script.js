@@ -277,9 +277,10 @@ function loadPuzzles(draft) {
 function fillDraft(e) {
   clearClues();
   clearCells();
-  const currentLevel = e.target.closest("li");
-  const chosenPuzzle =
-    matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle];
+  const currentLevel = e ? e.target.closest("li") : 0;
+  const chosenPuzzle = e
+    ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
+    : matrix[0][0];
   console.log(chosenPuzzle);
   const game = document.querySelector(".game");
   console.log(game);
@@ -332,6 +333,7 @@ function fillDraft(e) {
 }
 
 loadDraft("easy");
+fillDraft();
 function disablecontext() {
   return false;
 }
