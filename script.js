@@ -6,6 +6,8 @@ let down = false;
 let rmb = false;
 let lmb = false;
 let chosenPuzzle = matrix[0][0];
+let secretFill = 0;
+let secretCross = 0;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -284,6 +286,10 @@ function fillDraft(e) {
   chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
     : matrix[0][0];
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  console.log("secretFill - " + secretFill);
+  console.log("secretCross - " + secretCross);
   console.log(chosenPuzzle);
   const game = document.querySelector(".game");
   console.log(game);
@@ -339,7 +345,6 @@ function checkFill(e) {
   console.log(currentCell.classList.value.slice(8, -7));
   const chosenCell = currentCell.classList.value.slice(8, -7).split("_");
   console.log(chosenCell);
-  console.log(chosenPuzzle);
   console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
   if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
     console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
