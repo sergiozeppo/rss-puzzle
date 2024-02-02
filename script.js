@@ -5,6 +5,7 @@ let currentType = "";
 let down = false;
 let rmb = false;
 let lmb = false;
+let chosenPuzzle = matrix[0][0];
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -12,6 +13,7 @@ function clearCells() {
     const cell = cells[i];
     cell.classList?.remove("filled", "crossed");
     cell.onclick = fillCell;
+    // cell.onclick = ;
     cell.oncontextmenu = fillCross;
     // cell.onmousedown = dragCells;
     // cell.addEventListener("click", fillCell);
@@ -31,7 +33,7 @@ function clearClues() {
   }
 }
 
-function fillCell() {
+function fillCell(e) {
   down = true;
   lmb = true;
   if (this.classList.contains("filled")) {
@@ -45,6 +47,7 @@ function fillCell() {
     this.classList.add("filled");
     currentType = "filled";
   }
+  checkFill(e);
 }
 
 function fillCross() {
@@ -278,7 +281,7 @@ function fillDraft(e) {
   clearClues();
   clearCells();
   const currentLevel = e ? e.target.closest("li") : 0;
-  const chosenPuzzle = e
+  chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
     : matrix[0][0];
   console.log(chosenPuzzle);
@@ -330,6 +333,30 @@ function fillDraft(e) {
       }
     }
   }
+}
+function checkFill(e) {
+  const currentCell = e.target.closest(".cell");
+  console.log(currentCell.classList.value.slice(8, -7));
+  const chosenCell = currentCell.classList.value.slice(8, -7).split("_");
+  console.log(chosenCell);
+  console.log(chosenPuzzle);
+  console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
+  if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
+    console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
+    console.log("RIght");
+  }
+  // let draft;
+  // levels.forEach((level) => {
+  //   if (level === currentLevel) {
+  //     level.classList.add("level-item-active");
+  //     draft = level.dataset.level;
+  //     console.log(draft);
+  //     loadPuzzles(draft);
+  //   } else if (level.classList.contains("level-item-active")) {
+  //     level.classList.remove("level-item-active");
+  //   }
+  // });
+  // loadDraft(draft);
 }
 
 loadDraft("easy");
