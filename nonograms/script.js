@@ -3,6 +3,7 @@ import matrixNames from "./matrixNames.js";
 
 const body = document.querySelector("body");
 const modalCreate = document.createElement("div");
+const puzzleCreate = document.createElement("img");
 const resultCreate = document.createElement("div");
 const greetCreate = document.createElement("h3");
 const textCreate = document.createElement("p");
@@ -19,6 +20,7 @@ buttonCreate.innerText = "Play again";
 // Generating MODAL
 body.appendChild(modalCreate);
 modalCreate.appendChild(resultCreate);
+resultCreate.appendChild(puzzleCreate);
 resultCreate.appendChild(greetCreate);
 resultCreate.appendChild(textCreate);
 resultCreate.appendChild(buttonCreate);
@@ -331,6 +333,9 @@ function fillDraft(e) {
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
   guessCross = secretCross;
+  modalImg.src = `./img/puzzles/${
+    currentLevel.dataset?.level ? currentLevel.dataset.level : 0
+  }_${currentLevel.dataset?.puzzle ? currentLevel.dataset.puzzle : 0}.png`;
   console.log("secretFill - " + secretFill);
   console.log("secretCross - " + secretCross);
   console.log(chosenPuzzle);
@@ -407,6 +412,7 @@ function checkFill(e) {
   } else {
     if (prevType === "filled") {
       guessCross++;
+      checkWin();
     } else if (prevType === "empty") {
       guessCross = guessCross > 0 ? guessCross - 1 : 0;
     }
@@ -426,18 +432,28 @@ function checkCross(e) {
   }
   if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
     if (currentCell.classList.contains("crossed")) {
-      guessFill = guessFill > 0 ? guessFill - 1 : 0;
-      guessCross++;
-      checkWin();
+      if (prevType === "filled") {
+        guessFill = guessFill > 0 ? guessFill - 1 : 0;
+        guessCross++;
+        checkWin();
+      } else {
+        guessCross++;
+        checkWin();
+      }
     } else {
-      guessCross = guessCross > 0 ? guessCross - 1 : 0;
-      checkWin();
+      if (prevType === "crossed" && currentType === "empty") {
+        guessCross = guessCross > 0 ? guessCross - 1 : 0;
+        checkWin();
+      } else {
+        guessCross++;
+        checkWin();
+      }
     }
   } else {
     if (prevType === "filled") {
       guessCross++;
+      checkWin();
     }
-    checkWin();
   }
 }
 
@@ -453,12 +469,13 @@ function gameOver() {
   body.classList.remove("adapt-scroll");
   setTimeout(() => {
     modal.classList.add("visible");
-    modalImg.src = `./img/0_0.png`;
+    modalImg.src = `./img/puzzles/0_0.png`;
     modalGreet.innerText = `"You WIN!"`;
   }, 250);
 }
 
 loadDraft("easy");
+modalImg.src = `./img/puzzles/0_0.png`;
 fillDraft();
 function disablecontext() {
   return false;
