@@ -30,6 +30,7 @@ textCreate.innerHTML = "<p><b></b></p>";
 //
 resetCreate.classList.add("button");
 resetCreate.innerText = "Reset game";
+resetCreate.addEventListener("click", resetGame);
 solutionCreate.classList.add("button");
 solutionCreate.innerText = "Show solution";
 solutionCreate.addEventListener("click", showSolution);
@@ -38,7 +39,7 @@ randomCreate.innerText = "Random game";
 saveCreate.classList.add("button");
 saveCreate.innerText = "Save game";
 contCreate.classList.add("button");
-contCreate.innerText = "Continue game";
+contCreate.innerText = "Continue last game";
 
 // Generating MODAL
 body.appendChild(modalCreate);
@@ -519,6 +520,12 @@ function showSolution() {
       }
     }
   }
+}
+
+function resetGame() {
+  clearCells();
+  guessCross = secretCross;
+  guessFill = 0;
 }
 
 loadDraft("easy");
