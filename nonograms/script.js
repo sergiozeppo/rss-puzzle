@@ -32,6 +32,7 @@ resetCreate.classList.add("button");
 resetCreate.innerText = "Reset game";
 solutionCreate.classList.add("button");
 solutionCreate.innerText = "Show solution";
+solutionCreate.addEventListener("click", showSolution);
 randomCreate.classList.add("button");
 randomCreate.innerText = "Random game";
 saveCreate.classList.add("button");
@@ -504,6 +505,20 @@ function gameOver() {
     modal.classList.add("visible");
     modalGreet.innerText = `"You WIN!"`;
   }, 250);
+}
+
+function showSolution() {
+  clearCells();
+  for (let i = 0; i < chosenPuzzle.length; i++) {
+    for (let j = 0; j < chosenPuzzle.length; j++) {
+      if (chosenPuzzle[i][j] === 1) {
+        const td = document.querySelector(`.td_${i + 1}_${j + 1}`);
+        console.log(i, j, chosenPuzzle[i][j]);
+        console.log(td);
+        td.classList.add("filled");
+      }
+    }
+  }
 }
 
 loadDraft("easy");
