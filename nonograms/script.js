@@ -1,8 +1,6 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
-// Math.floor(Math.random() * (max - min + 1) + min);
-
 const body = document.querySelector("body");
 const mainCreate = document.createElement("main");
 const containerCreate = document.createElement("div");
@@ -36,6 +34,7 @@ solutionCreate.innerText = "Show solution";
 solutionCreate.addEventListener("click", showSolution);
 randomCreate.classList.add("button");
 randomCreate.innerText = "Random game";
+randomCreate.addEventListener("click", randomGame);
 saveCreate.classList.add("button");
 saveCreate.innerText = "Save game";
 contCreate.classList.add("button");
@@ -374,17 +373,23 @@ function fillDraft(e) {
   console.log("secretFill - " + secretFill);
   console.log("secretCross - " + secretCross);
   console.log(chosenPuzzle);
+
+  console.log("chose" + chosenPuzzle[0][2]);
+
+  fill(chosenPuzzle);
+}
+
+function fill(matr) {
   const game = document.querySelector(".game");
   console.log(game);
-  console.log("chose" + chosenPuzzle[0][2]);
-  for (let i = 0; i < chosenPuzzle.length; i++) {
+  for (let i = 0; i < matr.length; i++) {
     const clueSum = [];
     let clue = 0;
-    for (let j = 0; j < chosenPuzzle.length; j++) {
-      if (chosenPuzzle[i][j] === 1) {
+    for (let j = 0; j < matr.length; j++) {
+      if (matr[i][j] === 1) {
         clue += 1;
       }
-      if (chosenPuzzle[i][j] === 0 || j === chosenPuzzle.length - 1) {
+      if (matr[i][j] === 0 || j === matr.length - 1) {
         if (clue !== 0) {
           console.log(clue, i, j);
           clueSum.push(clue);
@@ -397,17 +402,17 @@ function fillDraft(e) {
       }
     }
   }
-  const chosenPuzzleRev = chosenPuzzle[0].map((_, indexCol) =>
-    chosenPuzzle.map((row) => row[indexCol])
+  const matrRev = matr[0].map((_, indexCol) =>
+    matr.map((row) => row[indexCol])
   );
-  for (let i = 0; i < chosenPuzzleRev.length; i++) {
+  for (let i = 0; i < matrRev.length; i++) {
     const clueSum = [];
     let clue = 0;
-    for (let j = 0; j < chosenPuzzleRev.length; j++) {
-      if (chosenPuzzleRev[i][j] === 1) {
+    for (let j = 0; j < matrRev.length; j++) {
+      if (matrRev[i][j] === 1) {
         clue += 1;
       }
-      if (chosenPuzzleRev[i][j] === 0 || j === chosenPuzzleRev.length - 1) {
+      if (matrRev[i][j] === 0 || j === matrRev.length - 1) {
         if (clue !== 0) {
           console.log(clue, i, j);
           clueSum.push(clue);
@@ -526,6 +531,37 @@ function resetGame() {
   clearCells();
   guessCross = secretCross;
   guessFill = 0;
+}
+
+function randomGame() {
+  clearClues();
+  clearCells();
+  secretFill = 0;
+  secretCross = 0;
+  guessFill = 0;
+  guessCross = 0;
+  let a = ~~(Math.random() * 3);
+  const b = ~~(Math.random() * matrix[a].length);
+  chosenPuzzle = matrix[a][b];
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
+  modalImg.src = `./img/puzzles/${a}_${b}.png`;
+  console.log(chosenPuzzle);
+  console.log(secretFill, secretCross, guessFill, guessCross);
+  let draft;
+  a === 0 ? (a = "easy") : a === 1 ? (a = "normal") : (a = "hard");
+  levels.forEach((level) => {
+    if (level.dataset.level === a) {
+      level.classList.add("level-item-active");
+      draft = level.dataset.level;
+      loadPuzzles(draft);
+    } else if (level.classList.contains("level-item-active")) {
+      level.classList.remove("level-item-active");
+    }
+  });
+  loadDraft(draft);
+  fill(chosenPuzzle);
 }
 
 loadDraft("easy");
