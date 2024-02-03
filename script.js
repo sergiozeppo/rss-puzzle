@@ -1,13 +1,44 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
+const body = document.querySelector("body");
+const modalCreate = document.createElement("div");
+const resultCreate = document.createElement("div");
+const greetCreate = document.createElement("h3");
+const textCreate = document.createElement("p");
+const buttonCreate = document.createElement("button");
+
+// Adding classes to MODAL section
+modalCreate.classList.add("modal");
+resultCreate.classList.add("result");
+greetCreate.classList.add("hint-part");
+textCreate.innerHTML = "<p><b></b></p>";
+buttonCreate.classList.add("retry");
+buttonCreate.innerText = "Play again";
+
+// Generating MODAL
+body.appendChild(modalCreate);
+modalCreate.appendChild(resultCreate);
+resultCreate.appendChild(greetCreate);
+resultCreate.appendChild(textCreate);
+resultCreate.appendChild(buttonCreate);
+
+const modal = document.querySelector(".modal");
+const modalImg = modal.querySelector("img");
+const modalGreet = modal.querySelector("h3");
+const retryButton = document.querySelector(".retry");
+
 let currentType = "";
+let prevType = "";
 let down = false;
 let rmb = false;
 let lmb = false;
 let chosenPuzzle = matrix[0][0];
 let secretFill = 0;
 let secretCross = 0;
+let guessFill = 0;
+let guessCross = 0;
+let isGameOver = false;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -40,32 +71,39 @@ function fillCell(e) {
   lmb = true;
   if (this.classList.contains("filled")) {
     this.classList?.remove("filled");
-    currentType = "";
+    prevType = "filled";
+    currentType = "empty";
   } else if (this.classList.contains("crossed")) {
     this.classList?.remove("crossed");
+    prevType = "crossed";
     this.classList.add("filled");
     currentType = "filled";
   } else {
     this.classList.add("filled");
     currentType = "filled";
+    prevType = "empty";
   }
   checkFill(e);
 }
 
-function fillCross() {
+function fillCross(e) {
   down = true;
   rmb = true;
   if (this.classList.contains("filled")) {
     this.classList.remove("filled");
+    prevType = "filled";
     this.classList.add("crossed");
     currentType = "crossed";
   } else if (this.classList.contains("crossed")) {
     this.classList.remove("crossed");
-    currentType = "";
+    prevType = "crossed";
+    currentType = "empty";
   } else {
     this.classList.add("crossed");
     currentType = "crossed";
+    prevType = "empty";
   }
+  checkCross(e);
 }
 
 // function dragCells() {
@@ -288,6 +326,7 @@ function fillDraft(e) {
     : matrix[0][0];
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
   console.log("secretFill - " + secretFill);
   console.log("secretCross - " + secretCross);
   console.log(chosenPuzzle);
@@ -341,27 +380,78 @@ function fillDraft(e) {
   }
 }
 function checkFill(e) {
-  const currentCell = e.target.closest(".cell");
-  console.log(currentCell.classList.value.slice(8, -7));
-  const chosenCell = currentCell.classList.value.slice(8, -7).split("_");
-  console.log(chosenCell);
-  console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
-  if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
-    console.log(chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1]);
-    console.log("RIght");
+  let currentCell = e.target.closest(".cell");
+  let chosenCell;
+  if (currentCell.classList.contains("filled")) {
+    chosenCell = currentCell.classList.value.slice(8, -7).split("_");
+  } else if (currentCell.classList.contains("crossed")) {
+    chosenCell = currentCell.classList.value.slice(8, -8).split("_");
+  } else {
+    chosenCell = currentCell.classList.value.slice(8).split("_");
   }
-  // let draft;
-  // levels.forEach((level) => {
-  //   if (level === currentLevel) {
-  //     level.classList.add("level-item-active");
-  //     draft = level.dataset.level;
-  //     console.log(draft);
-  //     loadPuzzles(draft);
-  //   } else if (level.classList.contains("level-item-active")) {
-  //     level.classList.remove("level-item-active");
-  //   }
-  // });
-  // loadDraft(draft);
+  if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
+    if (currentCell.classList.contains("filled")) {
+      if (prevType === "crossed") {
+        guessCross = guessCross > 0 ? guessCross - 1 : 0;
+      }
+      guessFill += 1;
+      checkWin();
+    } else {
+      guessFill = guessFill > 0 ? guessFill - 1 : 0;
+      checkWin();
+    }
+  } else {
+    if (prevType === "filled") {
+      guessCross++;
+    } else if (prevType === "empty") {
+      guessCross = guessCross > 0 ? guessCross - 1 : 0;
+    }
+    checkWin();
+  }
+}
+
+function checkCross(e) {
+  let currentCell = e.target.closest(".cell");
+  let chosenCell;
+  if (currentCell.classList.contains("filled")) {
+    chosenCell = currentCell.classList.value.slice(8, -7).split("_");
+  } else if (currentCell.classList.contains("crossed")) {
+    chosenCell = currentCell.classList.value.slice(8, -8).split("_");
+  } else {
+    chosenCell = currentCell.classList.value.slice(8).split("_");
+  }
+  if (chosenPuzzle[chosenCell[0] - 1][chosenCell[1] - 1] === 1) {
+    if (currentCell.classList.contains("crossed")) {
+      guessFill = guessFill > 0 ? guessFill - 1 : 0;
+      guessCross++;
+      checkWin();
+    } else {
+      guessCross = guessCross > 0 ? guessCross - 1 : 0;
+      checkWin();
+    }
+  } else {
+    if (prevType === "filled") {
+      guessCross++;
+    }
+    checkWin();
+  }
+}
+
+function checkWin() {
+  if (guessFill === secretFill && guessCross === secretCross) {
+    gameOver();
+  }
+}
+
+function gameOver() {
+  isGameOver = true;
+  body.classList.add("no-scroll");
+  body.classList.remove("adapt-scroll");
+  setTimeout(() => {
+    modal.classList.add("visible");
+    modalImg.src = `./img/0_0.png`;
+    modalGreet.innerText = `"You WIN!"`;
+  }, 250);
 }
 
 loadDraft("easy");
