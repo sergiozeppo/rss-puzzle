@@ -1,21 +1,43 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
+// Math.floor(Math.random() * (max - min + 1) + min);
+
 const body = document.querySelector("body");
+const mainCreate = document.createElement("main");
+const containerCreate = document.createElement("div");
+const settCreate = document.createElement("div");
+const levelsCreate = document.createElement("div");
 const modalCreate = document.createElement("div");
 const puzzleCreate = document.createElement("img");
 const resultCreate = document.createElement("div");
 const greetCreate = document.createElement("h3");
 const textCreate = document.createElement("p");
-const buttonCreate = document.createElement("button");
+const resetCreate = document.createElement("button");
+const solutionCreate = document.createElement("button");
+const randomCreate = document.createElement("button");
+const saveCreate = document.createElement("button");
+const contCreate = document.createElement("button");
 
 // Adding classes to MODAL section
 modalCreate.classList.add("modal");
 resultCreate.classList.add("result");
 greetCreate.classList.add("hint-part");
 textCreate.innerHTML = "<p><b></b></p>";
-buttonCreate.classList.add("retry");
-buttonCreate.innerText = "Play again";
+// buttonCreate.classList.add("retry");
+// buttonCreate.innerText = "Play again";
+
+//
+resetCreate.classList.add("button");
+resetCreate.innerText = "Reset game";
+solutionCreate.classList.add("button");
+solutionCreate.innerText = "Show solution";
+randomCreate.classList.add("button");
+randomCreate.innerText = "Random game";
+saveCreate.classList.add("button");
+saveCreate.innerText = "Save game";
+contCreate.classList.add("button");
+contCreate.innerText = "Continue game";
 
 // Generating MODAL
 body.appendChild(modalCreate);
@@ -23,12 +45,23 @@ modalCreate.appendChild(resultCreate);
 resultCreate.appendChild(puzzleCreate);
 resultCreate.appendChild(greetCreate);
 resultCreate.appendChild(textCreate);
-resultCreate.appendChild(buttonCreate);
+// resultCreate.appendChild(buttonCreate);
+
+// Generating
+body.appendChild(mainCreate);
+mainCreate.appendChild(containerCreate);
+containerCreate.appendChild(settCreate);
+settCreate.appendChild(levelsCreate);
+levelsCreate.appendChild(resetCreate);
+levelsCreate.appendChild(solutionCreate);
+levelsCreate.appendChild(randomCreate);
+levelsCreate.appendChild(saveCreate);
+levelsCreate.appendChild(contCreate);
 
 const modal = document.querySelector(".modal");
 const modalImg = modal.querySelector("img");
 const modalGreet = modal.querySelector("h3");
-const retryButton = document.querySelector(".retry");
+// const retryButton = document.querySelector(".retry");
 
 let currentType = "";
 let prevType = "";
