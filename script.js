@@ -320,6 +320,10 @@ function loadPuzzles(draft) {
 function fillDraft(e) {
   clearClues();
   clearCells();
+  secretFill = 0;
+  secretCross = 0;
+  guessFill = 0;
+  guessCross = 0;
   const currentLevel = e ? e.target.closest("li") : 0;
   chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
