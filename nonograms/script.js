@@ -469,7 +469,6 @@ function gameOver() {
   body.classList.remove("adapt-scroll");
   setTimeout(() => {
     modal.classList.add("visible");
-    modalImg.src = `./img/puzzles/0_0.png`;
     modalGreet.innerText = `"You WIN!"`;
   }, 250);
 }
