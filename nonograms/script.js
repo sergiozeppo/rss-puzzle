@@ -1,10 +1,6 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
-// stop() {
-//   clearInterval(this.timer);
-// }
-
 const body = document.querySelector("body");
 const headerCreate = document.createElement("header");
 const titleCreate = document.createElement("h1");
@@ -15,6 +11,10 @@ const settCreate = document.createElement("div");
 settCreate.classList.add("settings");
 const levelsCreate = document.createElement("div");
 levelsCreate.classList.add("levels");
+const buttonsBottomCreate = document.createElement("div");
+buttonsBottomCreate.classList.add("buttons-bottom");
+const gameCreate = document.createElement("div");
+gameCreate.classList.add("game-container");
 const easyCreate = document.createElement("button");
 const normalCreate = document.createElement("button");
 const hardCreate = document.createElement("button");
@@ -86,11 +86,13 @@ settCreate.appendChild(levelsCreate);
 levelsCreate.appendChild(easyCreate);
 levelsCreate.appendChild(normalCreate);
 levelsCreate.appendChild(hardCreate);
-levelsCreate.appendChild(resetCreate);
-levelsCreate.appendChild(solutionCreate);
 levelsCreate.appendChild(randomCreate);
-levelsCreate.appendChild(saveCreate);
-levelsCreate.appendChild(contCreate);
+containerCreate.appendChild(gameCreate);
+containerCreate.appendChild(buttonsBottomCreate);
+buttonsBottomCreate.appendChild(resetCreate);
+buttonsBottomCreate.appendChild(solutionCreate);
+buttonsBottomCreate.appendChild(saveCreate);
+buttonsBottomCreate.appendChild(contCreate);
 
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-modal");
@@ -191,16 +193,15 @@ function switchLevel(e) {
 }
 
 function loadDraft(draft) {
-  const container = document.querySelector(".container");
   const createTable = document.createElement("table");
   const createTbody = document.createElement("tbody");
   createTable.appendChild(createTbody);
   createTable.classList.add("game");
   if (draft === "easy") {
     if (document.querySelector(".game")) {
-      container.removeChild(document.querySelector(".game"));
+      gameCreate.removeChild(document.querySelector(".game"));
     }
-    container.appendChild(createTable);
+    gameCreate.appendChild(createTable);
     for (let i = 0; i < 6; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
@@ -230,9 +231,9 @@ function loadDraft(draft) {
     }
   } else if (draft === "normal") {
     if (document.querySelector(".game")) {
-      container.removeChild(document.querySelector(".game"));
+      gameCreate.removeChild(document.querySelector(".game"));
     }
-    container.appendChild(createTable);
+    gameCreate.appendChild(createTable);
     for (let i = 0; i < 11; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
@@ -261,9 +262,9 @@ function loadDraft(draft) {
     }
   } else if (draft === "hard") {
     if (document.querySelector(".game")) {
-      container.removeChild(document.querySelector(".game"));
+      gameCreate.removeChild(document.querySelector(".game"));
     }
-    container.appendChild(createTable);
+    gameCreate.appendChild(createTable);
     for (let i = 0; i < 16; i++) {
       if (i === 0) {
         const tr = parent.document.createElement("tr");
@@ -360,6 +361,8 @@ function fillDraft(e) {
   secretCross = 0;
   guessFill = 0;
   guessCross = 0;
+  if (document.querySelector(".title"))
+    gameCreate.removeChild(document.querySelector(".title"));
   const currentLevel = e ? e.target.closest("li") : 0;
   chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
@@ -371,6 +374,14 @@ function fillDraft(e) {
     currentLevel.dataset?.level ? currentLevel.dataset.level : 0
   }_${currentLevel.dataset?.puzzle ? currentLevel.dataset.puzzle : 0}.png`;
   console.log(chosenPuzzle);
+  const titleGameCreate = document.createElement("p");
+  titleGameCreate.classList.add("title");
+  titleGameCreate.innerHTML = e
+    ? `You are currently playing puzzle: <b>${
+        matrixNames[currentLevel.dataset.level][currentLevel.dataset.puzzle]
+      }</b>`
+    : `You are currently playing puzzle: <b>${matrixNames[0][0]}</b>`;
+  gameCreate.prepend(titleGameCreate);
   fill(chosenPuzzle);
 }
 
@@ -533,6 +544,8 @@ function randomGame() {
   guessFill = 0;
   guessCross = 0;
   isGameOver = false;
+  if (document.querySelector(".title"))
+    gameCreate.removeChild(document.querySelector(".title"));
   let a = ~~(Math.random() * 3);
   const b = ~~(Math.random() * matrix[a].length);
   chosenPuzzle = matrix[a][b];
@@ -541,6 +554,10 @@ function randomGame() {
   guessCross = secretCross;
   modalImg.src = `./img/puzzles/${a}_${b}.png`;
   console.log(chosenPuzzle);
+  const titleGameCreate = document.createElement("p");
+  titleGameCreate.classList.add("title");
+  titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${matrixNames[a][b]}</b>`;
+  gameCreate.prepend(titleGameCreate);
   let draft;
   a === 0 ? (a = "easy") : a === 1 ? (a = "normal") : (a = "hard");
   levels.forEach((level) => {
