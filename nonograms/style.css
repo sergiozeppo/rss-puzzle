@@ -22,8 +22,7 @@ body {
   margin: auto;
   text-align: center;
   align-items: center;
-  background: url("./img/back1.jpg") repeat;
-  background-color: rgba(71, 74, 80, 0.3);
+  background: url("./img/back.png") repeat;
 }
 
 header {
@@ -40,6 +39,10 @@ header {
   height: 10rem;
   width: 100%;
   background-color: brown;
+}
+
+.header-menu.dark {
+  background-color: #403f3d;
 }
 
 h1 {
@@ -234,6 +237,10 @@ th {
   font-weight: 700;
   border: none;
 }
+.button.dark {
+  background: #e1d4c9;
+  color: #403f3d;
+}
 .modal .retry:hover {
   background-color: #4d79a5;
   cursor: pointer;
@@ -246,6 +253,10 @@ th {
 }
 .level-item-active {
   background: #403f3d;
+  color: #e1d4c9;
+}
+.level-item-active.dark {
+  background: #721d1d;
   color: #e1d4c9;
 }
 .buttons-bottom {
