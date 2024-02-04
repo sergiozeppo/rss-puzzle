@@ -7,6 +7,7 @@ const containerCreate = document.createElement("div");
 const settCreate = document.createElement("div");
 const levelsCreate = document.createElement("div");
 const modalCreate = document.createElement("div");
+const closeMCreate = document.createElement("button");
 const puzzleCreate = document.createElement("img");
 const resultCreate = document.createElement("div");
 const greetCreate = document.createElement("h3");
@@ -22,8 +23,8 @@ modalCreate.classList.add("modal");
 resultCreate.classList.add("result");
 greetCreate.classList.add("hint-part");
 textCreate.innerHTML = "<p><b></b></p>";
-// buttonCreate.classList.add("retry");
-// buttonCreate.innerText = "Play again";
+closeMCreate.classList.add("close-modal");
+closeMCreate.innerHTML = "&times;";
 
 //
 resetCreate.classList.add("button");
@@ -43,10 +44,10 @@ contCreate.innerText = "Continue last game";
 // Generating MODAL
 body.appendChild(modalCreate);
 modalCreate.appendChild(resultCreate);
+resultCreate.appendChild(closeMCreate);
 resultCreate.appendChild(puzzleCreate);
 resultCreate.appendChild(greetCreate);
 resultCreate.appendChild(textCreate);
-// resultCreate.appendChild(buttonCreate);
 
 // Generating
 body.appendChild(mainCreate);
@@ -60,6 +61,7 @@ levelsCreate.appendChild(saveCreate);
 levelsCreate.appendChild(contCreate);
 
 const modal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-modal");
 const modalImg = modal.querySelector("img");
 const modalGreet = modal.querySelector("h3");
 // const retryButton = document.querySelector(".retry");
@@ -96,41 +98,45 @@ function clearClues() {
 function fillCell(e) {
   down = true;
   lmb = true;
-  if (this.classList.contains("filled")) {
-    this.classList?.remove("filled");
-    prevType = "filled";
-    currentType = "empty";
-  } else if (this.classList.contains("crossed")) {
-    this.classList?.remove("crossed");
-    prevType = "crossed";
-    this.classList.add("filled");
-    currentType = "filled";
-  } else {
-    this.classList.add("filled");
-    currentType = "filled";
-    prevType = "empty";
+  if (!isGameOver) {
+    if (this.classList.contains("filled")) {
+      this.classList?.remove("filled");
+      prevType = "filled";
+      currentType = "empty";
+    } else if (this.classList.contains("crossed")) {
+      this.classList?.remove("crossed");
+      prevType = "crossed";
+      this.classList.add("filled");
+      currentType = "filled";
+    } else {
+      this.classList.add("filled");
+      currentType = "filled";
+      prevType = "empty";
+    }
+    checkFill(e);
   }
-  checkFill(e);
 }
 
 function fillCross(e) {
   down = true;
   rmb = true;
-  if (this.classList.contains("filled")) {
-    this.classList.remove("filled");
-    prevType = "filled";
-    this.classList.add("crossed");
-    currentType = "crossed";
-  } else if (this.classList.contains("crossed")) {
-    this.classList.remove("crossed");
-    prevType = "crossed";
-    currentType = "empty";
-  } else {
-    this.classList.add("crossed");
-    currentType = "crossed";
-    prevType = "empty";
+  if (!isGameOver) {
+    if (this.classList.contains("filled")) {
+      this.classList.remove("filled");
+      prevType = "filled";
+      this.classList.add("crossed");
+      currentType = "crossed";
+    } else if (this.classList.contains("crossed")) {
+      this.classList.remove("crossed");
+      prevType = "crossed";
+      currentType = "empty";
+    } else {
+      this.classList.add("crossed");
+      currentType = "crossed";
+      prevType = "empty";
+    }
+    checkCross(e);
   }
-  checkCross(e);
 }
 
 const levels = document.querySelectorAll(".level-item");
@@ -450,8 +456,10 @@ function checkCross(e) {
 }
 
 function checkWin() {
-  if (guessFill === secretFill && guessCross === secretCross) {
-    gameOver();
+  if (!isGameOver) {
+    if (guessFill === secretFill && guessCross === secretCross) {
+      gameOver();
+    }
   }
 }
 
@@ -467,6 +475,7 @@ function gameOver() {
 
 function showSolution() {
   clearCells();
+  isGameOver = true;
   for (let i = 0; i < chosenPuzzle.length; i++) {
     for (let j = 0; j < chosenPuzzle.length; j++) {
       if (chosenPuzzle[i][j] === 1) {
@@ -481,6 +490,7 @@ function resetGame() {
   clearCells();
   guessCross = secretCross;
   guessFill = 0;
+  isGameOver = false;
 }
 
 function randomGame() {
@@ -490,6 +500,7 @@ function randomGame() {
   secretCross = 0;
   guessFill = 0;
   guessCross = 0;
+  isGameOver = false;
   let a = ~~(Math.random() * 3);
   const b = ~~(Math.random() * matrix[a].length);
   chosenPuzzle = matrix[a][b];
@@ -513,6 +524,12 @@ function randomGame() {
   fill(chosenPuzzle);
 }
 
+const closeModal = function () {
+  modal.classList.remove("visible");
+  body.classList.remove("no-scroll");
+  body.classList.add("adapt-scroll");
+};
+
 loadDraft("easy");
 modalImg.src = `./img/puzzles/0_0.png`;
 fillDraft();
@@ -525,3 +542,5 @@ function disableRMB() {
 }
 disableRMB();
 clearCells();
+modal.addEventListener("click", closeModal);
+closeButton.addEventListener("click", closeModal);

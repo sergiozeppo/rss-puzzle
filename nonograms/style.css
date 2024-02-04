@@ -152,6 +152,16 @@ th {
 .modal.visible {
   display: flex;
 }
+.close-modal {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 5rem;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
 .modal .result {
   background-color: #fff;
   max-width: 42rem;
@@ -159,6 +169,7 @@ th {
   padding: 4rem;
   border-radius: 1rem;
   text-align: center;
+  position: relative;
 }
 .modal img {
   max-width: 30rem;
