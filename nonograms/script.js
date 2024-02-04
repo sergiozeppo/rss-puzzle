@@ -1,11 +1,23 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
+// stop() {
+//   clearInterval(this.timer);
+// }
+
 const body = document.querySelector("body");
+const headerCreate = document.createElement("header");
+const titleCreate = document.createElement("h1");
 const mainCreate = document.createElement("main");
 const containerCreate = document.createElement("div");
+containerCreate.classList.add("container");
 const settCreate = document.createElement("div");
+settCreate.classList.add("settings");
 const levelsCreate = document.createElement("div");
+levelsCreate.classList.add("levels");
+const easyCreate = document.createElement("button");
+const normalCreate = document.createElement("button");
+const hardCreate = document.createElement("button");
 const modalCreate = document.createElement("div");
 const closeMCreate = document.createElement("button");
 const puzzleCreate = document.createElement("img");
@@ -26,7 +38,24 @@ textCreate.innerHTML = "<p><b></b></p>";
 closeMCreate.classList.add("close-modal");
 closeMCreate.innerHTML = "&times;";
 
+// Generating Header
+headerCreate.classList.add("header-menu");
+headerCreate.appendChild(titleCreate);
+titleCreate.innerText = "Nonograms";
+
 //
+body.appendChild(headerCreate);
+
+// Generating buttons
+easyCreate.classList.add("button", "level-item", "level-item-active");
+easyCreate.innerText = "Easy";
+easyCreate.dataset.level = "easy";
+normalCreate.classList.add("button", "level-item");
+normalCreate.innerText = "Normal";
+normalCreate.dataset.level = "normal";
+hardCreate.classList.add("button", "level-item");
+hardCreate.innerText = "Hard";
+hardCreate.dataset.level = "hard";
 resetCreate.classList.add("button");
 resetCreate.innerText = "Reset game";
 resetCreate.addEventListener("click", resetGame);
@@ -54,6 +83,9 @@ body.appendChild(mainCreate);
 mainCreate.appendChild(containerCreate);
 containerCreate.appendChild(settCreate);
 settCreate.appendChild(levelsCreate);
+levelsCreate.appendChild(easyCreate);
+levelsCreate.appendChild(normalCreate);
+levelsCreate.appendChild(hardCreate);
 levelsCreate.appendChild(resetCreate);
 levelsCreate.appendChild(solutionCreate);
 levelsCreate.appendChild(randomCreate);
