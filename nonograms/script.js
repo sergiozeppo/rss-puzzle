@@ -82,11 +82,7 @@ function clearCells() {
     const cell = cells[i];
     cell.classList?.remove("filled", "crossed");
     cell.onclick = fillCell;
-    // cell.onclick = ;
     cell.oncontextmenu = fillCross;
-    // cell.onmousedown = dragCells;
-    // cell.addEventListener("click", fillCell);
-    // cell.addEventListener("contextmenu", fillCross);
   }
 }
 
@@ -94,11 +90,6 @@ function clearClues() {
   const clues = document.querySelectorAll(".clue");
   for (let i = 0; i < clues.length; i++) {
     clues[i].textContent = "";
-    // cell.onclick = fillCell;
-    // cell.oncontextmenu = fillCross;
-    // cell.onmousedown = dragCells;
-    // cell.addEventListener("click", fillCell);
-    // cell.addEventListener("contextmenu", fillCross);
   }
 }
 
@@ -142,34 +133,6 @@ function fillCross(e) {
   checkCross(e);
 }
 
-// function dragCells() {
-//   if (down) {
-//     if (rmb) {
-//       if (currentType === "") {
-//         this.classList.add("crossed");
-//       } else if (currentType === "filled") {
-//         this.classList?.remove("filled");
-//         this.classList.add("crossed");
-//       } else if (currentType === "crossed") {
-//         // crossed
-//         this.classList?.remove("filled");
-//         this.classList.add("crossed");
-//       }
-//     }
-//     if (lmb) {
-//       if (currentType === "") {
-//         this.classList.add("filled");
-//       } else if (currentType === "filled") {
-//         this.classList.add("filled");
-//         this.classList?.remove("crossed");
-//       } else if (currentType === "crossed") {
-//         // crossed
-//         this.classList?.remove("crossed");
-//         this.classList.add("filled");
-//       }
-//     }
-//   }
-// }
 const levels = document.querySelectorAll(".level-item");
 levels.forEach((level) => {
   level.addEventListener("click", switchLevel);
@@ -181,7 +144,6 @@ function switchLevel(e) {
     if (level === currentLevel) {
       level.classList.add("level-item-active");
       draft = level.dataset.level;
-      console.log(draft);
       loadPuzzles(draft);
     } else if (level.classList.contains("level-item-active")) {
       level.classList.remove("level-item-active");
@@ -370,18 +332,12 @@ function fillDraft(e) {
   modalImg.src = `./img/puzzles/${
     currentLevel.dataset?.level ? currentLevel.dataset.level : 0
   }_${currentLevel.dataset?.puzzle ? currentLevel.dataset.puzzle : 0}.png`;
-  console.log("secretFill - " + secretFill);
-  console.log("secretCross - " + secretCross);
   console.log(chosenPuzzle);
-
-  console.log("chose" + chosenPuzzle[0][2]);
-
   fill(chosenPuzzle);
 }
 
 function fill(matr) {
   const game = document.querySelector(".game");
-  console.log(game);
   for (let i = 0; i < matr.length; i++) {
     const clueSum = [];
     let clue = 0;
@@ -391,10 +347,8 @@ function fill(matr) {
       }
       if (matr[i][j] === 0 || j === matr.length - 1) {
         if (clue !== 0) {
-          console.log(clue, i, j);
           clueSum.push(clue);
           clue = 0;
-          console.log(clueSum, i, j);
           const span = document.createElement("span");
           span.textContent = clueSum[clueSum.length - 1];
           game.querySelector(`.th_${i + 1}_0`).appendChild(span);
@@ -414,10 +368,8 @@ function fill(matr) {
       }
       if (matrRev[i][j] === 0 || j === matrRev.length - 1) {
         if (clue !== 0) {
-          console.log(clue, i, j);
           clueSum.push(clue);
           clue = 0;
-          console.log(clueSum, i, j);
           const span = document.createElement("span");
           const br = document.createElement("br");
           span.textContent = clueSum[clueSum.length - 1];
@@ -519,8 +471,6 @@ function showSolution() {
     for (let j = 0; j < chosenPuzzle.length; j++) {
       if (chosenPuzzle[i][j] === 1) {
         const td = document.querySelector(`.td_${i + 1}_${j + 1}`);
-        console.log(i, j, chosenPuzzle[i][j]);
-        console.log(td);
         td.classList.add("filled");
       }
     }
@@ -548,7 +498,6 @@ function randomGame() {
   guessCross = secretCross;
   modalImg.src = `./img/puzzles/${a}_${b}.png`;
   console.log(chosenPuzzle);
-  console.log(secretFill, secretCross, guessFill, guessCross);
   let draft;
   a === 0 ? (a = "easy") : a === 1 ? (a = "normal") : (a = "hard");
   levels.forEach((level) => {
