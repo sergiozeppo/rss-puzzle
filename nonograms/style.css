@@ -202,3 +202,9 @@ th {
   background-color: #4d79a5;
   cursor: pointer;
 }
+.no-scroll {
+  overflow: hidden;
+}
+.adapt-scroll {
+  overflow: auto;
+}
