@@ -461,7 +461,7 @@ function gameOver() {
   body.classList.remove("adapt-scroll");
   setTimeout(() => {
     modal.classList.add("visible");
-    modalGreet.innerText = `"You WIN!"`;
+    modalGreet.innerText = `"Great! You have solved the nonogram!"`;
   }, 250);
 }
 
