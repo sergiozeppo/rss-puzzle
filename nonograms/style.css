@@ -14,7 +14,7 @@
 }
 
 html {
-  font-family: "Japan Rich", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 62.5%;
 }
 
@@ -31,10 +31,9 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* gap: 2rem; */
   align-self: stretch;
   font-size: 1.6rem;
-  /* margin-bottom: 2rem; */
+  margin-bottom: 2rem;
 }
 
 .header-menu {
@@ -67,6 +66,8 @@ h1 {
   font-size: 1.5rem;
   background-color: #e1d4c9;
   color: #fff;
+  font-family: "Japan Rich", sans-serif;
+  margin-bottom: 2rem;
 }
 
 td,
@@ -133,6 +134,11 @@ th {
 
 .filled {
   background-color: #000;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
 }
 .modal {
   position: fixed;
