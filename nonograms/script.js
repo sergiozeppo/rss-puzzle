@@ -8,6 +8,34 @@ import matrixNames from "./matrixNames.js";
 const body = document.querySelector("body");
 const headerCreate = document.createElement("header");
 const titleCreate = document.createElement("h1");
+const switchCreate = document.createElement("div");
+switchCreate.classList.add("switch");
+const soundCreate = document.createElement("div");
+soundCreate.classList.add("sound");
+const soundOnCreate = document.createElement("button");
+const tadaCreate = document.createElement("audio");
+const crossCreate = document.createElement("audio");
+const fillCreate = document.createElement("audio");
+const emptyCreate = document.createElement("audio");
+
+const soundOnCreateImg = document.createElement("img");
+soundOnCreate.style.opacity = 1;
+soundOnCreate.classList.add("sound_on");
+soundOnCreateImg.src = "./img/assets/sound_on_light.png";
+soundOnCreateImg.alt = "";
+const soundOffCreate = document.createElement("button");
+const soundOffCreateImg = document.createElement("img");
+soundOffCreate.style.opacity = 0;
+soundOffCreate.classList.add("sound_off");
+soundOffCreateImg.src = "./img/assets/sound_off_light.png";
+soundOffCreateImg.alt = "";
+const themeCreate = document.createElement("div");
+const themeLCreate = document.createElement("button");
+const themeLCreateImg = document.createElement("img");
+
+const themeDCreate = document.createElement("button");
+const themeDCreateImg = document.createElement("img");
+
 const mainCreate = document.createElement("main");
 const containerCreate = document.createElement("div");
 containerCreate.classList.add("container");
@@ -49,6 +77,12 @@ titleCreate.innerText = "Nonograms";
 
 //
 body.appendChild(headerCreate);
+headerCreate.appendChild(switchCreate);
+switchCreate.appendChild(soundCreate);
+soundCreate.appendChild(soundOnCreate);
+soundOnCreate.appendChild(soundOnCreateImg);
+soundCreate.appendChild(soundOffCreate);
+soundOffCreate.appendChild(soundOffCreateImg);
 
 // Generating buttons
 easyCreate.classList.add("button", "level-item", "level-item-active");
@@ -112,6 +146,7 @@ let secretCross = 0;
 let guessFill = 0;
 let guessCross = 0;
 let isGameOver = false;
+let sound = true;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -136,15 +171,39 @@ function fillCell(e) {
       this.classList?.remove("filled");
       prevType = "filled";
       currentType = "empty";
+      if (sound === true) {
+        const empty = body.querySelector("audio");
+        if (empty) body.removeChild(empty);
+        const newEmpty = document.createElement("audio");
+        newEmpty.setAttribute("autoplay", "true");
+        newEmpty.innerHTML = `<source src="./audio/empty.mp3" type="audio/mpeg">`;
+        body.appendChild(newEmpty);
+      }
     } else if (this.classList.contains("crossed")) {
       this.classList?.remove("crossed");
       prevType = "crossed";
       this.classList.add("filled");
       currentType = "filled";
+      if (sound === true) {
+        const fill = body.querySelector("audio");
+        if (fill) body.removeChild(fill);
+        const newFill = document.createElement("audio");
+        newFill.setAttribute("autoplay", "true");
+        newFill.innerHTML = `<source src="./audio/fill.mp3" type="audio/mpeg">`;
+        body.appendChild(newFill);
+      }
     } else {
       this.classList.add("filled");
       currentType = "filled";
       prevType = "empty";
+      if (sound === true) {
+        const fill = body.querySelector("audio");
+        if (fill) body.removeChild(fill);
+        const newFill = document.createElement("audio");
+        newFill.setAttribute("autoplay", "true");
+        newFill.innerHTML = `<source src="./audio/fill.mp3" type="audio/mpeg">`;
+        body.appendChild(newFill);
+      }
     }
     checkFill(e);
   }
@@ -157,14 +216,38 @@ function fillCross(e) {
       prevType = "filled";
       this.classList.add("crossed");
       currentType = "crossed";
+      if (sound === true) {
+        const cross = body.querySelector("audio");
+        if (cross) body.removeChild(cross);
+        const newCross = document.createElement("audio");
+        newCross.setAttribute("autoplay", "true");
+        newCross.innerHTML = `<source src="./audio/cross.mp3" type="audio/mpeg">`;
+        body.appendChild(newCross);
+      }
     } else if (this.classList.contains("crossed")) {
       this.classList.remove("crossed");
       prevType = "crossed";
       currentType = "empty";
+      if (sound === true) {
+        const empty = body.querySelector("audio");
+        if (empty) body.removeChild(empty);
+        const newEmpty = document.createElement("audio");
+        newEmpty.setAttribute("autoplay", "true");
+        newEmpty.innerHTML = `<source src="./audio/empty.mp3" type="audio/mpeg">`;
+        body.appendChild(newEmpty);
+      }
     } else {
       this.classList.add("crossed");
       currentType = "crossed";
       prevType = "empty";
+      if (sound === true) {
+        const cross = body.querySelector("audio");
+        if (cross) body.removeChild(cross);
+        const newCross = document.createElement("audio");
+        newCross.setAttribute("autoplay", "true");
+        newCross.innerHTML = `<source src="./audio/cross.mp3" type="audio/mpeg">`;
+        body.appendChild(newCross);
+      }
     }
     checkCross(e);
   }
@@ -514,10 +597,23 @@ function gameOver() {
   isGameOver = true;
   body.classList.add("no-scroll");
   body.classList.remove("adapt-scroll");
-  setTimeout(() => {
-    modal.classList.add("visible");
-    modalGreet.innerText = `"Great! You have solved the nonogram!"`;
-  }, 250);
+  if (sound === true) {
+    const tada = modal.querySelector("audio");
+    if (tada) modal.removeChild(tada);
+    const newTada = document.createElement("audio");
+    newTada.setAttribute("autoplay", "true");
+    newTada.innerHTML = `<source src="./audio/tada.mp3" type="audio/mpeg">`;
+    modal.appendChild(newTada);
+    setTimeout(() => {
+      modal.classList.add("visible");
+      modalGreet.innerText = `"Great! You have solved the nonogram!"`;
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      modal.classList.add("visible");
+      modalGreet.innerText = `"Great! You have solved the nonogram!"`;
+    }, 250);
+  }
 }
 
 function showSolution() {
@@ -577,6 +673,18 @@ function randomGame() {
   fill(chosenPuzzle);
 }
 
+function toggleSound(e) {
+  if (sound === true) {
+    sound = false;
+    soundOnCreate.style.opacity = 0;
+    soundOffCreate.style.opacity = 1;
+  } else {
+    sound = true;
+    soundOnCreate.style.opacity = 1;
+    soundOffCreate.style.opacity = 0;
+  }
+}
+
 const closeModal = function () {
   modal.classList.remove("visible");
   body.classList.remove("no-scroll");
@@ -597,3 +705,4 @@ disableRMB();
 clearCells();
 modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
+soundCreate.addEventListener("click", toggleSound);
