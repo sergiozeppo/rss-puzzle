@@ -22,12 +22,35 @@ body {
   margin: auto;
   text-align: center;
   align-items: center;
+  background: url("./img/back1.jpg") repeat;
+  background-color: rgba(71, 74, 80, 0.3);
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* gap: 2rem; */
+  align-self: stretch;
+  font-size: 1.6rem;
+  /* margin-bottom: 2rem; */
+}
+
+.header-menu {
+  height: 10rem;
+  width: 100%;
+  background-color: brown;
 }
 
 h1 {
   font-family: "Japan Version", sans-serif;
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 400;
+  color: #fff;
+  vertical-align: middle;
+  line-height: 1;
+  padding-top: 3rem;
 }
 .container {
   margin: auto;
@@ -42,6 +65,8 @@ h1 {
   user-select: none;
   margin: auto;
   font-size: 1.5rem;
+  background-color: #e1d4c9;
+  color: #fff;
 }
 
 td,
@@ -76,7 +101,7 @@ tr:nth-child(5n + 1) {
 }
 
 th {
-  background-color: #999;
+  background-color: brown;
 }
 
 .cell {
@@ -95,38 +120,11 @@ th {
 }
 .level-item {
   display: flex;
-  padding: 0.8rem 1.6rem 0.8rem 0.8rem;
   justify-content: center;
   align-items: center;
-  gap: 0.8rem;
-  border-radius: 10rem;
-  font-size: 1.6rem;
   font-weight: 600;
-  line-height: 150%;
-  color: #403f3d;
-  background: #e1d4c9;
-  border: 0.1rem solid #c1b6ad;
 }
-.round-tab {
-  border-radius: 10rem;
-  background: #c1b6ad;
-  display: flex;
-  overflow: hidden;
-  width: 3rem;
-  height: 3rem;
-  justify-content: center;
-  align-items: center;
-  transition: 0.4s;
-}
-.level-item img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.level-item-active {
-  background: #665f55;
-  color: #e1d4c9;
-}
+
 .crossed {
   background-image: url("./img/x.png");
   background-repeat: no-repeat;
@@ -190,7 +188,7 @@ th {
 .button {
   padding: 1rem 2rem;
   color: #fff;
-  background-color: #1f558b;
+  background-color: brown;
   text-transform: uppercase;
   border-radius: 0.5rem;
   outline: none;
@@ -207,4 +205,8 @@ th {
 }
 .adapt-scroll {
   overflow: auto;
+}
+.level-item-active {
+  background: #403f3d;
+  color: #e1d4c9;
 }
