@@ -113,10 +113,15 @@ th {
   cursor: pointer;
   opacity: 0.8;
 }
+.settings {
+  width: fit-content;
+  margin: auto;
+}
 .levels {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   gap: 1.6rem;
 }
 .level-item {
@@ -124,6 +129,33 @@ th {
   justify-content: center;
   align-items: center;
   font-weight: 600;
+}
+
+.puzzles-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  width: 100%;
+  background: #403f3d;
+  color: #e1d4c9;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+.puzzles-list li {
+  font-size: 1.5rem;
+  list-style-type: none;
+}
+
+.puzzles-list li:hover {
+  cursor: pointer;
+}
+
+.puzzles-list li:first-child {
+  margin-top: 1rem;
+}
+.puzzles-list li:last-child {
+  margin-bottom: 1rem;
 }
 
 .crossed {
@@ -215,4 +247,7 @@ th {
 .level-item-active {
   background: #403f3d;
   color: #e1d4c9;
+}
+.buttons-bottom {
+  margin-bottom: 2rem;
 }

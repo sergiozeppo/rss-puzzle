@@ -1,6 +1,10 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
+// stop() {
+//   clearInterval(this.timer);
+// }
+
 const body = document.querySelector("body");
 const headerCreate = document.createElement("header");
 const titleCreate = document.createElement("h1");
@@ -102,9 +106,6 @@ const modalGreet = modal.querySelector("h3");
 
 let currentType = "";
 let prevType = "";
-let down = false;
-let rmb = false;
-let lmb = false;
 let chosenPuzzle = matrix[0][0];
 let secretFill = 0;
 let secretCross = 0;
@@ -130,8 +131,6 @@ function clearClues() {
 }
 
 function fillCell(e) {
-  down = true;
-  lmb = true;
   if (!isGameOver) {
     if (this.classList.contains("filled")) {
       this.classList?.remove("filled");
@@ -152,8 +151,6 @@ function fillCell(e) {
 }
 
 function fillCross(e) {
-  down = true;
-  rmb = true;
   if (!isGameOver) {
     if (this.classList.contains("filled")) {
       this.classList.remove("filled");
@@ -299,11 +296,14 @@ function loadDraft(draft) {
 }
 
 function loadPuzzles(draft) {
+  const settings = document.querySelector(".settings");
   const levels = document.querySelector(".levels");
+  const puzzlesCont = parent.document.createElement("div");
+  puzzlesCont.classList.add("puzzles-list");
   const createPuzzleList = parent.document.createElement("ul");
   if (draft === "easy") {
-    if (document.querySelector(".menu")) {
-      levels.removeChild(document.querySelector(".menu"));
+    if (document.querySelector(".puzzles-list")) {
+      settings.removeChild(document.querySelector(".puzzles-list"));
     }
 
     for (let i = 0; i < matrixNames[0].length; i++) {
@@ -315,11 +315,12 @@ function loadPuzzles(draft) {
     }
 
     createPuzzleList.classList.add("menu");
-    levels.appendChild(createPuzzleList);
+    puzzlesCont.appendChild(createPuzzleList);
+    settings.appendChild(puzzlesCont);
   }
   if (draft === "normal") {
-    if (document.querySelector(".menu")) {
-      levels.removeChild(document.querySelector(".menu"));
+    if (document.querySelector(".puzzles-list")) {
+      settings.removeChild(document.querySelector(".puzzles-list"));
     }
 
     for (let i = 0; i < matrixNames[1].length; i++) {
@@ -331,11 +332,12 @@ function loadPuzzles(draft) {
     }
 
     createPuzzleList.classList.add("menu");
-    levels.appendChild(createPuzzleList);
+    puzzlesCont.appendChild(createPuzzleList);
+    settings.appendChild(puzzlesCont);
   }
   if (draft === "hard") {
-    if (document.querySelector(".menu")) {
-      levels.removeChild(document.querySelector(".menu"));
+    if (document.querySelector(".puzzles-list")) {
+      settings.removeChild(document.querySelector(".puzzles-list"));
     }
 
     for (let i = 0; i < matrixNames[2].length; i++) {
@@ -347,7 +349,8 @@ function loadPuzzles(draft) {
     }
 
     createPuzzleList.classList.add("menu");
-    levels.appendChild(createPuzzleList);
+    puzzlesCont.appendChild(createPuzzleList);
+    settings.appendChild(puzzlesCont);
   }
   document.querySelectorAll("li").forEach((el) => {
     el.addEventListener("click", fillDraft);
@@ -428,6 +431,7 @@ function fill(matr) {
       }
     }
   }
+  isGameOver = false;
 }
 function checkFill(e) {
   let currentCell = e.target.closest(".cell");
