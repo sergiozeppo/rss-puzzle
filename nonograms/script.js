@@ -226,6 +226,7 @@ function fillCell(e) {
       }
     }
     checkFill(e);
+    toggleSave();
   }
 }
 
@@ -275,6 +276,7 @@ function fillCross(e) {
       }
     }
     checkCross(e);
+    toggleSave();
   }
 }
 
@@ -945,4 +947,3 @@ modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
-window.addEventListener("click", toggleSave);
