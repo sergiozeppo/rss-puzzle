@@ -25,6 +25,10 @@ body {
   background: url("./img/back.png") repeat;
 }
 
+body.dark-theme {
+  background: url("./img/dark_back.png") repeat;
+}
+
 header {
   display: flex;
   flex-direction: column;
@@ -145,6 +149,9 @@ h1 {
   vertical-align: middle;
   line-height: 1;
 }
+h1.dark-theme {
+  color: #e1d4c9;
+}
 .container {
   margin: auto;
   text-align: center;
@@ -195,8 +202,11 @@ tr:nth-child(5n + 1) {
   }
 }
 
-th {
+.clue {
   background-color: brown;
+}
+.clue.dark-theme {
+  background-color: #721d1d;
 }
 
 .cell {
@@ -236,6 +246,10 @@ th {
   outline: none;
 }
 
+.puzzles-list.dark-theme {
+  background: #721d1d;
+}
+
 .puzzles-list li {
   font-size: 1.5rem;
   list-style-type: none;
@@ -265,10 +279,18 @@ th {
 .title {
   font-size: 3rem;
   margin: 2rem 0;
+  color: black;
+}
+.title.dark-theme {
+  color: #e1d4c9;
 }
 .timer {
   font-size: 3rem;
   margin: 2rem 0;
+  color: black;
+}
+.timer.dark-theme {
+  color: #e1d4c9;
 }
 .modal {
   position: fixed;
@@ -380,5 +402,13 @@ th {
   }
   .timer {
     font-size: 2rem;
+  }
+  td,
+  th {
+    width: 2rem;
+    height: 2rem;
+  }
+  .game {
+    font-size: 1rem;
   }
 }

@@ -303,7 +303,11 @@ function loadDraft(draft) {
         tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 6; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add("clue", `th_${i}_${j}`);
+          if (light) {
+            th.classList.add("clue", `th_${i}_${j}`);
+          } else {
+            th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+          }
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
@@ -313,7 +317,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 6; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add("clue", `th_${i}_${j}`);
+            if (light) {
+              th.classList.add("clue", `th_${i}_${j}`);
+            } else {
+              th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+            }
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
@@ -335,7 +343,11 @@ function loadDraft(draft) {
         tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 11; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add("clue", `th_${i}_${j}`);
+          if (light) {
+            th.classList.add("clue", `th_${i}_${j}`);
+          } else {
+            th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+          }
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
@@ -344,7 +356,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 11; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add("clue", `th_${i}_${j}`);
+            if (light) {
+              th.classList.add("clue", `th_${i}_${j}`);
+            } else {
+              th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+            }
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
@@ -366,7 +382,11 @@ function loadDraft(draft) {
         tr.classList.add(`tr_${i}_0`);
         for (let j = 0; j < 16; j++) {
           const th = parent.document.createElement("th");
-          th.classList.add("clue", `th_${i}_${j}`);
+          if (light) {
+            th.classList.add("clue", `th_${i}_${j}`);
+          } else {
+            th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+          }
           tr.appendChild(th);
         }
         createTbody.appendChild(tr);
@@ -376,7 +396,11 @@ function loadDraft(draft) {
         for (let j = 0; j < 16; j++) {
           if (j === 0) {
             const th = parent.document.createElement("th");
-            th.classList.add("clue", `th_${i}_${j}`);
+            if (light) {
+              th.classList.add("clue", `th_${i}_${j}`);
+            } else {
+              th.classList.add("clue", "dark-theme", `th_${i}_${j}`);
+            }
             tr.appendChild(th);
           } else {
             const td = parent.document.createElement("td");
@@ -397,7 +421,11 @@ function loadPuzzles(draft) {
   const settings = document.querySelector(".settings");
   const levels = document.querySelector(".levels");
   const puzzlesCont = parent.document.createElement("div");
-  puzzlesCont.classList.add("puzzles-list");
+  if (light) {
+    puzzlesCont.classList.add("puzzles-list");
+  } else {
+    puzzlesCont.classList.add("puzzles-list", "dark-theme");
+  }
   const createPuzzleList = parent.document.createElement("ul");
   if (draft === "easy") {
     if (document.querySelector(".puzzles-list")) {
@@ -479,7 +507,11 @@ function fillDraft(e) {
   }_${currentLevel.dataset?.puzzle ? currentLevel.dataset.puzzle : 0}.png`;
   console.log(chosenPuzzle);
   const titleGameCreate = document.createElement("p");
-  titleGameCreate.classList.add("title");
+  if (light) {
+    titleGameCreate.classList.add("title");
+  } else {
+    titleGameCreate.classList.add("title", "dark-theme");
+  }
   titleGameCreate.innerHTML = e
     ? `You are currently playing puzzle: <b>${
         matrixNames[currentLevel.dataset.level][currentLevel.dataset.puzzle]
@@ -686,7 +718,11 @@ function randomGame() {
   modalImg.src = `./img/puzzles/${a}_${b}.png`;
   console.log(chosenPuzzle);
   const titleGameCreate = document.createElement("p");
-  titleGameCreate.classList.add("title");
+  if (light) {
+    titleGameCreate.classList.add("title");
+  } else {
+    titleGameCreate.classList.add("title", "dark-theme");
+  }
   titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${matrixNames[a][b]}</b>`;
   gameCreate.prepend(titleGameCreate);
   let draft;
@@ -721,10 +757,39 @@ function toggleTheme() {
     light = false;
     themeLCreate.style.opacity = 0;
     themeDCreate.style.opacity = 1;
+    body.classList.add("dark-theme");
+    headerCreate.classList.add("dark-theme");
+    titleCreate.classList.add("dark-theme");
+    soundOffCreateImg.src = "./img/assets/sound_off_dark.png";
+    soundOnCreateImg.src = "./img/assets/sound_on_dark.png";
+    document.querySelector(".title").classList.add("dark-theme");
+    document.querySelector(".puzzles-list")?.classList?.add("dark-theme");
+    timerCreate.classList.add("dark-theme");
+    document.querySelectorAll(".button").forEach((button) => {
+      button.classList.add("dark-theme");
+    });
+    document.querySelectorAll(".clue").forEach((clue) => {
+      clue.classList?.remove("dark-theme");
+      clue.classList.add("dark-theme");
+    });
   } else {
     light = true;
     themeLCreate.style.opacity = 1;
     themeDCreate.style.opacity = 0;
+    body.classList?.remove("dark-theme");
+    headerCreate.classList?.remove("dark-theme");
+    titleCreate.classList?.remove("dark-theme");
+    soundOffCreateImg.src = "./img/assets/sound_off_light.png";
+    soundOnCreateImg.src = "./img/assets/sound_on_light.png";
+    document.querySelector(".title").classList?.remove("dark-theme");
+    document.querySelector(".puzzles-list")?.classList?.remove("dark-theme");
+    timerCreate.classList?.remove("dark-theme");
+    document.querySelectorAll(".button").forEach((button) => {
+      button.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".clue").forEach((clue) => {
+      clue.classList?.remove("dark-theme");
+    });
   }
 }
 
