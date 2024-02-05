@@ -287,6 +287,7 @@ levels.forEach((level) => {
   level.addEventListener("click", switchLevel);
 });
 function switchLevel(e) {
+  isGameOver = true;
   const currentLevel = e.target.closest(".level-item");
   let draft;
   levels.forEach((level) => {
