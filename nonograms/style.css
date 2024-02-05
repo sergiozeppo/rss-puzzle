@@ -357,3 +357,28 @@ th {
 .buttons-bottom {
   margin-bottom: 2rem;
 }
+@media (width <= 700px) {
+  h1 {
+    font-size: 3rem;
+  }
+  .switch {
+    gap: 1rem;
+  }
+  .sound img {
+    width: 3rem;
+    height: 3rem;
+  }
+  .theme img {
+    width: 3rem;
+    height: 3rem;
+  }
+  .button {
+    font-size: 1.5rem;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .timer {
+    font-size: 2rem;
+  }
+}
