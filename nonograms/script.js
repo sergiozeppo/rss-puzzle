@@ -61,7 +61,11 @@ const resetCreate = document.createElement("button");
 const solutionCreate = document.createElement("button");
 const randomCreate = document.createElement("button");
 const saveCreate = document.createElement("button");
+saveCreate.disabled = true;
+saveCreate.addEventListener("click", saveToLocalStorage);
 const contCreate = document.createElement("button");
+contCreate.disabled = true;
+contCreate.addEventListener("click", loadFromLocalStorage);
 
 // Adding classes to MODAL section
 modalCreate.classList.add("modal");
@@ -181,6 +185,7 @@ function fillCell(e) {
     if (!isTimer) {
       isTimer = true;
       startTimer();
+      saveCreate.disabled = false;
     }
     if (this.classList.contains("filled")) {
       this.classList?.remove("filled");
@@ -226,6 +231,11 @@ function fillCell(e) {
 
 function fillCross(e) {
   if (!isGameOver) {
+    if (!isTimer) {
+      isTimer = true;
+      startTimer();
+      saveCreate.disabled = false;
+    }
     if (this.classList.contains("filled")) {
       this.classList.remove("filled");
       prevType = "filled";
@@ -499,6 +509,12 @@ function fillDraft(e) {
   chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
     : matrix[0][0];
+  const game = document.querySelector(".game");
+  game.classList.add(
+    `game_${currentLevel?.dataset?.level ?? 0}_${
+      currentLevel?.dataset?.puzzle ?? 0
+    }`
+  );
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
   guessCross = secretCross;
@@ -677,6 +693,7 @@ function showSolution() {
   clearCells();
   stopTimer();
   isGameOver = true;
+  saveCreate.disabled = false;
   for (let i = 0; i < chosenPuzzle.length; i++) {
     for (let j = 0; j < chosenPuzzle.length; j++) {
       if (chosenPuzzle[i][j] === 1) {
@@ -696,7 +713,7 @@ function resetGame() {
   resetTimer();
 }
 
-function randomGame() {
+function preparetoRandOrLoad() {
   clearClues();
   clearCells();
   stopTimer();
@@ -706,9 +723,25 @@ function randomGame() {
   guessFill = 0;
   guessCross = 0;
   isGameOver = false;
+  saveCreate.disabled = true;
   solutionCreate.disabled = false;
   if (document.querySelector(".title"))
     gameCreate.removeChild(document.querySelector(".title"));
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
+  console.log(chosenPuzzle);
+  const titleGameCreate = document.createElement("p");
+  if (light) {
+    titleGameCreate.classList.add("title");
+  } else {
+    titleGameCreate.classList.add("title", "dark-theme");
+  }
+  gameCreate.prepend(titleGameCreate);
+}
+
+function randomGame() {
+  preparetoRandOrLoad();
   let a = ~~(Math.random() * 3);
   const b = ~~(Math.random() * matrix[a].length);
   chosenPuzzle = matrix[a][b];
@@ -717,12 +750,7 @@ function randomGame() {
   guessCross = secretCross;
   modalImg.src = `./img/puzzles/${a}_${b}.png`;
   console.log(chosenPuzzle);
-  const titleGameCreate = document.createElement("p");
-  if (light) {
-    titleGameCreate.classList.add("title");
-  } else {
-    titleGameCreate.classList.add("title", "dark-theme");
-  }
+  const titleGameCreate = document.querySelector(".title");
   titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${matrixNames[a][b]}</b>`;
   gameCreate.prepend(titleGameCreate);
   let draft;
@@ -818,6 +846,83 @@ function resetTimer() {
   document.querySelector(".timer").textContent = "00:00";
   seconds = 0;
 }
+
+function saveToLocalStorage() {
+  if (!isGameOver) {
+    if (isTimer) {
+      const fills = [];
+      const crosses = [];
+      saveCreate.disabled = false;
+      const titleGameCreate = document
+        .querySelector(".title")
+        .innerText.slice(34);
+      localStorage.setItem("timer", timerCreate.textContent);
+      localStorage.setItem("chosenPuzzle", JSON.stringify(chosenPuzzle));
+      localStorage.setItem("name", titleGameCreate);
+      document.querySelectorAll(".cell").forEach((cell) => {
+        if (cell.classList.contains("filled")) {
+          fills.push(cell.classList.value.slice(8, -7).split("_"));
+        } else if (cell.classList.contains("crossed")) {
+          crosses.push(cell.classList.value.slice(8, -8).split("_"));
+        }
+      });
+      localStorage.setItem("fills", JSON.stringify(fills));
+      localStorage.setItem("crosses", JSON.stringify(crosses));
+      const game = document.querySelector(".game");
+      const a = game.classList.value.slice(10).split("_");
+      localStorage.setItem("a", JSON.stringify(a));
+      localStorage.setItem("seconds", seconds);
+    }
+  }
+}
+
+function toggleSave() {
+  if (saveCreate.disabled) contCreate.disabled = true;
+  if (localStorage.getItem("chosenPuzzle")) contCreate.disabled = false;
+}
+
+function loadFromLocalStorage() {
+  preparetoRandOrLoad();
+  timerCreate.textContent = localStorage.getItem("timer");
+  seconds = Number(localStorage.getItem("seconds"));
+  chosenPuzzle = JSON.parse(localStorage.chosenPuzzle);
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
+  const ab = JSON.parse(localStorage.a);
+  let a = Number(ab[0]);
+  let b = Number(ab[1]);
+  modalImg.src = `./img/puzzles/${a}_${b}.png`;
+  let draft;
+  a === 0 ? (a = "easy") : a === 1 ? (a = "normal") : (a = "hard");
+  levels.forEach((level) => {
+    if (level.dataset.level === a) {
+      level.classList.add("level-item-active");
+      draft = level.dataset.level;
+      loadPuzzles(draft);
+    } else if (level.classList.contains("level-item-active")) {
+      level.classList.remove("level-item-active");
+    }
+  });
+  loadDraft(draft);
+  fill(chosenPuzzle);
+  const fills = JSON.parse(localStorage.fills);
+  const crosses = JSON.parse(localStorage.crosses);
+  const cells = document.querySelectorAll(".cell");
+  cells.forEach((cell) => {
+    fills.forEach((f) => {
+      if (cell.classList.contains(`td_${f.join("_")}`)) {
+        cell.classList.add("filled");
+      }
+    });
+    crosses.forEach((x) => {
+      if (cell.classList.contains(`td_${x.join("_")}`)) {
+        cell.classList.add("crossed");
+      }
+    });
+  });
+}
+
 const closeModal = function () {
   modal.classList.remove("visible");
   body.classList.remove("no-scroll");
@@ -840,3 +945,4 @@ modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
+window.addEventListener("click", toggleSave);

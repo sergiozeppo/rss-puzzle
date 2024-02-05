@@ -354,6 +354,10 @@ tr:nth-child(5n + 1) {
   font-weight: 700;
   border: none;
 }
+button[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
 .button.dark-theme {
   background: #e1d4c9;
   color: #403f3d;
