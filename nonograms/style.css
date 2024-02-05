@@ -42,7 +42,7 @@ header {
   background-color: brown;
 }
 
-.header-menu.dark {
+.header-menu.dark-theme {
   background-color: #403f3d;
 }
 
@@ -93,6 +93,47 @@ header {
   height: 40px;
 }
 .sound_on img:hover {
+  cursor: pointer;
+}
+
+.theme {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dark {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+.dark img {
+  width: 40px;
+  height: 40px;
+}
+.dark img:hover {
+  cursor: pointer;
+}
+.light {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.light img {
+  width: 40px;
+  height: 40px;
+}
+.light img:hover {
   cursor: pointer;
 }
 
@@ -287,7 +328,7 @@ th {
   font-weight: 700;
   border: none;
 }
-.button.dark {
+.button.dark-theme {
   background: #e1d4c9;
   color: #403f3d;
 }
@@ -305,7 +346,7 @@ th {
   background: #403f3d;
   color: #e1d4c9;
 }
-.level-item-active.dark {
+.level-item-active.dark-theme {
   background: #721d1d;
   color: #e1d4c9;
 }

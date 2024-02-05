@@ -13,11 +13,6 @@ switchCreate.classList.add("switch");
 const soundCreate = document.createElement("div");
 soundCreate.classList.add("sound");
 const soundOnCreate = document.createElement("button");
-const tadaCreate = document.createElement("audio");
-const crossCreate = document.createElement("audio");
-const fillCreate = document.createElement("audio");
-const emptyCreate = document.createElement("audio");
-
 const soundOnCreateImg = document.createElement("img");
 soundOnCreate.style.opacity = 1;
 soundOnCreate.classList.add("sound_on");
@@ -30,12 +25,19 @@ soundOffCreate.classList.add("sound_off");
 soundOffCreateImg.src = "./img/assets/sound_off_light.png";
 soundOffCreateImg.alt = "";
 const themeCreate = document.createElement("div");
+themeCreate.classList.add("theme");
 const themeLCreate = document.createElement("button");
 const themeLCreateImg = document.createElement("img");
-
+themeLCreate.style.opacity = 1;
+themeLCreate.classList.add("light");
+themeLCreateImg.src = "./img/assets/theme_light.png";
+themeLCreateImg.alt = "";
 const themeDCreate = document.createElement("button");
 const themeDCreateImg = document.createElement("img");
-
+themeDCreate.style.opacity = 0;
+themeDCreate.classList.add("dark");
+themeDCreateImg.src = "./img/assets/theme_dark.png";
+themeDCreateImg.alt = "";
 const mainCreate = document.createElement("main");
 const containerCreate = document.createElement("div");
 containerCreate.classList.add("container");
@@ -83,6 +85,11 @@ soundCreate.appendChild(soundOnCreate);
 soundOnCreate.appendChild(soundOnCreateImg);
 soundCreate.appendChild(soundOffCreate);
 soundOffCreate.appendChild(soundOffCreateImg);
+switchCreate.appendChild(themeCreate);
+themeCreate.appendChild(themeLCreate);
+themeCreate.appendChild(themeDCreate);
+themeLCreate.appendChild(themeLCreateImg);
+themeDCreate.appendChild(themeDCreateImg);
 
 // Generating buttons
 easyCreate.classList.add("button", "level-item", "level-item-active");
@@ -147,6 +154,7 @@ let guessFill = 0;
 let guessCross = 0;
 let isGameOver = false;
 let sound = true;
+let light = true;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -685,6 +693,17 @@ function toggleSound(e) {
   }
 }
 
+function toggleTheme() {
+  if (light === true) {
+    light = false;
+    themeLCreate.style.opacity = 0;
+    themeDCreate.style.opacity = 1;
+  } else {
+    light = true;
+    themeLCreate.style.opacity = 1;
+    themeDCreate.style.opacity = 0;
+  }
+}
 const closeModal = function () {
   modal.classList.remove("visible");
   body.classList.remove("no-scroll");
@@ -706,3 +725,4 @@ clearCells();
 modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
+themeCreate.addEventListener("click", toggleTheme);
