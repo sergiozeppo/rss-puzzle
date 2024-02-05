@@ -455,6 +455,7 @@ function fillDraft(e) {
   secretCross = 0;
   guessFill = 0;
   guessCross = 0;
+  solutionCreate.disabled = false;
   if (document.querySelector(".title"))
     gameCreate.removeChild(document.querySelector(".title"));
   const currentLevel = e ? e.target.closest("li") : 0;
@@ -603,8 +604,11 @@ function checkWin() {
 
 function gameOver() {
   isGameOver = true;
+  solutionCreate.disabled = true;
   body.classList.add("no-scroll");
   body.classList.remove("adapt-scroll");
+  const fill = body.querySelector("audio");
+  if (fill) body.removeChild(fill);
   if (sound === true) {
     const tada = modal.querySelector("audio");
     if (tada) modal.removeChild(tada);
@@ -616,6 +620,9 @@ function gameOver() {
       modal.classList.add("visible");
       modalGreet.innerText = `"Great! You have solved the nonogram!"`;
     }, 1000);
+    setTimeout(() => {
+      modal.removeChild(newTada);
+    }, 2500);
   } else {
     setTimeout(() => {
       modal.classList.add("visible");
@@ -652,6 +659,7 @@ function randomGame() {
   guessFill = 0;
   guessCross = 0;
   isGameOver = false;
+  solutionCreate.disabled = false;
   if (document.querySelector(".title"))
     gameCreate.removeChild(document.querySelector(".title"));
   let a = ~~(Math.random() * 3);
