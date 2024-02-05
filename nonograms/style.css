@@ -202,10 +202,12 @@ tr:nth-child(5n + 1) {
   }
 }
 
-.clue {
+.clue,
+.highscore-clue {
   background-color: brown;
 }
-.clue.dark-theme {
+.clue.dark-theme,
+.highscore-clue.dark-theme {
   background-color: #721d1d;
 }
 
@@ -292,7 +294,8 @@ tr:nth-child(5n + 1) {
 .timer.dark-theme {
   color: #e1d4c9;
 }
-.modal {
+.modal,
+.highscore {
   position: fixed;
   display: none;
   align-items: center;
@@ -305,7 +308,8 @@ tr:nth-child(5n + 1) {
   height: 100%;
   z-index: 3;
 }
-.modal.visible {
+.modal.visible,
+.highscore.visible {
   display: flex;
 }
 .close-modal {
@@ -318,7 +322,11 @@ tr:nth-child(5n + 1) {
   border: none;
   background: none;
 }
-.modal .result {
+.close-modal.dark-theme {
+  color: #e1d4c9;
+}
+.modal .result,
+.highscore .result {
   background-color: #fff;
   max-width: 42rem;
   width: 100%;
@@ -327,22 +335,30 @@ tr:nth-child(5n + 1) {
   text-align: center;
   position: relative;
 }
+.modal .result.dark-theme,
+.highscore .result.dark-theme {
+  background-color: #721d1d;
+}
 .modal img {
   max-width: 30rem;
-  margin-bottom: 5rem;
-}
-.modal h3 {
-  font-size: 2rem;
+  margin-bottom: 3rem;
 }
 .modal p {
   font-size: 1.5rem;
   margin: 2rem 0 4rem;
   font-weight: 500;
 }
-.modal p b {
-  color: #1f558b;
-  font-weight: 900;
+.greeting {
+  font-size: 2rem;
+  color: #000;
+  margin-bottom: 3rem;
 }
+
+.greeting.dark-theme {
+  font-size: 2rem;
+  color: #e1d4c9;
+}
+
 .button {
   padding: 1rem 2rem;
   color: #fff;
@@ -354,14 +370,20 @@ tr:nth-child(5n + 1) {
   font-weight: 700;
   border: none;
 }
+
+.button:hover {
+  cursor: pointer;
+}
+
+button[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
 .button.dark-theme {
   background: #e1d4c9;
   color: #403f3d;
 }
-.modal .retry:hover {
-  background-color: #4d79a5;
-  cursor: pointer;
-}
+
 .no-scroll {
   overflow: hidden;
 }

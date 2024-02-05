@@ -34,6 +34,20 @@ themeDCreate.style.opacity = 0;
 themeDCreate.classList.add("dark");
 themeDCreateImg.src = "./img/assets/theme_dark.png";
 themeDCreateImg.alt = "";
+const hsCreate = document.createElement("div");
+hsCreate.classList.add("theme");
+const hsLCreate = document.createElement("button");
+const hsLCreateImg = document.createElement("img");
+hsLCreate.style.opacity = 1;
+hsLCreate.classList.add("light");
+hsLCreateImg.src = "./img/assets/hs_light.png";
+hsLCreateImg.alt = "";
+const hsDCreate = document.createElement("button");
+const hsDCreateImg = document.createElement("img");
+hsDCreate.style.opacity = 0;
+hsDCreate.classList.add("dark");
+hsDCreateImg.src = "./img/assets/hs_dark.png";
+hsDCreateImg.alt = "";
 const mainCreate = document.createElement("main");
 const containerCreate = document.createElement("div");
 containerCreate.classList.add("container");
@@ -61,15 +75,43 @@ const resetCreate = document.createElement("button");
 const solutionCreate = document.createElement("button");
 const randomCreate = document.createElement("button");
 const saveCreate = document.createElement("button");
+saveCreate.disabled = true;
+saveCreate.addEventListener("click", saveToLocalStorage);
 const contCreate = document.createElement("button");
+contCreate.disabled = true;
+contCreate.addEventListener("click", loadFromLocalStorage);
+const OKCreate = document.createElement("button");
+
+const highScoreCreate = document.createElement("div");
+const closeHSCreate = document.createElement("button");
+const contHSCreate = document.createElement("div");
+const greetHSCreate = document.createElement("h3");
+const tableHSCreate = document.createElement("table");
+const tbodyHSCreate = document.createElement("tbody");
+
+// Generating highscore
+highScoreCreate.classList.add("highscore");
+contHSCreate.classList.add("result");
+greetHSCreate.classList.add("greeting");
+closeHSCreate.classList.add("close-modal");
+closeHSCreate.innerHTML = "&times;";
+tableHSCreate.classList.add("highscore-table");
+
+body.appendChild(highScoreCreate);
+highScoreCreate.appendChild(contHSCreate);
+contHSCreate.appendChild(closeHSCreate);
+contHSCreate.appendChild(greetHSCreate);
+contHSCreate.appendChild(tableHSCreate);
+tableHSCreate.appendChild(tbodyHSCreate);
 
 // Adding classes to MODAL section
 modalCreate.classList.add("modal");
 resultCreate.classList.add("result");
-greetCreate.classList.add("hint-part");
-textCreate.innerHTML = "<p><b></b></p>";
+greetCreate.classList.add("greeting");
 closeMCreate.classList.add("close-modal");
 closeMCreate.innerHTML = "&times;";
+OKCreate.classList.add("button");
+OKCreate.textContent = "OK";
 
 // Generating Header
 headerCreate.classList.add("header-menu");
@@ -89,6 +131,11 @@ themeCreate.appendChild(themeLCreate);
 themeCreate.appendChild(themeDCreate);
 themeLCreate.appendChild(themeLCreateImg);
 themeDCreate.appendChild(themeDCreateImg);
+switchCreate.appendChild(hsCreate);
+hsCreate.appendChild(hsLCreate);
+hsCreate.appendChild(hsDCreate);
+hsLCreate.appendChild(hsLCreateImg);
+hsDCreate.appendChild(hsDCreateImg);
 
 // Generating buttons
 easyCreate.classList.add("button", "level-item", "level-item-active");
@@ -120,7 +167,7 @@ modalCreate.appendChild(resultCreate);
 resultCreate.appendChild(closeMCreate);
 resultCreate.appendChild(puzzleCreate);
 resultCreate.appendChild(greetCreate);
-resultCreate.appendChild(textCreate);
+resultCreate.appendChild(OKCreate);
 
 // Generating
 body.appendChild(mainCreate);
@@ -158,6 +205,7 @@ let light = true;
 let isTimer = false;
 let seconds = 0;
 let interval;
+const highScore = [];
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -181,6 +229,7 @@ function fillCell(e) {
     if (!isTimer) {
       isTimer = true;
       startTimer();
+      saveCreate.disabled = false;
     }
     if (this.classList.contains("filled")) {
       this.classList?.remove("filled");
@@ -221,11 +270,17 @@ function fillCell(e) {
       }
     }
     checkFill(e);
+    toggleSave();
   }
 }
 
 function fillCross(e) {
   if (!isGameOver) {
+    if (!isTimer) {
+      isTimer = true;
+      startTimer();
+      saveCreate.disabled = false;
+    }
     if (this.classList.contains("filled")) {
       this.classList.remove("filled");
       prevType = "filled";
@@ -265,6 +320,7 @@ function fillCross(e) {
       }
     }
     checkCross(e);
+    toggleSave();
   }
 }
 
@@ -273,6 +329,7 @@ levels.forEach((level) => {
   level.addEventListener("click", switchLevel);
 });
 function switchLevel(e) {
+  isGameOver = true;
   const currentLevel = e.target.closest(".level-item");
   let draft;
   levels.forEach((level) => {
@@ -499,6 +556,12 @@ function fillDraft(e) {
   chosenPuzzle = e
     ? matrix[currentLevel.dataset.level][currentLevel.dataset.puzzle]
     : matrix[0][0];
+  const game = document.querySelector(".game");
+  game.classList.add(
+    `game_${currentLevel?.dataset?.level ?? 0}_${
+      currentLevel?.dataset?.puzzle ?? 0
+    }`
+  );
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
   guessCross = secretCross;
@@ -659,6 +722,15 @@ function gameOver() {
     newTada.innerHTML = `<source src="./audio/tada.mp3" type="audio/mpeg">`;
     modal.appendChild(newTada);
     setTimeout(() => {
+      if (!light) {
+        resultCreate.classList.add("dark-theme");
+        greetCreate.classList.add("dark-theme");
+        closeButton.classList.add("dark-theme");
+      } else {
+        resultCreate.classList?.remove("dark-theme");
+        greetCreate.classList?.remove("dark-theme");
+        closeButton.classList?.remove("dark-theme");
+      }
       modal.classList.add("visible");
       modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 1000);
@@ -667,9 +739,92 @@ function gameOver() {
     }, 2500);
   } else {
     setTimeout(() => {
+      if (!light) {
+        resultCreate.classList.add("dark-theme");
+        greetCreate.classList.add("dark-theme");
+        closeButton.classList.add("dark-theme");
+      } else {
+        resultCreate.classList?.remove("dark-theme");
+        greetCreate.classList?.remove("dark-theme");
+        closeButton.classList?.remove("dark-theme");
+      }
       modal.classList.add("visible");
       modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 250);
+  }
+  const titleGameCreate = document.querySelector(".title").innerText.slice(34);
+  const difficulty = document.querySelector(".level-item-active").innerText;
+  const winResult = [
+    titleGameCreate,
+    difficulty,
+    timerCreate.textContent,
+    seconds,
+  ];
+  localStorage.winResult = JSON.stringify(winResult);
+  highScoreTable();
+}
+
+function highScoreTable() {
+  if (localStorage.winResult) {
+    let flag = true;
+    const highScore = [];
+    if (!isHighscoreFill) {
+      let winResult = JSON.parse(localStorage.winResult);
+      if (localStorage.highScore) {
+        highScore = JSON.parse(localStorage.highScore);
+      } else {
+        highScore = [];
+      }
+      if (highScore.length > 4) {
+        highScore.shift();
+        highScore.push(winResult);
+      } else {
+        highScore.push(winResult);
+      }
+    } else {
+      if (localStorage.highScore) {
+        highScore = JSON.parse(localStorage.highScore);
+      } else {
+        flag = false;
+      }
+    }
+    isHighscoreFill = false;
+    if (flag) {
+      localStorage.highScore = JSON.stringify(highScore);
+      let sort = JSON.parse(JSON.stringify(highScore)).sort(function (a, b) {
+        return +a[2].split(":").join("") - +b[2].split(":").join("");
+      });
+
+      for (let i = 0; i < sort.length; i += 1) {
+        document.querySelectorAll(".name-item")[i + 1].innerHTML = sort[i][0];
+        document.querySelectorAll(".level-item")[
+          i + 1
+        ].innerHTML = `${sort[i][1]} x ${sort[i][1]}`;
+        document.querySelectorAll(".time-item")[i + 1].innerHTML = sort[i][2];
+      }
+    }
+  }
+}
+
+function highScoreTableGen() {
+  body.classList.add("no-scroll");
+  body.classList.remove("adapt-scroll");
+  highScoreCreate.classList.add("visible");
+  modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
+  if (!document.querySelector(".highscore-clue")) {
+    for (let i = 0; i < 6; i++) {
+      const tr = parent.document.createElement("tr");
+      for (let j = 0; j < 6; j++) {
+        const th = parent.document.createElement("th");
+        if (light) {
+          th.classList.add("highscore-clue");
+        } else {
+          th.classList.add("highscore-clue", "dark-theme");
+        }
+        tr.appendChild(th);
+      }
+      tbodyHSCreate.appendChild(tr);
+    }
   }
 }
 
@@ -677,6 +832,7 @@ function showSolution() {
   clearCells();
   stopTimer();
   isGameOver = true;
+  saveCreate.disabled = false;
   for (let i = 0; i < chosenPuzzle.length; i++) {
     for (let j = 0; j < chosenPuzzle.length; j++) {
       if (chosenPuzzle[i][j] === 1) {
@@ -696,7 +852,7 @@ function resetGame() {
   resetTimer();
 }
 
-function randomGame() {
+function preparetoRandOrLoad() {
   clearClues();
   clearCells();
   stopTimer();
@@ -706,9 +862,25 @@ function randomGame() {
   guessFill = 0;
   guessCross = 0;
   isGameOver = false;
+  saveCreate.disabled = true;
   solutionCreate.disabled = false;
   if (document.querySelector(".title"))
     gameCreate.removeChild(document.querySelector(".title"));
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
+  console.log(chosenPuzzle);
+  const titleGameCreate = document.createElement("p");
+  if (light) {
+    titleGameCreate.classList.add("title");
+  } else {
+    titleGameCreate.classList.add("title", "dark-theme");
+  }
+  gameCreate.prepend(titleGameCreate);
+}
+
+function randomGame() {
+  preparetoRandOrLoad();
   let a = ~~(Math.random() * 3);
   const b = ~~(Math.random() * matrix[a].length);
   chosenPuzzle = matrix[a][b];
@@ -717,12 +889,7 @@ function randomGame() {
   guessCross = secretCross;
   modalImg.src = `./img/puzzles/${a}_${b}.png`;
   console.log(chosenPuzzle);
-  const titleGameCreate = document.createElement("p");
-  if (light) {
-    titleGameCreate.classList.add("title");
-  } else {
-    titleGameCreate.classList.add("title", "dark-theme");
-  }
+  const titleGameCreate = document.querySelector(".title");
   titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${matrixNames[a][b]}</b>`;
   gameCreate.prepend(titleGameCreate);
   let draft;
@@ -757,6 +924,8 @@ function toggleTheme() {
     light = false;
     themeLCreate.style.opacity = 0;
     themeDCreate.style.opacity = 1;
+    hsLCreate.style.opacity = 0;
+    hsDCreate.style.opacity = 1;
     body.classList.add("dark-theme");
     headerCreate.classList.add("dark-theme");
     titleCreate.classList.add("dark-theme");
@@ -776,6 +945,8 @@ function toggleTheme() {
     light = true;
     themeLCreate.style.opacity = 1;
     themeDCreate.style.opacity = 0;
+    hsLCreate.style.opacity = 1;
+    hsDCreate.style.opacity = 0;
     body.classList?.remove("dark-theme");
     headerCreate.classList?.remove("dark-theme");
     titleCreate.classList?.remove("dark-theme");
@@ -818,6 +989,83 @@ function resetTimer() {
   document.querySelector(".timer").textContent = "00:00";
   seconds = 0;
 }
+
+function saveToLocalStorage() {
+  if (!isGameOver) {
+    if (isTimer) {
+      const fills = [];
+      const crosses = [];
+      saveCreate.disabled = false;
+      const titleGameCreate = document
+        .querySelector(".title")
+        .innerText.slice(34);
+      localStorage.setItem("timer", timerCreate.textContent);
+      localStorage.setItem("chosenPuzzle", JSON.stringify(chosenPuzzle));
+      localStorage.setItem("name", titleGameCreate);
+      document.querySelectorAll(".cell").forEach((cell) => {
+        if (cell.classList.contains("filled")) {
+          fills.push(cell.classList.value.slice(8, -7).split("_"));
+        } else if (cell.classList.contains("crossed")) {
+          crosses.push(cell.classList.value.slice(8, -8).split("_"));
+        }
+      });
+      localStorage.setItem("fills", JSON.stringify(fills));
+      localStorage.setItem("crosses", JSON.stringify(crosses));
+      const game = document.querySelector(".game");
+      const a = game.classList.value.slice(10).split("_");
+      localStorage.setItem("a", JSON.stringify(a));
+      localStorage.setItem("seconds", seconds);
+    }
+  }
+}
+
+function toggleSave() {
+  if (saveCreate.disabled) contCreate.disabled = true;
+  if (localStorage.getItem("chosenPuzzle")) contCreate.disabled = false;
+}
+
+function loadFromLocalStorage() {
+  preparetoRandOrLoad();
+  timerCreate.textContent = localStorage.getItem("timer");
+  seconds = Number(localStorage.getItem("seconds"));
+  chosenPuzzle = JSON.parse(localStorage.chosenPuzzle);
+  secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
+  secretCross = chosenPuzzle.length ** 2 - secretFill;
+  guessCross = secretCross;
+  const ab = JSON.parse(localStorage.a);
+  let a = Number(ab[0]);
+  let b = Number(ab[1]);
+  modalImg.src = `./img/puzzles/${a}_${b}.png`;
+  let draft;
+  a === 0 ? (a = "easy") : a === 1 ? (a = "normal") : (a = "hard");
+  levels.forEach((level) => {
+    if (level.dataset.level === a) {
+      level.classList.add("level-item-active");
+      draft = level.dataset.level;
+      loadPuzzles(draft);
+    } else if (level.classList.contains("level-item-active")) {
+      level.classList.remove("level-item-active");
+    }
+  });
+  loadDraft(draft);
+  fill(chosenPuzzle);
+  const fills = JSON.parse(localStorage.fills);
+  const crosses = JSON.parse(localStorage.crosses);
+  const cells = document.querySelectorAll(".cell");
+  cells.forEach((cell) => {
+    fills.forEach((f) => {
+      if (cell.classList.contains(`td_${f.join("_")}`)) {
+        cell.classList.add("filled");
+      }
+    });
+    crosses.forEach((x) => {
+      if (cell.classList.contains(`td_${x.join("_")}`)) {
+        cell.classList.add("crossed");
+      }
+    });
+  });
+}
+
 const closeModal = function () {
   modal.classList.remove("visible");
   body.classList.remove("no-scroll");
@@ -838,5 +1086,7 @@ disableRMB();
 clearCells();
 modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
+OKCreate.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
+hsCreate.addEventListener("click", highScoreTableGen);
