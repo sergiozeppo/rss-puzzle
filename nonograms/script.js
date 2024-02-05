@@ -1,10 +1,6 @@
 import matrix from "./matrix.js";
 import matrixNames from "./matrixNames.js";
 
-// stop() {
-//   clearInterval(this.timer);
-// }
-
 const body = document.querySelector("body");
 const headerCreate = document.createElement("header");
 const titleCreate = document.createElement("h1");
@@ -49,6 +45,9 @@ const buttonsBottomCreate = document.createElement("div");
 buttonsBottomCreate.classList.add("buttons-bottom");
 const gameCreate = document.createElement("div");
 gameCreate.classList.add("game-container");
+const timerCreate = document.createElement("p");
+timerCreate.classList.add("timer");
+timerCreate.textContent = "00:00";
 const easyCreate = document.createElement("button");
 const normalCreate = document.createElement("button");
 const hardCreate = document.createElement("button");
@@ -77,7 +76,7 @@ headerCreate.classList.add("header-menu");
 headerCreate.appendChild(titleCreate);
 titleCreate.innerText = "Nonograms";
 
-//
+// Generating header buttons
 body.appendChild(headerCreate);
 headerCreate.appendChild(switchCreate);
 switchCreate.appendChild(soundCreate);
@@ -133,6 +132,7 @@ levelsCreate.appendChild(normalCreate);
 levelsCreate.appendChild(hardCreate);
 levelsCreate.appendChild(randomCreate);
 containerCreate.appendChild(gameCreate);
+gameCreate.appendChild(timerCreate);
 containerCreate.appendChild(buttonsBottomCreate);
 buttonsBottomCreate.appendChild(resetCreate);
 buttonsBottomCreate.appendChild(solutionCreate);
@@ -155,6 +155,9 @@ let guessCross = 0;
 let isGameOver = false;
 let sound = true;
 let light = true;
+let isTimer = false;
+let seconds = 0;
+let interval;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -175,6 +178,10 @@ function clearClues() {
 
 function fillCell(e) {
   if (!isGameOver) {
+    if (!isTimer) {
+      isTimer = true;
+      startTimer();
+    }
     if (this.classList.contains("filled")) {
       this.classList?.remove("filled");
       prevType = "filled";
@@ -451,6 +458,8 @@ function loadPuzzles(draft) {
 function fillDraft(e) {
   clearClues();
   clearCells();
+  stopTimer();
+  resetTimer();
   secretFill = 0;
   secretCross = 0;
   guessFill = 0;
@@ -604,6 +613,7 @@ function checkWin() {
 
 function gameOver() {
   isGameOver = true;
+  stopTimer();
   solutionCreate.disabled = true;
   body.classList.add("no-scroll");
   body.classList.remove("adapt-scroll");
@@ -618,7 +628,7 @@ function gameOver() {
     modal.appendChild(newTada);
     setTimeout(() => {
       modal.classList.add("visible");
-      modalGreet.innerText = `"Great! You have solved the nonogram!"`;
+      modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 1000);
     setTimeout(() => {
       modal.removeChild(newTada);
@@ -626,13 +636,14 @@ function gameOver() {
   } else {
     setTimeout(() => {
       modal.classList.add("visible");
-      modalGreet.innerText = `"Great! You have solved the nonogram!"`;
+      modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 250);
   }
 }
 
 function showSolution() {
   clearCells();
+  stopTimer();
   isGameOver = true;
   for (let i = 0; i < chosenPuzzle.length; i++) {
     for (let j = 0; j < chosenPuzzle.length; j++) {
@@ -649,11 +660,15 @@ function resetGame() {
   guessCross = secretCross;
   guessFill = 0;
   isGameOver = false;
+  stopTimer();
+  resetTimer();
 }
 
 function randomGame() {
   clearClues();
   clearCells();
+  stopTimer();
+  resetTimer();
   secretFill = 0;
   secretCross = 0;
   guessFill = 0;
@@ -711,6 +726,32 @@ function toggleTheme() {
     themeLCreate.style.opacity = 1;
     themeDCreate.style.opacity = 0;
   }
+}
+
+function startTimer() {
+  if (isTimer) {
+    interval = setInterval(updateTimer, 1000);
+  }
+}
+
+function updateTimer() {
+  seconds++;
+  const minutes = Math.floor(seconds / 60);
+  const minusSeconds = seconds % 60;
+  const time = `${String(minutes).padStart(2, "0")}:${String(
+    minusSeconds
+  ).padStart(2, "0")}`;
+  document.querySelector(".timer").textContent = time;
+}
+
+function stopTimer() {
+  isTimer = false;
+  interval = clearInterval(interval);
+}
+
+function resetTimer() {
+  document.querySelector(".timer").textContent = "00:00";
+  seconds = 0;
 }
 const closeModal = function () {
   modal.classList.remove("visible");
