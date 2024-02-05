@@ -318,6 +318,9 @@ tr:nth-child(5n + 1) {
   border: none;
   background: none;
 }
+.close-modal.dark-theme {
+  color: #e1d4c9;
+}
 .modal .result {
   background-color: #fff;
   max-width: 42rem;
@@ -327,22 +330,29 @@ tr:nth-child(5n + 1) {
   text-align: center;
   position: relative;
 }
+.modal .result.dark-theme {
+  background-color: #721d1d;
+}
 .modal img {
   max-width: 30rem;
-  margin-bottom: 5rem;
-}
-.modal h3 {
-  font-size: 2rem;
+  margin-bottom: 3rem;
 }
 .modal p {
   font-size: 1.5rem;
   margin: 2rem 0 4rem;
   font-weight: 500;
 }
-.modal p b {
-  color: #1f558b;
-  font-weight: 900;
+.greeting {
+  font-size: 2rem;
+  color: #000;
+  margin-bottom: 3rem;
 }
+
+.greeting.dark-theme {
+  font-size: 2rem;
+  color: #e1d4c9;
+}
+
 .button {
   padding: 1rem 2rem;
   color: #fff;
@@ -354,6 +364,11 @@ tr:nth-child(5n + 1) {
   font-weight: 700;
   border: none;
 }
+
+.button:hover {
+  cursor: pointer;
+}
+
 button[disabled] {
   pointer-events: none;
   opacity: 0.5;

@@ -66,14 +66,16 @@ saveCreate.addEventListener("click", saveToLocalStorage);
 const contCreate = document.createElement("button");
 contCreate.disabled = true;
 contCreate.addEventListener("click", loadFromLocalStorage);
+const OKCreate = document.createElement("button");
 
 // Adding classes to MODAL section
 modalCreate.classList.add("modal");
 resultCreate.classList.add("result");
-greetCreate.classList.add("hint-part");
-textCreate.innerHTML = "<p><b></b></p>";
+greetCreate.classList.add("greeting");
 closeMCreate.classList.add("close-modal");
 closeMCreate.innerHTML = "&times;";
+OKCreate.classList.add("button");
+OKCreate.textContent = "OK";
 
 // Generating Header
 headerCreate.classList.add("header-menu");
@@ -124,7 +126,7 @@ modalCreate.appendChild(resultCreate);
 resultCreate.appendChild(closeMCreate);
 resultCreate.appendChild(puzzleCreate);
 resultCreate.appendChild(greetCreate);
-resultCreate.appendChild(textCreate);
+resultCreate.appendChild(OKCreate);
 
 // Generating
 body.appendChild(mainCreate);
@@ -677,6 +679,15 @@ function gameOver() {
     newTada.innerHTML = `<source src="./audio/tada.mp3" type="audio/mpeg">`;
     modal.appendChild(newTada);
     setTimeout(() => {
+      if (!light) {
+        resultCreate.classList.add("dark-theme");
+        greetCreate.classList.add("dark-theme");
+        closeButton.classList.add("dark-theme");
+      } else {
+        resultCreate.classList?.remove("dark-theme");
+        greetCreate.classList?.remove("dark-theme");
+        closeButton.classList?.remove("dark-theme");
+      }
       modal.classList.add("visible");
       modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 1000);
@@ -685,6 +696,15 @@ function gameOver() {
     }, 2500);
   } else {
     setTimeout(() => {
+      if (!light) {
+        resultCreate.classList.add("dark-theme");
+        greetCreate.classList.add("dark-theme");
+        closeButton.classList.add("dark-theme");
+      } else {
+        resultCreate.classList?.remove("dark-theme");
+        greetCreate.classList?.remove("dark-theme");
+        closeButton.classList?.remove("dark-theme");
+      }
       modal.classList.add("visible");
       modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
     }, 250);
@@ -945,5 +965,6 @@ disableRMB();
 clearCells();
 modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
+OKCreate.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
