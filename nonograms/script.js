@@ -924,7 +924,14 @@ function toggleTheme() {
       clue.classList?.remove("dark-theme");
       clue.classList.add("dark-theme");
     });
-
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+      cell.classList.add("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+      cell.classList.add("dark-theme");
+    });
     document.querySelectorAll(".highscore-clue").forEach((clue) => {
       clue.classList.add("dark-theme");
     });
@@ -953,6 +960,12 @@ function toggleTheme() {
     });
     document.querySelectorAll(".clue").forEach((clue) => {
       clue.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
     });
     document.querySelector(".highscore-result").classList?.remove("dark-theme");
     document

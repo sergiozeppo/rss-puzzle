@@ -172,6 +172,7 @@ h1.dark-theme {
 }
 .highscore-table {
   margin: auto;
+  border: 3px solid black;
 }
 td,
 th {
@@ -219,6 +220,7 @@ tr:nth-child(5n + 1) {
 .clue.dark-theme,
 .highscore-clue.dark-theme {
   background-color: #721d1d;
+  color: #e1d4c9;
 }
 
 .cell,
@@ -226,10 +228,19 @@ tr:nth-child(5n + 1) {
   border-top: 1px dotted #aaa;
   border-left: 1px dotted #aaa;
 }
+.cell.dark-theme,
+.highscore-cell.dark-theme {
+  border-top: 1px dotted #333;
+  border-left: 1px dotted #333;
+}
 .cell:hover,
 .highscore-cell:hover {
   cursor: pointer;
   opacity: 0.8;
+}
+.cell.dark-theme,
+.highscore-cell.dark-theme {
+  background-color: #aea39b;
 }
 .settings {
   width: fit-content;
