@@ -91,9 +91,10 @@ const tbodyHSCreate = document.createElement("tbody");
 
 // Generating highscore
 highScoreCreate.classList.add("highscore");
-contHSCreate.classList.add("result");
-greetHSCreate.classList.add("greeting");
-closeHSCreate.classList.add("close-modal");
+contHSCreate.classList.add("highscore-result");
+greetHSCreate.classList.add("highscore-greeting");
+greetHSCreate.textContent = "High Score Table";
+closeHSCreate.classList.add("close-hs");
 closeHSCreate.innerHTML = "&times;";
 tableHSCreate.classList.add("highscore-table");
 
@@ -206,6 +207,7 @@ let isTimer = false;
 let seconds = 0;
 let interval;
 const highScore = [];
+let isHighscoreFull = false;
 
 function clearCells() {
   const cells = document.querySelectorAll(".cell");
@@ -755,77 +757,58 @@ function gameOver() {
   const titleGameCreate = document.querySelector(".title").innerText.slice(34);
   const difficulty = document.querySelector(".level-item-active").innerText;
   const winResult = [
+    timerCreate.textContent,
     titleGameCreate,
     difficulty,
     timerCreate.textContent,
-    seconds,
   ];
   localStorage.winResult = JSON.stringify(winResult);
-  highScoreTable();
+  highScoreTableGen();
 }
 
 function highScoreTable() {
   if (localStorage.winResult) {
-    let flag = true;
-    const highScore = [];
-    if (!isHighscoreFill) {
-      let winResult = JSON.parse(localStorage.winResult);
-      if (localStorage.highScore) {
-        highScore = JSON.parse(localStorage.highScore);
-      } else {
-        highScore = [];
+    const winArr = JSON.parse(localStorage.winResult);
+    delete localStorage.winResult;
+    if (localStorage.hs) {
+      const hs = JSON.parse(localStorage.hs);
+      console.log(hs);
+      hs.push(winArr);
+      console.log(hs);
+      console.log(hs[0][0]);
+      if (hs) {
+        hs.sort();
+        console.log(hs);
+        if (hs.length > 5) hs.pop();
+        for (let i = 0; i < hs.length; i++) {
+          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
+        }
       }
-      if (highScore.length > 4) {
-        highScore.shift();
-        highScore.push(winResult);
-      } else {
-        highScore.push(winResult);
-      }
+      localStorage.setItem("hs", JSON.stringify(hs));
     } else {
-      if (localStorage.highScore) {
-        highScore = JSON.parse(localStorage.highScore);
-      } else {
-        flag = false;
-      }
-    }
-    isHighscoreFill = false;
-    if (flag) {
-      localStorage.highScore = JSON.stringify(highScore);
-      let sort = JSON.parse(JSON.stringify(highScore)).sort(function (a, b) {
-        return +a[2].split(":").join("") - +b[2].split(":").join("");
-      });
-
-      for (let i = 0; i < sort.length; i += 1) {
-        document.querySelectorAll(".name-item")[i + 1].innerHTML = sort[i][0];
-        document.querySelectorAll(".level-item")[
-          i + 1
-        ].innerHTML = `${sort[i][1]} x ${sort[i][1]}`;
-        document.querySelectorAll(".time-item")[i + 1].innerHTML = sort[i][2];
+      localStorage.setItem("hs", JSON.stringify([winArr]));
+      const hs = JSON.parse(localStorage.getItem("hs"));
+      console.log(hs);
+      if (hs) {
+        hs.sort();
+        for (let i = 0; i < hs.length; i++) {
+          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
+        }
       }
     }
   }
 }
 
 function highScoreTableGen() {
-  body.classList.add("no-scroll");
-  body.classList.remove("adapt-scroll");
-  highScoreCreate.classList.add("visible");
-  modalGreet.innerText = `Great! You have solved the nonogram in ${seconds} seconds!`;
   if (!document.querySelector(".highscore-clue")) {
-    for (let i = 0; i < 6; i++) {
-      const tr = parent.document.createElement("tr");
-      for (let j = 0; j < 6; j++) {
-        const th = parent.document.createElement("th");
-        if (light) {
-          th.classList.add("highscore-clue");
-        } else {
-          th.classList.add("highscore-clue", "dark-theme");
-        }
-        tr.appendChild(th);
-      }
-      tbodyHSCreate.appendChild(tr);
-    }
+    tbodyHSCreate.innerHTML = `<tr><td class="highscore-clue">Puzzle</td><td class="highscore-clue">Difficulty</td><td class="highscore-clue">Time</td></tr><tr><td class="highscore-cell pzname">---</td><td class="highscore-cell pzdiff">---</td><td class="highscore-cell pztime">---</td></tr>
+    <tr><td class="highscore-cell pzname">---</td><td class="highscore-cell pzdiff">---</td><td class="highscore-cell pztime">---</td></tr><tr><td class="highscore-cell pzname">---</td><td class="highscore-cell pzdiff">---</td><td class="highscore-cell pztime">---</td></tr><tr><td class="highscore-cell pzname">---</td><td class="highscore-cell pzdiff">---</td><td class="highscore-cell pztime">---</td></tr><tr><td class="highscore-cell pzname">---</td><td class="highscore-cell pzdiff">---</td><td class="highscore-cell pztime">---</td></tr>`;
   }
+  highScoreTable();
 }
 
 function showSolution() {
@@ -941,6 +924,23 @@ function toggleTheme() {
       clue.classList?.remove("dark-theme");
       clue.classList.add("dark-theme");
     });
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+      cell.classList.add("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+      cell.classList.add("dark-theme");
+    });
+    document.querySelectorAll(".highscore-clue").forEach((clue) => {
+      clue.classList.add("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList.add("dark-theme");
+    });
+    document.querySelector(".highscore-result").classList.add("dark-theme");
+    document.querySelector(".highscore-greeting").classList.add("dark-theme");
+    document.querySelector(".close-hs").classList.add("dark-theme");
   } else {
     light = true;
     themeLCreate.style.opacity = 1;
@@ -960,6 +960,23 @@ function toggleTheme() {
     });
     document.querySelectorAll(".clue").forEach((clue) => {
       clue.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
+    });
+    document.querySelector(".highscore-result").classList?.remove("dark-theme");
+    document
+      .querySelector(".highscore-greeting")
+      .classList?.remove("dark-theme");
+    document.querySelector(".close-hs").classList?.remove("dark-theme");
+    document.querySelectorAll(".highscore-clue").forEach((clue) => {
+      clue.classList?.remove("dark-theme");
+    });
+    document.querySelectorAll(".highscore-cell").forEach((cell) => {
+      cell.classList?.remove("dark-theme");
     });
   }
 }
@@ -1071,6 +1088,22 @@ const closeModal = function () {
   body.classList.remove("no-scroll");
   body.classList.add("adapt-scroll");
 };
+const closeHS = function () {
+  highScoreCreate.classList.remove("visible");
+  body.classList.remove("no-scroll");
+  body.classList.add("adapt-scroll");
+};
+const openHS = function () {
+  if (!highScoreCreate.classList.contains("visible")) {
+    body.classList.add("no-scroll");
+    body.classList.remove("adapt-scroll");
+    highScoreCreate.classList.add("visible");
+  } else {
+    body.classList.remove("no-scroll");
+    body.classList.add("adapt-scroll");
+    highScoreCreate.classList.remove("visible");
+  }
+};
 
 loadDraft("easy");
 modalImg.src = `./img/puzzles/0_0.png`;
@@ -1084,9 +1117,11 @@ function disableRMB() {
 }
 disableRMB();
 clearCells();
+highScoreTableGen();
 modal.addEventListener("click", closeModal);
 closeButton.addEventListener("click", closeModal);
 OKCreate.addEventListener("click", closeModal);
 soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
-hsCreate.addEventListener("click", highScoreTableGen);
+hsCreate.addEventListener("click", openHS);
+closeHSCreate.addEventListener("click", closeHS);
