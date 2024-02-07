@@ -789,9 +789,12 @@ function highScoreTable() {
     }
     localStorage.setItem("hs", JSON.stringify(hs));
   } else {
-    localStorage.setItem("hs", JSON.stringify([winArr]));
+    if (localStorage.winResult) {
+      const winArr = JSON.parse(localStorage.winResult);
+      delete localStorage.winResult;
+      localStorage.setItem("hs", JSON.stringify([winArr]));
+    }
     const hs = JSON.parse(localStorage.getItem("hs"));
-    console.log(hs);
     if (hs) {
       hs.sort();
       for (let i = 0; i < hs.length; i++) {
@@ -1137,4 +1140,4 @@ soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
 hsCreate.addEventListener("click", openHS);
 closeHSCreate.addEventListener("click", closeHS);
-highScoreCreate.addEventListener("click", closeHS);
+// highScoreCreate.addEventListener("click", closeHS);
