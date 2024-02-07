@@ -1037,14 +1037,19 @@ function saveToLocalStorage() {
 }
 
 function toggleSave() {
-  if (saveCreate.disabled) contCreate.disabled = true;
-  if (localStorage.getItem("chosenPuzzle")) contCreate.disabled = false;
+  if (localStorage.chosenPuzzle) {
+    contCreate.disabled = false;
+  } else if (saveCreate.disabled) contCreate.disabled = true;
 }
 
 function loadFromLocalStorage() {
   preparetoRandOrLoad();
   timerCreate.textContent = localStorage.getItem("timer");
   seconds = Number(localStorage.getItem("seconds"));
+  const titleGameCreate = document.querySelector(".title");
+  titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${localStorage.getItem(
+    "name"
+  )}</b>`;
   chosenPuzzle = JSON.parse(localStorage.chosenPuzzle);
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
@@ -1069,18 +1074,25 @@ function loadFromLocalStorage() {
   const fills = JSON.parse(localStorage.fills);
   const crosses = JSON.parse(localStorage.crosses);
   const cells = document.querySelectorAll(".cell");
+  let counter = 0;
+  let counterX = 0;
   cells.forEach((cell) => {
     fills.forEach((f) => {
       if (cell.classList.contains(`td_${f.join("_")}`)) {
         cell.classList.add("filled");
+        counter++;
       }
+      guessFill = counter;
     });
     crosses.forEach((x) => {
       if (cell.classList.contains(`td_${x.join("_")}`)) {
         cell.classList.add("crossed");
+        counterX++;
       }
     });
   });
+  guessCross += counterX;
+  console.log(secretFill, secretCross, guessFill, guessCross);
 }
 
 const closeModal = function () {
