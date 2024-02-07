@@ -1137,3 +1137,4 @@ soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
 hsCreate.addEventListener("click", openHS);
 closeHSCreate.addEventListener("click", closeHS);
+highScoreCreate.addEventListener("click", closeHS);
