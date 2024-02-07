@@ -767,37 +767,37 @@ function gameOver() {
 }
 
 function highScoreTable() {
-  if (localStorage.winResult) {
-    const winArr = JSON.parse(localStorage.winResult);
-    delete localStorage.winResult;
-    if (localStorage.hs) {
-      const hs = JSON.parse(localStorage.hs);
-      console.log(hs);
+  if (localStorage.hs) {
+    const hs = JSON.parse(localStorage.hs);
+    console.log(hs);
+    if (localStorage.winResult) {
+      const winArr = JSON.parse(localStorage.winResult);
+      delete localStorage.winResult;
       hs.push(winArr);
+    }
+    console.log(hs);
+    console.log(hs[0][0]);
+    if (hs) {
+      hs.sort();
       console.log(hs);
-      console.log(hs[0][0]);
-      if (hs) {
-        hs.sort();
-        console.log(hs);
-        if (hs.length > 5) hs.pop();
-        for (let i = 0; i < hs.length; i++) {
-          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
-          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
-          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
-        }
+      if (hs.length > 5) hs.pop();
+      for (let i = 0; i < hs.length; i++) {
+        document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+        document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+        document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
       }
-      localStorage.setItem("hs", JSON.stringify(hs));
-    } else {
-      localStorage.setItem("hs", JSON.stringify([winArr]));
-      const hs = JSON.parse(localStorage.getItem("hs"));
-      console.log(hs);
-      if (hs) {
-        hs.sort();
-        for (let i = 0; i < hs.length; i++) {
-          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
-          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
-          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
-        }
+    }
+    localStorage.setItem("hs", JSON.stringify(hs));
+  } else {
+    localStorage.setItem("hs", JSON.stringify([winArr]));
+    const hs = JSON.parse(localStorage.getItem("hs"));
+    console.log(hs);
+    if (hs) {
+      hs.sort();
+      for (let i = 0; i < hs.length; i++) {
+        document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+        document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+        document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
       }
     }
   }
