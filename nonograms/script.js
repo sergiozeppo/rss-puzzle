@@ -767,37 +767,37 @@ function gameOver() {
 }
 
 function highScoreTable() {
-  if (localStorage.winResult) {
-    const winArr = JSON.parse(localStorage.winResult);
-    delete localStorage.winResult;
-    if (localStorage.hs) {
-      const hs = JSON.parse(localStorage.hs);
-      console.log(hs);
+  if (localStorage.hs) {
+    const hs = JSON.parse(localStorage.hs);
+    console.log(hs);
+    if (localStorage.winResult) {
+      const winArr = JSON.parse(localStorage.winResult);
+      delete localStorage.winResult;
       hs.push(winArr);
+    }
+    console.log(hs);
+    console.log(hs[0][0]);
+    if (hs) {
+      hs.sort();
       console.log(hs);
-      console.log(hs[0][0]);
-      if (hs) {
-        hs.sort();
-        console.log(hs);
-        if (hs.length > 5) hs.pop();
-        for (let i = 0; i < hs.length; i++) {
-          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
-          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
-          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
-        }
+      if (hs.length > 5) hs.pop();
+      for (let i = 0; i < hs.length; i++) {
+        document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+        document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+        document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
       }
-      localStorage.setItem("hs", JSON.stringify(hs));
-    } else {
-      localStorage.setItem("hs", JSON.stringify([winArr]));
-      const hs = JSON.parse(localStorage.getItem("hs"));
-      console.log(hs);
-      if (hs) {
-        hs.sort();
-        for (let i = 0; i < hs.length; i++) {
-          document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
-          document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
-          document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
-        }
+    }
+    localStorage.setItem("hs", JSON.stringify(hs));
+  } else {
+    localStorage.setItem("hs", JSON.stringify([winArr]));
+    const hs = JSON.parse(localStorage.getItem("hs"));
+    console.log(hs);
+    if (hs) {
+      hs.sort();
+      for (let i = 0; i < hs.length; i++) {
+        document.querySelectorAll(".pzname")[i].textContent = hs[i][1];
+        document.querySelectorAll(".pzdiff")[i].textContent = hs[i][2];
+        document.querySelectorAll(".pztime")[i].textContent = hs[i][3];
       }
     }
   }
@@ -1037,14 +1037,19 @@ function saveToLocalStorage() {
 }
 
 function toggleSave() {
-  if (saveCreate.disabled) contCreate.disabled = true;
-  if (localStorage.getItem("chosenPuzzle")) contCreate.disabled = false;
+  if (localStorage.chosenPuzzle) {
+    contCreate.disabled = false;
+  } else if (saveCreate.disabled) contCreate.disabled = true;
 }
 
 function loadFromLocalStorage() {
   preparetoRandOrLoad();
   timerCreate.textContent = localStorage.getItem("timer");
   seconds = Number(localStorage.getItem("seconds"));
+  const titleGameCreate = document.querySelector(".title");
+  titleGameCreate.innerHTML = `You are currently playing puzzle: <b>${localStorage.getItem(
+    "name"
+  )}</b>`;
   chosenPuzzle = JSON.parse(localStorage.chosenPuzzle);
   secretFill = chosenPuzzle.flat().reduce((acc, value) => acc + value);
   secretCross = chosenPuzzle.length ** 2 - secretFill;
@@ -1069,18 +1074,25 @@ function loadFromLocalStorage() {
   const fills = JSON.parse(localStorage.fills);
   const crosses = JSON.parse(localStorage.crosses);
   const cells = document.querySelectorAll(".cell");
+  let counter = 0;
+  let counterX = 0;
   cells.forEach((cell) => {
     fills.forEach((f) => {
       if (cell.classList.contains(`td_${f.join("_")}`)) {
         cell.classList.add("filled");
+        counter++;
       }
+      guessFill = counter;
     });
     crosses.forEach((x) => {
       if (cell.classList.contains(`td_${x.join("_")}`)) {
         cell.classList.add("crossed");
+        counterX++;
       }
     });
   });
+  guessCross += counterX;
+  console.log(secretFill, secretCross, guessFill, guessCross);
 }
 
 const closeModal = function () {
@@ -1125,3 +1137,4 @@ soundCreate.addEventListener("click", toggleSound);
 themeCreate.addEventListener("click", toggleTheme);
 hsCreate.addEventListener("click", openHS);
 closeHSCreate.addEventListener("click", closeHS);
+highScoreCreate.addEventListener("click", closeHS);
