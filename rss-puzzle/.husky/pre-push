@@ -1,5 +1,5 @@
+cd rss-puzzle
 npm run lint
 
 # validate branch name before push
-
-npx validate branch name
+npx validate-branch-name -r '(feat|chore|fix)/(RSS-PZ-\d+\_)?[a-zA-Z]+'
