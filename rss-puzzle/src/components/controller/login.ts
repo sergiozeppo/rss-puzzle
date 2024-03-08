@@ -1,21 +1,32 @@
 import './login.css';
 
-export function LoginPage(): void {
-  const form = document.createElement('form');
+const form = document.createElement('form');
+const nameInput = document.createElement('input');
+const surnameInput = document.createElement('input');
+const submitButton = document.createElement('button');
 
-  const nameInput = document.createElement('input');
+class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+export function LoginPage(): void {
   nameInput.type = 'text';
+  nameInput.minLength = 3;
   nameInput.name = 'firstname';
   nameInput.placeholder = 'First Name';
+  nameInput.pattern = '^[A-Z][\\-a-zA-z]{2,}$';
   nameInput.required = true;
 
-  const surnameInput = document.createElement('input');
   surnameInput.type = 'text';
+  surnameInput.minLength = 4;
   surnameInput.name = 'surname';
   surnameInput.placeholder = 'Surname';
+  surnameInput.pattern = '^[A-Z][\\-a-zA-z]{3,}$';
   surnameInput.required = true;
 
-  const submitButton = document.createElement('button');
   submitButton.type = 'submit';
   submitButton.textContent = 'Login';
   submitButton.disabled = true;
@@ -26,12 +37,96 @@ export function LoginPage(): void {
 
   const body = document.querySelector('body');
   body?.appendChild(form);
-
-  function checkInputs(): void {
-    if (nameInput.value === '' || surnameInput.value === '') {
-      submitButton.disabled = true;
-    } else submitButton.disabled = false;
-  }
-  nameInput.addEventListener('keyup', checkInputs);
-  surnameInput.addEventListener('keyup', checkInputs);
 }
+
+function checkDisableButton(): void {
+  if (nameInput.value === '' || surnameInput.value === '') {
+    submitButton.disabled = true;
+  } else submitButton.disabled = false;
+}
+
+function checkName(): void {
+  if (!nameInput.value) {
+    const nameError = new ValidationError(`Please, enter ${nameInput.placeholder}`);
+    nameInput.insertAdjacentHTML('afterend', `<p class="error-message">${nameError.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (nameInput.validity.tooShort) {
+    const min = nameInput.getAttribute('minLength');
+    const nameError = new ValidationError(`The minimum length should be ${min}`);
+    nameInput.insertAdjacentHTML('afterend', `<p class="error-message">${nameError.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (!nameInput.value.match(/^[A-Z]/g)) {
+    const nameError = new ValidationError(`First letter should be capital.`);
+    nameInput.insertAdjacentHTML('afterend', `<p class="error-message">${nameError.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (!nameInput.value.match(/[a-zA-z]/g)) {
+    const nameError = new ValidationError(`Only latin letters and hyphen allowed.`);
+    nameInput.insertAdjacentHTML('afterend', `<p class="error-message">${nameError.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  checkDisableButton();
+}
+
+function checkSurname(): void {
+  if (!surnameInput.value) {
+    const error = new ValidationError(`Please, enter ${nameInput.placeholder}`);
+    surnameInput.insertAdjacentHTML('afterend', `<p class="error-message">${error.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (surnameInput.validity.tooShort) {
+    const min = surnameInput.getAttribute('minLength');
+    const error = new ValidationError(`The minimum length should be ${min}`);
+    surnameInput.insertAdjacentHTML('afterend', `<p class="error-message">${error.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (!surnameInput.value.match(/^[A-Z]/g)) {
+    const error = new ValidationError(`First letter should be capital.`);
+    surnameInput.insertAdjacentHTML('afterend', `<p class="error-message">${error.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  if (!surnameInput.value.match(/[a-zA-z]/g)) {
+    const error = new ValidationError(`Only latin letters and hyphen allowed.`);
+    surnameInput.insertAdjacentHTML('afterend', `<p class="error-message">${error.message}</p>`);
+    setTimeout(() => {
+      const deleteError = document.querySelector('.error-message');
+      form?.removeChild(deleteError as Node);
+    }, 3000);
+    submitButton.disabled = true;
+  }
+  checkDisableButton();
+}
+
+form.addEventListener('focusout', checkDisableButton);
+nameInput.addEventListener('focusout', checkName);
+surnameInput.addEventListener('focusout', checkSurname);
