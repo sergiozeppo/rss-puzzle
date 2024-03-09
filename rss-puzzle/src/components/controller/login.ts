@@ -17,6 +17,8 @@ class ValidationError extends Error {
 const div = document.createElement('div');
 const h1Element = document.createElement('h1');
 const h2Element = document.createElement('h2');
+const startButton = document.createElement('button');
+startButton.classList.add('start-button');
 const logoutButton = document.createElement('button');
 const greet = document.createElement('h1');
 const fio = document.createElement('span');
@@ -36,6 +38,8 @@ export function startPage(): void {
     h2Element.textContent =
       'Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu.';
     div.appendChild(h2Element);
+    startButton.textContent = 'Start';
+    div.appendChild(startButton);
     logoutButton.textContent = 'Logout';
     div.appendChild(logoutButton);
     body?.appendChild(div);
@@ -153,6 +157,46 @@ logoutButton.addEventListener('click', () => {
       body?.removeChild(modal);
       body?.removeChild(div);
       LoginPage();
+    });
+    declineButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      body?.removeChild(modal);
+    });
+  }
+});
+
+startButton.addEventListener('click', () => {
+  if (localStorage.user) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    const resultCreate = document.createElement('div');
+    resultCreate.classList.add('result');
+    const greetCreate = document.createElement('h3');
+    greetCreate.classList.add('greeting');
+    greetCreate.innerText = `Navigate to main game page?`;
+    const acceptButton = document.createElement('button');
+    acceptButton.innerText = 'Yes';
+    const declineButton = document.createElement('button');
+    declineButton.innerText = 'No';
+    body?.appendChild(modal);
+    modal.appendChild(resultCreate);
+    resultCreate.appendChild(greetCreate);
+    resultCreate.appendChild(acceptButton);
+    resultCreate.appendChild(declineButton);
+    modal.classList.add('visible');
+    acceptButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      greet.removeChild(fio);
+      div.removeChild(greet);
+      body?.removeChild(modal);
+      body?.removeChild(div);
+      const div2 = document.createElement('div');
+      div2.classList.add('result');
+      const greet2 = document.createElement('h3');
+      greet2.classList.add('greeting');
+      greet2.innerText = `Main game page. For now...`;
+      div2.appendChild(greet2);
+      body?.appendChild(div2);
     });
     declineButton.addEventListener('click', () => {
       modal.classList?.remove('visible');

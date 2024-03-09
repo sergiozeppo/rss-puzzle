@@ -83,3 +83,30 @@
   color: #000;
   margin-bottom: 3rem;
 }
+
+.start-button {
+  border: none;
+}
+
+@keyframes button {
+  from {
+    background-color: #5163a2;
+    height: 48px;
+    font-size: 2rem;
+  }
+  to {
+    background-color: #db9cb1;
+    height: 55px;
+    font-size: 2.2rem;
+    font-weight: bold;
+  }
+}
+
+.start-button:hover {
+  height: 55px;
+  font-size: 2.2rem;
+  font-weight: bold;
+  background-color: #db9cb1;
+  animation-name: button;
+  animation-duration: 0.5s;
+}
