@@ -1,9 +1,9 @@
 import './login.css';
 
-const form = document.createElement('form');
-const nameInput = document.createElement('input');
-const surnameInput = document.createElement('input');
-const submitButton = document.createElement('button');
+export const form = document.createElement('form');
+export const nameInput = document.createElement('input');
+export const surnameInput = document.createElement('input');
+export const submitButton = document.createElement('button');
 
 class ValidationError extends Error {
   constructor(message: string) {
@@ -127,6 +127,15 @@ function checkSurname(): void {
   checkDisableButton();
 }
 
-form.addEventListener('focusout', checkDisableButton);
+form.addEventListener('keyup', checkDisableButton);
 nameInput.addEventListener('focusout', checkName);
 surnameInput.addEventListener('focusout', checkSurname);
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const user = {
+    name: nameInput.value,
+    surname: surnameInput.value,
+  };
+  localStorage.setItem('user', JSON.stringify(user));
+  form.submit();
+});
