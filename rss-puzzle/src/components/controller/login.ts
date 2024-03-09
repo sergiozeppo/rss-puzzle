@@ -1,9 +1,11 @@
 import './login.css';
+import './startPage.css';
 
 export const form = document.createElement('form');
 export const nameInput = document.createElement('input');
 export const surnameInput = document.createElement('input');
 export const submitButton = document.createElement('button');
+export const body = document.querySelector('body');
 
 class ValidationError extends Error {
   constructor(message: string) {
@@ -12,31 +14,47 @@ class ValidationError extends Error {
   }
 }
 
+const div = document.createElement('div');
+const h1Element = document.createElement('h1');
+const logoutButton = document.createElement('button');
+
+export function startPage(): void {
+  if (localStorage.user) {
+    div.classList.add('start-page');
+    h1Element.textContent = 'Start Page';
+    div.appendChild(h1Element);
+    logoutButton.textContent = 'Logout';
+    div.appendChild(logoutButton);
+    body?.appendChild(div);
+  }
+}
+
 export function LoginPage(): void {
-  nameInput.type = 'text';
-  nameInput.minLength = 3;
-  nameInput.name = 'firstname';
-  nameInput.placeholder = 'First Name';
-  nameInput.pattern = '^[A-Z][\\-a-zA-z]{2,}$';
-  nameInput.required = true;
+  if (localStorage.user) startPage();
+  else {
+    nameInput.type = 'text';
+    nameInput.minLength = 3;
+    nameInput.name = 'firstname';
+    nameInput.placeholder = 'First Name';
+    nameInput.pattern = '^[A-Z][\\-a-zA-z]{2,}$';
+    nameInput.required = true;
 
-  surnameInput.type = 'text';
-  surnameInput.minLength = 4;
-  surnameInput.name = 'surname';
-  surnameInput.placeholder = 'Surname';
-  surnameInput.pattern = '^[A-Z][\\-a-zA-z]{3,}$';
-  surnameInput.required = true;
+    surnameInput.type = 'text';
+    surnameInput.minLength = 4;
+    surnameInput.name = 'surname';
+    surnameInput.placeholder = 'Surname';
+    surnameInput.pattern = '^[A-Z][\\-a-zA-z]{3,}$';
+    surnameInput.required = true;
 
-  submitButton.type = 'submit';
-  submitButton.textContent = 'Login';
-  submitButton.disabled = true;
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Login';
+    submitButton.disabled = true;
 
-  form.appendChild(nameInput);
-  form.appendChild(surnameInput);
-  form.appendChild(submitButton);
-
-  const body = document.querySelector('body');
-  body?.appendChild(form);
+    form.appendChild(nameInput);
+    form.appendChild(surnameInput);
+    form.appendChild(submitButton);
+    body?.appendChild(form);
+  }
 }
 
 function checkDisableButton(): void {
@@ -83,12 +101,46 @@ function checkSurname(): void {
 form.addEventListener('keyup', checkDisableButton);
 nameInput.addEventListener('focusout', checkName);
 surnameInput.addEventListener('focusout', checkSurname);
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+form.addEventListener('submit', () => {
   const user = {
     name: nameInput.value,
     surname: surnameInput.value,
   };
   localStorage.setItem('user', JSON.stringify(user));
   form.submit();
+  body?.removeChild(form);
+  startPage();
+});
+
+logoutButton.addEventListener('click', () => {
+  if (localStorage.user) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    const resultCreate = document.createElement('div');
+    resultCreate.classList.add('result');
+    const greetCreate = document.createElement('h3');
+    greetCreate.classList.add('greeting');
+    greetCreate.innerText = `Are you sure you want to log out?`;
+    const acceptButton = document.createElement('button');
+    acceptButton.innerText = 'Yes';
+    const declineButton = document.createElement('button');
+    declineButton.innerText = 'No';
+    body?.appendChild(modal);
+    modal.appendChild(resultCreate);
+    resultCreate.appendChild(greetCreate);
+    resultCreate.appendChild(acceptButton);
+    resultCreate.appendChild(declineButton);
+    modal.classList.add('visible');
+    acceptButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      delete localStorage.user;
+      body?.removeChild(modal);
+      body?.removeChild(div);
+      LoginPage();
+    });
+    declineButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      body?.removeChild(modal);
+    });
+  }
 });
