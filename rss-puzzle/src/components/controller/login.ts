@@ -16,13 +16,17 @@ class ValidationError extends Error {
 
 const div = document.createElement('div');
 const h1Element = document.createElement('h1');
+const h2Element = document.createElement('h2');
 const logoutButton = document.createElement('button');
 
 export function startPage(): void {
   if (localStorage.user) {
     div.classList.add('start-page');
-    h1Element.textContent = 'Start Page';
+    h1Element.textContent = 'ENGLISH PUZZLE';
     div.appendChild(h1Element);
+    h2Element.textContent =
+      'Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu.';
+    div.appendChild(h2Element);
     logoutButton.textContent = 'Logout';
     div.appendChild(logoutButton);
     body?.appendChild(div);
