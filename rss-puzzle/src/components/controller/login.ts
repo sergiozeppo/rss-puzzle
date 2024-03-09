@@ -18,9 +18,18 @@ const div = document.createElement('div');
 const h1Element = document.createElement('h1');
 const h2Element = document.createElement('h2');
 const logoutButton = document.createElement('button');
+const greet = document.createElement('h1');
+const fio = document.createElement('span');
 
 export function startPage(): void {
   if (localStorage.user) {
+    const userArr = JSON.parse(localStorage.user);
+    greet.classList.add('great-greet');
+    fio.textContent = `${userArr.name} ${userArr.surname}!`;
+    fio.classList.add('fio-animation');
+    greet.innerText = `Welcome, `;
+    greet.appendChild(fio);
+    div.appendChild(greet);
     div.classList.add('start-page');
     h1Element.textContent = 'ENGLISH PUZZLE';
     div.appendChild(h1Element);
@@ -30,6 +39,7 @@ export function startPage(): void {
     logoutButton.textContent = 'Logout';
     div.appendChild(logoutButton);
     body?.appendChild(div);
+    userArr.length = 0;
   }
 }
 
@@ -138,6 +148,8 @@ logoutButton.addEventListener('click', () => {
     acceptButton.addEventListener('click', () => {
       modal.classList?.remove('visible');
       delete localStorage.user;
+      greet.removeChild(fio);
+      div.removeChild(greet);
       body?.removeChild(modal);
       body?.removeChild(div);
       LoginPage();

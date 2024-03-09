@@ -2,8 +2,8 @@
 
 .start-page {
   text-align: center;
-  width: 50rem;
-  height: 25vh;
+  width: calc(100% - 100px);
+  height: 30vh;
   color: #fff;
   position: absolute;
   top: 50%;
@@ -15,7 +15,7 @@
 }
 
 .start-page h1 {
-  font-size: 4.5rem;
+  font-size: 5rem;
   letter-spacing: 0.5rem;
   margin-bottom: 2rem;
 }
@@ -28,6 +28,26 @@
 .start-page button,
 .result button {
   margin-right: 2rem;
+}
+
+.great-greet {
+  color: #fff;
+  text-align: center;
+}
+
+@keyframes fio {
+  from {
+    color: #fff;
+  }
+  to {
+    color: #db9cb1;
+  }
+}
+
+.fio-animation {
+  color: #db9cb1;
+  animation-name: fio;
+  animation-duration: 4s;
 }
 
 .modal {
