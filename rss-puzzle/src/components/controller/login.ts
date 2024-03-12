@@ -1,3 +1,4 @@
+import { fetchData } from '../view/mainPage';
 import './login.css';
 import './startPage.css';
 
@@ -167,40 +168,7 @@ logoutButton.addEventListener('click', () => {
 
 startButton.addEventListener('click', () => {
   if (localStorage.user) {
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-    const resultCreate = document.createElement('div');
-    resultCreate.classList.add('result');
-    const greetCreate = document.createElement('h3');
-    greetCreate.classList.add('greeting');
-    greetCreate.innerText = `Navigate to main game page?`;
-    const acceptButton = document.createElement('button');
-    acceptButton.innerText = 'Yes';
-    const declineButton = document.createElement('button');
-    declineButton.innerText = 'No';
-    body?.appendChild(modal);
-    modal.appendChild(resultCreate);
-    resultCreate.appendChild(greetCreate);
-    resultCreate.appendChild(acceptButton);
-    resultCreate.appendChild(declineButton);
-    modal.classList.add('visible');
-    acceptButton.addEventListener('click', () => {
-      modal.classList?.remove('visible');
-      greet.removeChild(fio);
-      div.removeChild(greet);
-      body?.removeChild(modal);
-      body?.removeChild(div);
-      const div2 = document.createElement('div');
-      div2.classList.add('result');
-      const greet2 = document.createElement('h3');
-      greet2.classList.add('greeting');
-      greet2.innerText = `Main game page. For now...`;
-      div2.appendChild(greet2);
-      body?.appendChild(div2);
-    });
-    declineButton.addEventListener('click', () => {
-      modal.classList?.remove('visible');
-      body?.removeChild(modal);
-    });
+    body?.removeChild(div);
+    fetchData();
   }
 });
