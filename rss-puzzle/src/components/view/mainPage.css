@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 75rem;
   height: 50rem;
-  border: 3px solid white;
+  border: 1px solid white;
 }
 
 .puzzle-row {
@@ -11,24 +11,21 @@
   flex-direction: row;
 }
 
-.puzzle-row-word {
+.puzzle-row-word,
+.source-field-word {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 0 5px;
-  border: 3px solid white;
+  border: 1px solid white;
 }
 
 .source-field {
   display: flex;
   flex-direction: row;
   width: 75rem;
-}
-
-.source-field-word {
-  display: flex;
-  flex-direction: column;
-  padding: 0 5px;
-  border: 3px solid white;
+  border: 1px solid white;
 }
 
 .source-field-word:hover {
@@ -38,9 +35,13 @@
 }
 
 body {
-  font-size: 3rem;
   color: #fff;
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+
+body .puzzle-div,
+body .source-field {
+  font-size: 3rem;
 }

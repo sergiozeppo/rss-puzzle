@@ -3,6 +3,8 @@ import './mainPage.css';
 const SOURCE_RAW =
   'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel1.json';
 const PUZZLE_ROWS = 10;
+let PUZZLE_DIV_WIDTH = 750;
+let PUZZLE_DIV_HEIGHT = 500;
 
 const puzzleDiv = document.createElement('div');
 puzzleDiv.classList.add('puzzle-div');
@@ -33,11 +35,19 @@ function determineEmptyRow(): HTMLElement | undefined {
 }
 
 function generateSourceItem(strings: string[]): void {
+  sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
+  const divWidth = PUZZLE_DIV_WIDTH;
+  const divHeight = PUZZLE_DIV_HEIGHT / 10;
+  const lettersWidth = strings.join('').length;
+  const letter = divWidth / lettersWidth;
   const sortedStr = strings.sort(() => Math.random() - 0.5);
   sortedStr.forEach((str) => {
+    const width = str.length * letter;
     const element = document.createElement('div');
     element.classList.add('source-field-word');
     element.textContent = str;
+    element.style.width = `${width}px`;
+    element.style.height = `${divHeight}px`;
     sourceField.append(element);
     const empty = determineEmptyRow();
     element.addEventListener('click', (event) => {
@@ -51,6 +61,12 @@ function generateSourceItem(strings: string[]): void {
           clickedElement.classList.add('puzzle-row-word');
           clickedElement.style.opacity = '1';
           clickedElement.style.transition = 'opacity 0.5s ease';
+          const emptyEl = document.createElement('div');
+          emptyEl.classList.add('source-field-word');
+          emptyEl.textContent = clickedElement.textContent?.replace(/[a-zA-z]/g, ' ') as string;
+          emptyEl.style.width = clickedElement.style.width;
+          emptyEl.style.height = clickedElement.style.height;
+          sourceField.append(emptyEl);
         }, 400);
       }
     });
@@ -70,3 +86,38 @@ export async function fetchData(): Promise<void> {
     console.error('Ошибка при получении данных:', error);
   }
 }
+
+window.addEventListener('resize', () => {
+  if (document.documentElement.clientWidth < 850) {
+    PUZZLE_DIV_WIDTH = 750;
+  } else if (document.documentElement.clientWidth < 1000) {
+    PUZZLE_DIV_WIDTH = document.documentElement.clientWidth - 100;
+    PUZZLE_DIV_HEIGHT = Math.floor(PUZZLE_DIV_WIDTH / 1.5);
+    sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
+    sourceField.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+    let lettersWidth = 0;
+    let letter = 0;
+    sourceField.querySelectorAll('.source-field-word').forEach((card) => {
+      if (card instanceof HTMLDivElement && card.textContent) {
+        lettersWidth += card.textContent.length;
+      }
+    });
+    letter = PUZZLE_DIV_WIDTH / lettersWidth;
+    sourceField.querySelectorAll('.source-field-word').forEach((card) => {
+      const card1 = card;
+      if (card1 instanceof HTMLDivElement && card1.textContent) {
+        card1.style.width = `${card1.textContent.length * letter}px`;
+        card1.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+      }
+    });
+    puzzleDiv.style.width = `${PUZZLE_DIV_WIDTH}px`;
+    puzzleDiv.style.height = `${PUZZLE_DIV_HEIGHT}px`;
+    puzzleDiv.querySelectorAll('.puzzle-row-word').forEach((word) => {
+      const word1 = word;
+      if (word1 instanceof HTMLDivElement && word1.textContent) {
+        word1.style.width = `${word1.textContent.length * letter}px`;
+        word1.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+      }
+    });
+  }
+});
