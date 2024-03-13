@@ -34,6 +34,33 @@ function determineEmptyRow(): HTMLElement | undefined {
   return emptyChild as HTMLElement;
 }
 
+function eventRow(clickedElement: HTMLElement): void {
+  clickedElement.addEventListener('click', (event) => {
+    const card = event.target as HTMLElement;
+    const puzzleRow = card.closest('.puzzle-row');
+    if (card && card.parentElement === puzzleRow) {
+      card.style.opacity = '0';
+      card.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        const children = Array.from(sourceField.children);
+        const firstEmptyIndex = children.findIndex((child) => child.textContent?.match(/ /g));
+        console.log(firstEmptyIndex);
+        if (firstEmptyIndex === -1) {
+          sourceField.appendChild(card);
+        } else {
+          sourceField.insertBefore(card, children[firstEmptyIndex]);
+        }
+        card.classList.add('source-field-word');
+        card.classList?.remove('puzzle-row-word');
+        card.style.opacity = '1';
+        card.style.transition = 'opacity 0.5s ease';
+        const emptyEl = sourceField.querySelector('.emptyEl');
+        if (emptyEl) sourceField.removeChild(emptyEl);
+      }, 400);
+    }
+  });
+}
+
 function generateSourceItem(strings: string[]): void {
   sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
   const divWidth = PUZZLE_DIV_WIDTH;
@@ -61,8 +88,9 @@ function generateSourceItem(strings: string[]): void {
           clickedElement.classList.add('puzzle-row-word');
           clickedElement.style.opacity = '1';
           clickedElement.style.transition = 'opacity 0.5s ease';
+          eventRow(clickedElement);
           const emptyEl = document.createElement('div');
-          emptyEl.classList.add('source-field-word');
+          emptyEl.classList.add('source-field-word', 'emptyEl');
           emptyEl.textContent = clickedElement.textContent?.replace(/[a-zA-z]/g, ' ') as string;
           emptyEl.style.width = clickedElement.style.width;
           emptyEl.style.height = clickedElement.style.height;
