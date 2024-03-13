@@ -4,11 +4,39 @@
   width: 75rem;
   height: 50rem;
   border: 1px solid white;
+  background-color: #fff3cb;
+  border-radius: 0.5rem;
 }
 
 .puzzle-row {
   display: flex;
   flex-direction: row;
+}
+
+.source-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.next {
+  display: flex;
+  justify-content: center;
+  border: none;
+  background-color: #5163a2;
+  border-radius: 0.5rem;
+  color: #fff;
+  width: 20rem;
+  font-size: 2rem;
+}
+
+.next.hidden {
+  display: none;
+}
+
+.filled-row {
+  pointer-events: none;
 }
 
 .puzzle-row-word,
@@ -19,6 +47,8 @@
   justify-content: center;
   padding: 0 5px;
   border: 1px solid white;
+  background-color: #a395c0;
+  color: #1c1a42;
 }
 
 .source-field {
@@ -26,6 +56,8 @@
   flex-direction: row;
   width: 75rem;
   border: 1px solid white;
+  border-radius: 0.5rem;
+  background-color: #fff3cb;
 }
 
 .source-field-word:hover {

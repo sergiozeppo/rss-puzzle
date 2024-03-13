@@ -169,6 +169,6 @@ logoutButton.addEventListener('click', () => {
 startButton.addEventListener('click', () => {
   if (localStorage.user) {
     body?.removeChild(div);
-    fetchData();
+    fetchData(0);
   }
 });

@@ -1,3 +1,4 @@
+import { Words } from '../types';
 import './mainPage.css';
 
 const SOURCE_RAW =
@@ -5,22 +6,31 @@ const SOURCE_RAW =
 const PUZZLE_ROWS = 10;
 let PUZZLE_DIV_WIDTH = 750;
 let PUZZLE_DIV_HEIGHT = 500;
+let ID_WORD = 0;
+let ID_LEVEL = 0;
+
+const words: Words[] = [];
 
 const puzzleDiv = document.createElement('div');
 puzzleDiv.classList.add('puzzle-div');
 const { body } = document;
 
+const sourceDiv = document.createElement('div');
+sourceDiv.classList.add('source-div');
 const sourceField = document.createElement('div');
 sourceField.classList.add('source-field');
+const nextButton = document.createElement('button');
+nextButton.classList.add('next', 'hidden');
+nextButton.textContent = 'Continue';
 
 const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
   for (let i = 0; i < PUZZLE_ROWS; i += 1) {
     const puzzleRow = document.createElement('div');
     puzzleRow.classList.add('puzzle-row');
+    puzzleRow.dataset.id = `row_${i}`;
     puzzle.append(puzzleRow);
-    puzzleDiv.append(puzzleRow);
   }
-  body.append(puzzleDiv);
+  body.append(puzzle);
 };
 
 function determineEmptyRow(): HTMLElement | undefined {
@@ -29,12 +39,13 @@ function determineEmptyRow(): HTMLElement | undefined {
   for (let i = 0; i < childElements.length; i += 1) {
     if (childElements[i].textContent === '') {
       emptyChild = childElements[i];
+      break;
     }
   }
   return emptyChild as HTMLElement;
 }
 
-function eventRow(clickedElement: HTMLElement): void {
+function reverseClick(clickedElement: HTMLElement): void {
   clickedElement.addEventListener('click', (event) => {
     const card = event.target as HTMLElement;
     const puzzleRow = card.closest('.puzzle-row');
@@ -61,12 +72,34 @@ function eventRow(clickedElement: HTMLElement): void {
   });
 }
 
-function generateSourceItem(strings: string[]): void {
+function deleteItems(div: HTMLDivElement, tag: string): void {
+  const cards = div.querySelectorAll(tag);
+  for (let i = 0; i < cards.length; i += 1) {
+    cards[i].remove();
+  }
+}
+
+function checkRow(puzzleRow: HTMLElement | undefined): void {
+  if (puzzleRow) {
+    const children = Array.from(puzzleRow.children);
+    const text = children.reduce((total, child) => total + child.textContent, '');
+    console.log(text);
+    const example = words[ID_WORD].textExample.split(' ').join('');
+    console.log(example);
+    if (text === example) {
+      children.forEach((child) => {
+        child.classList.add('filled-row');
+      });
+      nextButton.classList?.remove('hidden');
+    }
+  }
+}
+
+function generateSourceItem(data: Words[], ID: number): void {
+  const strings = data[ID].textExample.split(' ');
   sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
-  const divWidth = PUZZLE_DIV_WIDTH;
-  const divHeight = PUZZLE_DIV_HEIGHT / 10;
   const lettersWidth = strings.join('').length;
-  const letter = divWidth / lettersWidth;
+  const letter = PUZZLE_DIV_WIDTH / lettersWidth;
   const sortedStr = strings.sort(() => Math.random() - 0.5);
   sortedStr.forEach((str) => {
     const width = str.length * letter;
@@ -74,7 +107,7 @@ function generateSourceItem(strings: string[]): void {
     element.classList.add('source-field-word');
     element.textContent = str;
     element.style.width = `${width}px`;
-    element.style.height = `${divHeight}px`;
+    element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
     sourceField.append(element);
     const empty = determineEmptyRow();
     element.addEventListener('click', (event) => {
@@ -87,11 +120,11 @@ function generateSourceItem(strings: string[]): void {
           clickedElement.classList?.remove('source-field-word');
           clickedElement.classList.add('puzzle-row-word');
           clickedElement.style.opacity = '1';
-          clickedElement.style.transition = 'opacity 0.5s ease';
-          eventRow(clickedElement);
+          reverseClick(clickedElement);
+          checkRow(empty);
           const emptyEl = document.createElement('div');
           emptyEl.classList.add('source-field-word', 'emptyEl');
-          emptyEl.textContent = clickedElement.textContent?.replace(/[a-zA-z]/g, ' ') as string;
+          emptyEl.textContent = clickedElement.textContent?.replace(/[\w\W]+/g, ' ') as string;
           emptyEl.style.width = clickedElement.style.width;
           emptyEl.style.height = clickedElement.style.height;
           sourceField.append(emptyEl);
@@ -99,19 +132,21 @@ function generateSourceItem(strings: string[]): void {
       }
     });
   });
-  body.append(sourceField);
+  sourceDiv.append(sourceField, nextButton);
+  body.append(sourceDiv);
 }
 
-export async function fetchData(): Promise<void> {
+export async function fetchData(id: number): Promise<void> {
   try {
     const response = await fetch(SOURCE_RAW);
     const data = await response.json();
-    const { words } = data.rounds[0];
+    Object.assign(words, data.rounds[id].words);
+    deleteItems(puzzleDiv, '.puzzle-row');
     generatePuzzleRows(puzzleDiv);
-    generateSourceItem(data.rounds[0].words[0].textExample.split(' '));
+    generateSourceItem(words, ID_WORD);
     console.log(words);
   } catch (error) {
-    console.error('Ошибка при получении данных:', error);
+    console.error('Error: ', error);
   }
 }
 
@@ -149,3 +184,19 @@ window.addEventListener('resize', () => {
     });
   }
 });
+
+function continueNextLevel(): void {
+  deleteItems(sourceField, '.emptyEl');
+  if (words[ID_WORD + 1]) {
+    ID_WORD += 1;
+    generateSourceItem(words, ID_WORD);
+    console.log(ID_WORD);
+    nextButton.classList.add('hidden');
+  } else {
+    ID_WORD = 0;
+    ID_LEVEL += 1;
+    fetchData(ID_LEVEL);
+    console.log('AYAKTALDY');
+  }
+}
+nextButton.addEventListener('click', continueNextLevel, false);
