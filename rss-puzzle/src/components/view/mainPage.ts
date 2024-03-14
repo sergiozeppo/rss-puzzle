@@ -18,7 +18,6 @@ const { body } = document;
 const sourceDiv = createElement('div', ['source-div']);
 const buttonsDiv = createElement('div', ['buttons-div']);
 const sourceField = createElement('div', ['source-field']);
-const nextButton = createElement('button', ['next', 'hidden'], 'Continue');
 const checkButton = createElement('button', ['check', 'hidden'], 'Check');
 
 const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
@@ -80,7 +79,6 @@ function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number)
   // const objectsArray = exArr.map((text, id) => ({ text, id }));
   if (puzzleRow) {
     const children = Array.from(puzzleRow.children);
-    // const example = words[ID_WORD].textExample.split(' ').join('');
     const textArr: string[] = [];
     children.forEach((child) => {
       if (child.textContent) textArr.push(child.textContent);
@@ -94,9 +92,11 @@ function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number)
             child.classList.add('filled-row');
             child.classList.remove('wrong');
           });
-          nextButton.classList?.remove('hidden');
+          checkButton.textContent = 'Continue';
+          checkButton.classList?.remove('check');
+          checkButton.classList?.add('next', 'accept');
+          checkButton.addEventListener('click', continueNextLevel, false);
         } else {
-          nextButton.classList.add('hidden');
           const negative: number[] = [];
           for (let i = 0; i < exArr.length; i += 1) {
             if (exArr[i] !== textArr[i]) {
@@ -168,7 +168,7 @@ function generateSourceItem(data: Words[], ID: number): void {
     element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
   });
   clickSourceFieldItems(data, ID, sortedStr);
-  buttonsDiv.append(checkButton, nextButton);
+  buttonsDiv.append(checkButton);
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
 }
@@ -227,12 +227,13 @@ function continueNextLevel(): void {
   if (words[ID_WORD + 1]) {
     ID_WORD += 1;
     generateSourceItem(words, ID_WORD);
-    nextButton.classList.add('hidden');
+    checkButton.textContent = 'Check';
+    checkButton.classList?.remove('next', 'accept');
+    checkButton.classList.add('check', 'hidden');
+    checkButton.removeEventListener('click', continueNextLevel, false);
   } else {
     ID_WORD = 0;
     ID_LEVEL += 1;
     fetchData(ID_LEVEL);
   }
 }
-
-nextButton.addEventListener('click', continueNextLevel, false);

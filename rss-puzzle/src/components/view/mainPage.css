@@ -44,6 +44,27 @@
   display: none;
 }
 
+.next.accept {
+  animation-name: checkCont;
+  animation-duration: 2s;
+  background-color: green;
+}
+
+@keyframes checkCont {
+  from {
+    background-color: #5163a2;
+  }
+  to {
+    background-color: green;
+  }
+}
+
+.fio-animation {
+  color: #db9cb1;
+  animation-name: fio;
+  animation-duration: 4s;
+}
+
 .filled-row {
   pointer-events: none;
 }
