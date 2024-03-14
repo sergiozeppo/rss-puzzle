@@ -20,7 +20,15 @@
   gap: 3rem;
 }
 
-.next {
+.buttons-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+}
+
+.next,
+.check {
   display: flex;
   justify-content: center;
   border: none;
@@ -31,7 +39,8 @@
   font-size: 2rem;
 }
 
-.next.hidden {
+.next.hidden,
+.check.hidden {
   display: none;
 }
 
@@ -49,6 +58,10 @@
   border: 1px solid white;
   background-color: #a395c0;
   color: #1c1a42;
+}
+
+.puzzle-row-word.wrong {
+  border: 3px solid red;
 }
 
 .source-field {

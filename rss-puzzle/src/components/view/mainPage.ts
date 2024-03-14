@@ -17,11 +17,16 @@ const { body } = document;
 
 const sourceDiv = document.createElement('div');
 sourceDiv.classList.add('source-div');
+const buttonsDiv = document.createElement('div');
+buttonsDiv.classList.add('buttons-div');
 const sourceField = document.createElement('div');
 sourceField.classList.add('source-field');
 const nextButton = document.createElement('button');
 nextButton.classList.add('next', 'hidden');
 nextButton.textContent = 'Continue';
+const checkButton = document.createElement('button');
+checkButton.classList.add('check', 'hidden');
+checkButton.textContent = 'Check';
 
 const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
   for (let i = 0; i < PUZZLE_ROWS; i += 1) {
@@ -62,7 +67,7 @@ function reverseClick(clickedElement: HTMLElement): void {
           sourceField.insertBefore(card, children[firstEmptyIndex]);
         }
         card.classList.add('source-field-word');
-        card.classList?.remove('puzzle-row-word');
+        card.classList?.remove('puzzle-row-word', 'wrong');
         card.style.opacity = '1';
         card.style.transition = 'opacity 0.5s ease';
         const emptyEl = sourceField.querySelector('.emptyEl');
@@ -79,37 +84,59 @@ function deleteItems(div: HTMLDivElement, tag: string): void {
   }
 }
 
-function checkRow(puzzleRow: HTMLElement | undefined): void {
+function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number): void {
+  const exArr = data[ID].textExample.split(' ');
+  // const objectsArray = exArr.map((text, id) => ({ text, id }));
   if (puzzleRow) {
     const children = Array.from(puzzleRow.children);
-    const text = children.reduce((total, child) => total + child.textContent, '');
-    console.log(text);
-    const example = words[ID_WORD].textExample.split(' ').join('');
-    console.log(example);
-    if (text === example) {
-      children.forEach((child) => {
-        child.classList.add('filled-row');
+    // const example = words[ID_WORD].textExample.split(' ').join('');
+    const textArr: string[] = [];
+    children.forEach((child) => {
+      if (child.textContent) textArr.push(child.textContent);
+    });
+    console.log(textArr);
+    if (textArr.length === exArr.length) {
+      checkButton.classList?.remove('hidden');
+      checkButton.addEventListener('click', () => {
+        if (exArr.every((element, index) => element === textArr[index])) {
+          children.forEach((child) => {
+            child.classList.add('filled-row');
+            child.classList.remove('wrong');
+          });
+          nextButton.classList?.remove('hidden');
+        } else {
+          nextButton.classList.add('hidden');
+          const negative: number[] = [];
+          for (let i = 0; i < exArr.length; i += 1) {
+            if (exArr[i] !== textArr[i]) {
+              negative.push(i);
+            }
+          }
+          console.log(negative);
+          negative.forEach((id) => {
+            children[id].classList.add('wrong');
+          });
+          negative.splice(0, negative.length);
+          textArr.splice(0, textArr.length);
+        }
       });
-      nextButton.classList?.remove('hidden');
     }
   }
 }
 
-function generateSourceItem(data: Words[], ID: number): void {
-  const strings = data[ID].textExample.split(' ');
-  sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
-  const lettersWidth = strings.join('').length;
-  const letter = PUZZLE_DIV_WIDTH / lettersWidth;
-  const sortedStr = strings.sort(() => Math.random() - 0.5);
-  sortedStr.forEach((str) => {
-    const width = str.length * letter;
-    const element = document.createElement('div');
-    element.classList.add('source-field-word');
-    element.textContent = str;
-    element.style.width = `${width}px`;
-    element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
-    sourceField.append(element);
-    const empty = determineEmptyRow();
+function clickSourceFieldItems(
+  data: Words[],
+  ID: number,
+  sortedStr: {
+    text: string;
+    id: number;
+    newId: number;
+  }[]
+): void {
+  const empty = determineEmptyRow();
+  sourceField.querySelectorAll('.source-field-word').forEach((element, id) => {
+    const el = element as HTMLElement;
+    el.dataset.newId = `${sortedStr[id].newId}`;
     element.addEventListener('click', (event) => {
       const clickedElement = event.target as HTMLElement;
       if (clickedElement && clickedElement.parentElement === sourceField) {
@@ -121,7 +148,7 @@ function generateSourceItem(data: Words[], ID: number): void {
           clickedElement.classList.add('puzzle-row-word');
           clickedElement.style.opacity = '1';
           reverseClick(clickedElement);
-          checkRow(empty);
+          checkRow(empty, data, ID);
           const emptyEl = document.createElement('div');
           emptyEl.classList.add('source-field-word', 'emptyEl');
           emptyEl.textContent = clickedElement.textContent?.replace(/[\w\W]+/g, ' ') as string;
@@ -132,7 +159,31 @@ function generateSourceItem(data: Words[], ID: number): void {
       }
     });
   });
-  sourceDiv.append(sourceField, nextButton);
+}
+
+function generateSourceItem(data: Words[], ID: number): void {
+  const strings = data[ID].textExample.split(' ');
+  const dataObject = strings.map((text, id) => ({ text, id, newId: 0 }));
+  sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
+  const lettersWidth = strings.join('').length;
+  const letter = PUZZLE_DIV_WIDTH / lettersWidth;
+  const sortedStr = dataObject.sort(() => Math.random() - 0.5);
+  // sortedStr.forEach((str, id) => {
+  //   str.newId = id;
+  // });
+  console.log(sortedStr);
+  sortedStr.forEach((str) => {
+    const width = str.text.length * letter;
+    const element = document.createElement('div');
+    element.classList.add('source-field-word');
+    element.textContent = str.text;
+    element.style.width = `${width}px`;
+    element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+    sourceField.append(element);
+  });
+  clickSourceFieldItems(data, ID, sortedStr);
+  buttonsDiv.append(checkButton, nextButton);
+  sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
 }
 
@@ -199,4 +250,5 @@ function continueNextLevel(): void {
     console.log('AYAKTALDY');
   }
 }
+
 nextButton.addEventListener('click', continueNextLevel, false);
