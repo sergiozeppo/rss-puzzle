@@ -1,4 +1,5 @@
 import { fetchData } from '../view/mainPage';
+import { createElement } from './functions';
 import './login.css';
 import './startPage.css';
 
@@ -18,8 +19,7 @@ class ValidationError extends Error {
 const div = document.createElement('div');
 const h1Element = document.createElement('h1');
 const h2Element = document.createElement('h2');
-const startButton = document.createElement('button');
-startButton.classList.add('start-button');
+const startButton = createElement('button', ['start-button']);
 const logoutButton = document.createElement('button');
 const greet = document.createElement('h1');
 const fio = document.createElement('span');
@@ -133,23 +133,18 @@ form.addEventListener('submit', () => {
 
 logoutButton.addEventListener('click', () => {
   if (localStorage.user) {
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-    const resultCreate = document.createElement('div');
-    resultCreate.classList.add('result');
-    const greetCreate = document.createElement('h3');
-    greetCreate.classList.add('greeting');
-    greetCreate.innerText = `Are you sure you want to log out?`;
-    const acceptButton = document.createElement('button');
-    acceptButton.innerText = 'Yes';
-    const declineButton = document.createElement('button');
-    declineButton.innerText = 'No';
+    const modal = createElement('div', ['modal', 'visible'], '');
+    const resultCreate = createElement('div', ['result'], '', modal);
+    const greetCreate = createElement(
+      'h3',
+      ['greeting'],
+      `Are you sure you want to log out?`,
+      resultCreate
+    );
+    console.log(greetCreate);
+    const acceptButton = createElement('button', [], `Yes`, resultCreate);
+    const declineButton = createElement('button', [], `No`, resultCreate);
     body?.appendChild(modal);
-    modal.appendChild(resultCreate);
-    resultCreate.appendChild(greetCreate);
-    resultCreate.appendChild(acceptButton);
-    resultCreate.appendChild(declineButton);
-    modal.classList.add('visible');
     acceptButton.addEventListener('click', () => {
       modal.classList?.remove('visible');
       delete localStorage.user;
