@@ -1,5 +1,5 @@
 import { Words } from '../types';
-import { createElement } from '../controller/functions';
+import { createElement, classListHandle } from '../controller/functions';
 import './mainPage.css';
 
 const SOURCE_RAW =
@@ -9,6 +9,8 @@ let PUZZLE_DIV_WIDTH = 750;
 let PUZZLE_DIV_HEIGHT = 500;
 let ID_WORD = 0;
 let ID_LEVEL = 0;
+let PERCENT = 0;
+let PERCENT_STEP = 0;
 
 const words: Words[] = [];
 
@@ -19,6 +21,7 @@ const sourceDiv = createElement('div', ['source-div']);
 const buttonsDiv = createElement('div', ['buttons-div']);
 const sourceField = createElement('div', ['source-field']);
 const checkButton = createElement('button', ['check', 'hidden'], 'Check');
+const autoButton = createElement('button', ['autocomplete'], 'Auto-Complete');
 
 const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
   for (let i = 0; i < PUZZLE_ROWS; i += 1) {
@@ -29,18 +32,25 @@ const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
 };
 
 function determineEmptyRow(): HTMLElement | undefined {
-  const childElements = puzzleDiv.children;
+  const rows = puzzleDiv.children;
+  // const sourceChildren = Array.from(sourceField.children);
   let emptyChild;
-  for (let i = 0; i < childElements.length; i += 1) {
-    if (childElements[i].textContent === '') {
-      emptyChild = childElements[i];
-      break;
+  for (let i = 0; i < rows.length; i += 1) {
+    if (PERCENT === 0) {
+      if (rows[i]?.children?.length === 0) {
+        emptyChild = rows[i];
+        break;
+      }
+    } else if (rows[i]?.children?.length > 0 && rows[i + 1]?.children?.length === 0)
+      emptyChild = rows[i];
+    else if (rows[i]?.children?.length > 0 && !rows[i + 1]) {
+      emptyChild = rows[i];
     }
   }
   return emptyChild as HTMLElement;
 }
 
-function reverseClick(clickedElement: HTMLElement): void {
+function reverseClick(clickedElement: HTMLElement, arr: string[]): void {
   clickedElement.addEventListener('click', (event) => {
     const card = event.target as HTMLElement;
     const puzzleRow = card.closest('.puzzle-row');
@@ -49,20 +59,29 @@ function reverseClick(clickedElement: HTMLElement): void {
       card.style.transition = 'opacity 0.5s ease';
       setTimeout(() => {
         const children = Array.from(sourceField.children);
-        const firstEmptyIndex = children.findIndex((child) => child.textContent?.match(/ /g));
+        const firstEmptyIndex = arr.findIndex((child) => child.match(/ /g));
         console.log(firstEmptyIndex);
         if (firstEmptyIndex === -1) {
           sourceField.appendChild(card);
+          card.style.width = correctWidth(arr, card.textContent);
+          PERCENT -= PERCENT_STEP;
+          console.log(PERCENT);
+          if (PERCENT < 0) PERCENT = 0;
         } else {
+          card.style.width = correctWidth(arr, card.textContent);
           sourceField.insertBefore(card, children[firstEmptyIndex]);
+          arr.pop();
+          PERCENT -= PERCENT_STEP;
+          console.log(PERCENT);
+          if (PERCENT < 0) PERCENT = 0;
         }
-        card.classList.add('source-field-word');
-        card.classList?.remove('puzzle-row-word', 'wrong');
+        classListHandle(card, ['source-field-word'], ['puzzle-row-word', 'wrong']);
+        card.style.width = correctWidth(arr, card.textContent);
         card.style.opacity = '1';
         card.style.transition = 'opacity 0.5s ease';
         const emptyEl = sourceField.querySelector('.emptyEl');
         if (emptyEl) sourceField.removeChild(emptyEl);
-      }, 400);
+      }, 200);
     }
   });
 }
@@ -85,16 +104,13 @@ function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number)
     });
     console.log(textArr);
     if (textArr.length === exArr.length) {
-      checkButton.classList?.remove('hidden');
+      classListHandle(checkButton, [], ['hidden']);
       checkButton.addEventListener('click', () => {
         if (exArr.every((element, index) => element === textArr[index])) {
           children.forEach((child) => {
-            child.classList.add('filled-row');
-            child.classList.remove('wrong');
+            classListHandle(child as HTMLElement, ['filled-row'], ['wrong']);
           });
-          checkButton.textContent = 'Continue';
-          checkButton.classList?.remove('check');
-          checkButton.classList?.add('next', 'accept');
+          classListHandle(checkButton, ['next', 'accept'], ['check'], 'Continue');
           checkButton.addEventListener('click', continueNextLevel, false);
         } else {
           const negative: number[] = [];
@@ -135,42 +151,63 @@ function clickSourceFieldItems(
         clickedElement.style.transition = 'opacity 0.5s ease';
         setTimeout(() => {
           empty?.appendChild(clickedElement);
-          clickedElement.classList?.remove('source-field-word');
-          clickedElement.classList.add('puzzle-row-word');
+          PERCENT += PERCENT_STEP;
+          classListHandle(clickedElement, ['puzzle-row-word'], ['source-field-word']);
           clickedElement.style.opacity = '1';
-          reverseClick(clickedElement);
-          checkRow(empty, data, ID);
           const emptyEl = createElement('div', ['source-field-word', 'emptyEl'], '', sourceField);
           emptyEl.textContent = clickedElement.textContent?.replace(/[\w\W]+/g, ' ') as string;
           emptyEl.style.width = clickedElement.style.width;
           emptyEl.style.height = clickedElement.style.height;
+          const arr: string[] = [];
+          const children = Array.from(sourceField.children);
+          children.forEach((child) => {
+            if (child.textContent) arr.push(child.textContent);
+          });
+          reverseClick(clickedElement, arr);
+          checkRow(empty, data, ID);
         }, 400);
       }
     });
   });
 }
 
+function correctWidth(strings: string[], str: string | null): string {
+  const lettersWidth = strings.join('').length;
+  const letter = PUZZLE_DIV_WIDTH / lettersWidth;
+  const width = str ? str.length * letter : 3;
+  return `${width}px`;
+}
+
 function generateSourceItem(data: Words[], ID: number): void {
   const strings = data[ID].textExample.split(' ');
   const dataObject = strings.map((text, id) => ({ text, id, newId: 0 }));
   sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
-  const lettersWidth = strings.join('').length;
-  const letter = PUZZLE_DIV_WIDTH / lettersWidth;
   const sortedStr = dataObject.sort(() => Math.random() - 0.5);
+  const sortedStrArr = strings.sort(() => Math.random() - 0.5);
+  PERCENT_STEP = +(100 / sortedStrArr.length).toFixed(2);
   // sortedStr.forEach((str, id) => {
   //   str.newId = id;
   // });
   console.log(sortedStr);
-  sortedStr.forEach((str) => {
-    const width = str.text.length * letter;
-    const element = createElement('div', ['source-field-word'], str.text, sourceField);
-    element.style.width = `${width}px`;
+  sortedStrArr.forEach((str) => {
+    const element = createElement('div', ['source-field-word'], str, sourceField);
+    element.style.width = correctWidth(sortedStrArr, str);
     element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
   });
   clickSourceFieldItems(data, ID, sortedStr);
-  buttonsDiv.append(checkButton);
+  buttonsDiv.append(autoButton, checkButton);
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
+}
+
+function fillEmptySourceField(): void {
+  const children = Array.from(sourceField.children);
+  children.forEach((child) => {
+    if (child) child.remove();
+    const emptyEl = createElement('div', ['source-field-word', 'emptyEl'], ' ', sourceField);
+    emptyEl.style.width = `${PUZZLE_DIV_WIDTH / children.length}px`;
+    sourceField.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+  });
 }
 
 export async function fetchData(id: number): Promise<void> {
@@ -182,6 +219,30 @@ export async function fetchData(id: number): Promise<void> {
     generatePuzzleRows(puzzleDiv as HTMLDivElement);
     generateSourceItem(words, ID_WORD);
     console.log(words);
+    autoButton.addEventListener('click', () => {
+      const exArr = words[ID_WORD].textExample.split(' ');
+      const emptyRow = determineEmptyRow();
+      const emptyChildren = emptyRow?.children;
+      if (emptyChildren) {
+        for (let i = 0; i < exArr.length; i += 1) {
+          if (emptyChildren[i]) {
+            emptyChildren[i].textContent = exArr[i];
+            emptyChildren[i].classList.add('filled-row');
+            const element = emptyChildren[i] as HTMLElement;
+            element.style.width = correctWidth(exArr, element.textContent);
+            element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+          } else {
+            const element = createElement('div', ['puzzle-row-word', 'filled-row'], `${exArr[i]}`);
+            emptyRow.append(element);
+            element.style.width = correctWidth(exArr, element.textContent);
+            element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+          }
+        }
+      }
+      fillEmptySourceField();
+      classListHandle(checkButton, ['next', 'accept'], ['check', 'hidden'], 'Continue');
+      checkButton.addEventListener('click', continueNextLevel, false);
+    });
   } catch (error) {
     console.error('Error: ', error);
   }
@@ -226,14 +287,17 @@ function continueNextLevel(): void {
   deleteItems(sourceField as HTMLDivElement, '.emptyEl');
   if (words[ID_WORD + 1]) {
     ID_WORD += 1;
+    PERCENT = 0;
+    PERCENT_STEP = 0;
     generateSourceItem(words, ID_WORD);
-    checkButton.textContent = 'Check';
-    checkButton.classList?.remove('next', 'accept');
-    checkButton.classList.add('check', 'hidden');
+    classListHandle(checkButton, ['check', 'hidden'], ['next', 'accept'], 'Check');
     checkButton.removeEventListener('click', continueNextLevel, false);
   } else {
     ID_WORD = 0;
     ID_LEVEL += 1;
+    PERCENT = 0;
+    PERCENT_STEP = 0;
+    checkButton.removeEventListener('click', continueNextLevel, false);
     fetchData(ID_LEVEL);
   }
 }

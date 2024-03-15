@@ -1,4 +1,6 @@
 cd rss-puzzle
+npm run lint
 
 # validate syntax error before commit
+
 npm run ci:format

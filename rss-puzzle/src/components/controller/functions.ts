@@ -19,3 +19,28 @@ export function createElement(
   }
   return element;
 }
+
+export function classListHandle(
+  element: HTMLElement,
+  classesAdd?: string[],
+  classesRemove?: string[],
+  text?: string
+): HTMLElement {
+  const el = element;
+  if (classesAdd) {
+    if (classesAdd.length > 0) {
+      el.classList.add(...classesAdd);
+    }
+  }
+
+  if (classesRemove) {
+    if (classesRemove.length > 0) {
+      el.classList?.remove(...classesRemove);
+    }
+  }
+
+  if (text) {
+    el.textContent = text;
+  }
+  return el;
+}
