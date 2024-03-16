@@ -200,7 +200,7 @@ function clearAudio(): void {
 }
 
 function playAudioHint(current: string): void {
-  if (audioFlag) {
+  if (audioFlag || isGameOver) {
     clearAudio();
     const hintDiv = document.querySelector('.buttons-div');
     const audioHintDiv = createElement('div', ['audio-hint-cont']);
@@ -339,6 +339,12 @@ function prepareGen(): void {
   generatePuzzleRows(puzzleDiv as HTMLDivElement);
 }
 
+function dimensionsEmptyChildren(emptyChildren: HTMLElement, exArr: string[]): void {
+  const element = emptyChildren;
+  element.style.width = correctWidth(exArr, element.textContent);
+  element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+}
+
 export async function fetchData(id: number): Promise<void> {
   try {
     const response = await fetch(SOURCE_RAW);
@@ -349,6 +355,7 @@ export async function fetchData(id: number): Promise<void> {
     autoButton.addEventListener('click', () => {
       isGameOver = true;
       showTextHint(currText);
+      playAudioHint(currAudio);
       const exArr = words[ID_WORD].textExample.split(' ');
       const emptyRow = determineEmptyRow();
       const emptyChildren = emptyRow?.children;
@@ -357,14 +364,11 @@ export async function fetchData(id: number): Promise<void> {
           if (emptyChildren[i]) {
             emptyChildren[i].textContent = exArr[i];
             emptyChildren[i].classList.add('filled-row');
-            const element = emptyChildren[i] as HTMLElement;
-            element.style.width = correctWidth(exArr, element.textContent);
-            element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+            dimensionsEmptyChildren(emptyChildren[i] as HTMLElement, exArr);
           } else {
             const element = createElement('div', ['puzzle-row-word', 'filled-row'], `${exArr[i]}`);
             emptyRow.append(element);
-            element.style.width = correctWidth(exArr, element.textContent);
-            element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
+            dimensionsEmptyChildren(element, exArr);
           }
         }
       }
@@ -415,6 +419,7 @@ window.addEventListener('resize', () => {
 function continueNextLevel(): void {
   deleteItems(sourceField as HTMLDivElement, '.emptyEl');
   clearHints();
+  clearAudio();
   isGameOver = false;
   if (words[ID_WORD + 1]) {
     ID_WORD += 1;
