@@ -13,6 +13,7 @@ let PERCENT = 0;
 let PERCENT_STEP = 0;
 let textFlag = false;
 let currText = '';
+let isGameOver = false;
 
 const words: Words[] = [];
 
@@ -110,6 +111,8 @@ function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number)
       classListHandle(checkButton, [], ['hidden']);
       checkButton.addEventListener('click', () => {
         if (exArr.every((element, index) => element === textArr[index])) {
+          isGameOver = true;
+          showTextHint(currText);
           children.forEach((child) => {
             classListHandle(child as HTMLElement, ['filled-row'], ['wrong']);
           });
@@ -171,9 +174,13 @@ function correctWidth(strings: string[], str: string | null): string {
   return `${width}px`;
 }
 
+function clearHints(): void {
+  if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+}
+
 function showTextHint(current: string): void {
-  if (textFlag) {
-    if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+  if (textFlag || isGameOver) {
+    clearHints();
     const hintDiv = createElement('div', ['hint-cont']);
     const hintImg = createElement('img', ['hint-img']) as HTMLImageElement;
     hintImg.src = './src/components/view/buttons/hinticon.svg';
@@ -250,7 +257,7 @@ function toggleTextHints(): void {
       textFlag = false;
       hint2.classList.add('texthint-off');
       hint2.classList.remove('texthint-on');
-      if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+      clearHints();
     }
   }
 }
@@ -282,8 +289,9 @@ export async function fetchData(id: number): Promise<void> {
     createNav();
     generatePuzzleRows(puzzleDiv as HTMLDivElement);
     generateSourceItem(words, ID_WORD);
-    console.log(words);
     autoButton.addEventListener('click', () => {
+      isGameOver = true;
+      showTextHint(currText);
       const exArr = words[ID_WORD].textExample.split(' ');
       const emptyRow = determineEmptyRow();
       const emptyChildren = emptyRow?.children;
@@ -349,6 +357,8 @@ window.addEventListener('resize', () => {
 
 function continueNextLevel(): void {
   deleteItems(sourceField as HTMLDivElement, '.emptyEl');
+  clearHints();
+  isGameOver = false;
   if (words[ID_WORD + 1]) {
     ID_WORD += 1;
     PERCENT = 0;
