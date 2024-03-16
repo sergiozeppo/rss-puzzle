@@ -202,12 +202,22 @@ function clearAudio(): void {
 function playAudioHint(current: string): void {
   if (audioFlag) {
     clearAudio();
+    const hintDiv = document.querySelector('.buttons-div');
     const audioHintDiv = createElement('div', ['audio-hint-cont']);
-    const hint = createElement('audio', ['audio-hint']);
-    hint.setAttribute('autoplay', 'true');
-    hint.innerHTML = `<source src="${SOURCE_AUDIO + current}" type="audio/mpeg">`;
-    audioHintDiv.append(hint);
-    body.append(audioHintDiv);
+    const hintImg = createElement('img', ['audio-hint-img']) as HTMLImageElement;
+    hintImg.src = './src/components/view/buttons/audiohinticon.png';
+    audioHintDiv.append(hintImg);
+    if (hintDiv) hintDiv.prepend(audioHintDiv);
+    else buttonsDiv.prepend(audioHintDiv);
+    audioHintDiv.addEventListener('click', () => {
+      const hint = createElement('audio', ['audio-hint'], '', audioHintDiv);
+      hintImg.src = './src/components/view/buttons/audiohinticon-play.gif';
+      hint.setAttribute('autoplay', 'true');
+      hint.innerHTML = `<source src="${SOURCE_AUDIO + current}" type="audio/mpeg">`;
+      hint.addEventListener('ended', () => {
+        hintImg.src = './src/components/view/buttons/audiohinticon.png';
+      });
+    });
   }
 }
 
@@ -231,7 +241,7 @@ function generateSourceItem(data: Words[], ID: number): void {
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
   showTextHint(currText);
-  // playAudioHint(currAudio);
+  playAudioHint(currAudio);
 }
 
 function fillEmptySourceField(): void {
@@ -286,24 +296,22 @@ function toggleTextHints(): void {
 }
 
 function toggleAudioHints(): void {
-  // const hint: HTMLDivElement | null = document.querySelector('.audio-hint-off');
-  if (!audioFlag) {
+  const hint: HTMLDivElement | null = document.querySelector('.audio-hint-off');
+  if (hint) {
     audioFlag = true;
-    // hint.classList.add('audio-hint-on');
-    // hint.classList.remove('audio-hint-off');
+    hint.classList.add('audio-hint-on');
+    hint.classList.remove('audio-hint-off');
     playAudioHint(currAudio);
-    audioFlag = false;
+  } else {
+    const hint2: HTMLDivElement | null = document.querySelector('.audio-hint-on');
+    if (hint2) {
+      audioFlag = false;
+      hint2.classList.add('audio-hint-off');
+      hint2.classList.remove('audio-hint-on');
+      clearAudio();
+    }
   }
-  // else {
-  //   // const hint2: HTMLDivElement | null = document.querySelector('.audio-hint-on');
-  //   // if (hint2) {
-  //   audioFlag = false;
-  //   // hint2.classList.add('audio-hint-off');
-  //   // hint2.classList.remove('audio-hint-on');
-  //   clearAudio();
-  // }
 }
-// }
 
 function createNav(): void {
   const navbar = createElement('nav', ['navbar'], '');

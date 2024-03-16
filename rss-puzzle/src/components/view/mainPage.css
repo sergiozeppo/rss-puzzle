@@ -171,6 +171,7 @@ body .source-field {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-top: 3rem;
 }
 
 .texthint-on {
@@ -213,7 +214,7 @@ body .source-field {
   height: 50px;
   border: none;
   background-color: transparent;
-  background-image: url('./buttons/audiohint-on.gif');
+  background-image: url('./buttons/audiohint-on.png');
   background-size: cover;
 }
 
