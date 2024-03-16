@@ -11,6 +11,8 @@ let ID_WORD = 0;
 let ID_LEVEL = 0;
 let PERCENT = 0;
 let PERCENT_STEP = 0;
+let textFlag = false;
+let currText = '';
 
 const words: Words[] = [];
 
@@ -169,18 +171,20 @@ function correctWidth(strings: string[], str: string | null): string {
   return `${width}px`;
 }
 
-function showTextHint(data: Words[], ID: number): void {
-  if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
-  const strings = data[ID].textExampleTranslate;
-  const hintDiv = createElement('div', ['hint-cont']);
-  const hintImg = createElement('img', ['hint-img']) as HTMLImageElement;
-  hintImg.src = './src/components/view/buttons/hinticon.svg';
-  const hint = createElement('h2', ['hint'], strings);
-  hintDiv.append(hintImg, hint);
-  puzzleCont.prepend(hintDiv);
+function showTextHint(current: string): void {
+  if (textFlag) {
+    if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+    const hintDiv = createElement('div', ['hint-cont']);
+    const hintImg = createElement('img', ['hint-img']) as HTMLImageElement;
+    hintImg.src = './src/components/view/buttons/hinticon.svg';
+    const hint = createElement('h2', ['hint'], current);
+    hintDiv.append(hintImg, hint);
+    puzzleCont.prepend(hintDiv);
+  }
 }
 
 function generateSourceItem(data: Words[], ID: number): void {
+  currText = data[ID].textExampleTranslate;
   const strings = data[ID].textExample.split(' ');
   const dataObject = strings.map((text, id) => ({ text, id, newId: 0 }));
   sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
@@ -197,7 +201,7 @@ function generateSourceItem(data: Words[], ID: number): void {
   buttonsDiv.append(autoButton, checkButton);
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
-  showTextHint(data, ID_WORD);
+  showTextHint(currText);
 }
 
 function fillEmptySourceField(): void {
@@ -233,6 +237,24 @@ export function logout(): void {
   }
 }
 
+function toggleTextHints(): void {
+  const hint: HTMLDivElement | null = document.querySelector('.texthint-off');
+  if (hint) {
+    textFlag = true;
+    hint.classList.add('texthint-on');
+    hint.classList.remove('texthint-off');
+    showTextHint(currText);
+  } else {
+    const hint2: HTMLDivElement | null = document.querySelector('.texthint-on');
+    if (hint2) {
+      textFlag = false;
+      hint2.classList.add('texthint-off');
+      hint2.classList.remove('texthint-on');
+      if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+    }
+  }
+}
+
 function createNav(): void {
   const navbar = createElement('nav', ['navbar'], '');
   const userArr = JSON.parse(localStorage.user);
@@ -242,7 +264,8 @@ function createNav(): void {
   const hintsDiv = createElement('div', ['buttons-div'], '');
   navbar.appendChild(hintsDiv);
   body.appendChild(navbar);
-  // const textHint = createElement('button', ['texthint'], '', buttonsDiv);
+  const textHint = createElement('button', ['texthint-off'], '', hintsDiv);
+  textHint.addEventListener('click', toggleTextHints, false);
   const logOut = createElement('button', ['exit'], '', hintsDiv);
   logOut.addEventListener('click', () => {
     logout();
