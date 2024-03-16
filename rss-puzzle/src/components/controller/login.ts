@@ -1,4 +1,4 @@
-import { fetchData } from '../view/mainPage';
+import { logout, fetchData } from '../view/mainPage';
 import { createElement } from './functions';
 import './login.css';
 import './startPage.css';
@@ -131,35 +131,7 @@ form.addEventListener('submit', () => {
   startPage();
 });
 
-logoutButton.addEventListener('click', () => {
-  if (localStorage.user) {
-    const modal = createElement('div', ['modal', 'visible'], '');
-    const resultCreate = createElement('div', ['result'], '', modal);
-    const greetCreate = createElement(
-      'h3',
-      ['greeting'],
-      `Are you sure you want to log out?`,
-      resultCreate
-    );
-    console.log(greetCreate);
-    const acceptButton = createElement('button', [], `Yes`, resultCreate);
-    const declineButton = createElement('button', [], `No`, resultCreate);
-    body?.appendChild(modal);
-    acceptButton.addEventListener('click', () => {
-      modal.classList?.remove('visible');
-      delete localStorage.user;
-      greet.removeChild(fio);
-      div.removeChild(greet);
-      body?.removeChild(modal);
-      body?.removeChild(div);
-      LoginPage();
-    });
-    declineButton.addEventListener('click', () => {
-      modal.classList?.remove('visible');
-      body?.removeChild(modal);
-    });
-  }
-});
+logoutButton.addEventListener('click', () => logout());
 
 startButton.addEventListener('click', () => {
   if (localStorage.user) {

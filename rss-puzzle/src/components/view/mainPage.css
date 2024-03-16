@@ -132,3 +132,54 @@ body .puzzle-div,
 body .source-field {
   font-size: 3rem;
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 5rem;
+  height: 5rem;
+  width: 100%;
+  background-color: #1b1a40;
+  color: #fff;
+}
+
+.navbar h2 {
+  font-size: 2rem;
+}
+
+.exit {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/exit.png');
+  background-size: cover;
+}
+
+.puzzle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.hint-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.hint {
+  text-decoration: dashed;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.hint-img {
+  width: 3rem;
+  height: 3rem;
+}

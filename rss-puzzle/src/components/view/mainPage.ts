@@ -14,6 +14,7 @@ let PERCENT_STEP = 0;
 
 const words: Words[] = [];
 
+const puzzleCont = createElement('div', ['puzzle-container']);
 const puzzleDiv = createElement('div', ['puzzle-div']);
 const { body } = document;
 
@@ -28,12 +29,12 @@ const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
     const puzzleRow = createElement('div', ['puzzle-row'], '', puzzle);
     puzzleRow.dataset.id = `row_${i}`;
   }
-  body.append(puzzle);
+  puzzleCont.append(puzzle);
+  body.append(puzzleCont);
 };
 
 function determineEmptyRow(): HTMLElement | undefined {
   const rows = puzzleDiv.children;
-  // const sourceChildren = Array.from(sourceField.children);
   let emptyChild;
   for (let i = 0; i < rows.length; i += 1) {
     if (PERCENT === 0) {
@@ -131,19 +132,9 @@ function checkRow(puzzleRow: HTMLElement | undefined, data: Words[], ID: number)
   }
 }
 
-function clickSourceFieldItems(
-  data: Words[],
-  ID: number,
-  sortedStr: {
-    text: string;
-    id: number;
-    newId: number;
-  }[]
-): void {
+function clickSourceFieldItems(data: Words[], ID: number): void {
   const empty = determineEmptyRow();
-  sourceField.querySelectorAll('.source-field-word').forEach((element, id) => {
-    const el = element as HTMLElement;
-    el.dataset.newId = `${sortedStr[id].newId}`;
+  sourceField.querySelectorAll('.source-field-word').forEach((element) => {
     element.addEventListener('click', (event) => {
       const clickedElement = event.target as HTMLElement;
       if (clickedElement && clickedElement.parentElement === sourceField) {
@@ -178,6 +169,17 @@ function correctWidth(strings: string[], str: string | null): string {
   return `${width}px`;
 }
 
+function showTextHint(data: Words[], ID: number): void {
+  if (document.querySelector('.hint-cont')) document.querySelector('.hint-cont')?.remove();
+  const strings = data[ID].textExampleTranslate;
+  const hintDiv = createElement('div', ['hint-cont']);
+  const hintImg = createElement('img', ['hint-img']) as HTMLImageElement;
+  hintImg.src = './src/components/view/buttons/hinticon.svg';
+  const hint = createElement('h2', ['hint'], strings);
+  hintDiv.append(hintImg, hint);
+  puzzleCont.prepend(hintDiv);
+}
+
 function generateSourceItem(data: Words[], ID: number): void {
   const strings = data[ID].textExample.split(' ');
   const dataObject = strings.map((text, id) => ({ text, id, newId: 0 }));
@@ -185,19 +187,17 @@ function generateSourceItem(data: Words[], ID: number): void {
   const sortedStr = dataObject.sort(() => Math.random() - 0.5);
   const sortedStrArr = strings.sort(() => Math.random() - 0.5);
   PERCENT_STEP = +(100 / sortedStrArr.length).toFixed(2);
-  // sortedStr.forEach((str, id) => {
-  //   str.newId = id;
-  // });
   console.log(sortedStr);
   sortedStrArr.forEach((str) => {
     const element = createElement('div', ['source-field-word'], str, sourceField);
     element.style.width = correctWidth(sortedStrArr, str);
     element.style.height = `${PUZZLE_DIV_HEIGHT / 10}px`;
   });
-  clickSourceFieldItems(data, ID, sortedStr);
+  clickSourceFieldItems(data, ID);
   buttonsDiv.append(autoButton, checkButton);
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
+  showTextHint(data, ID_WORD);
 }
 
 function fillEmptySourceField(): void {
@@ -210,12 +210,53 @@ function fillEmptySourceField(): void {
   });
 }
 
+export function logout(): void {
+  if (localStorage.user) {
+    const modal = createElement('div', ['modal', 'visible'], '');
+    const resultCreate = createElement('div', ['result'], '', modal);
+    const greetCreate = createElement('h3', ['greeting'], `Are you sure you want to log out?`);
+    resultCreate.appendChild(greetCreate);
+    const acceptButton = createElement('button', [], `Yes`, resultCreate);
+    const declineButton = createElement('button', [], `No`, resultCreate);
+    body?.appendChild(modal);
+    acceptButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      delete localStorage.user;
+      const bodyChild = Array.from(document.body.children);
+      bodyChild.forEach((child) => document.body.removeChild(child));
+      // location.reload();
+    });
+    declineButton.addEventListener('click', () => {
+      modal.classList?.remove('visible');
+      body?.removeChild(modal);
+    });
+  }
+}
+
+function createNav(): void {
+  const navbar = createElement('nav', ['navbar'], '');
+  const userArr = JSON.parse(localStorage.user);
+  const greet = createElement('h2', ['great-greet'], '');
+  greet.textContent = `Welcome, ${userArr.name} ${userArr.surname}!`;
+  navbar.append(greet);
+  const hintsDiv = createElement('div', ['buttons-div'], '');
+  navbar.appendChild(hintsDiv);
+  body.appendChild(navbar);
+  // const textHint = createElement('button', ['texthint'], '', buttonsDiv);
+  const logOut = createElement('button', ['exit'], '', hintsDiv);
+  logOut.addEventListener('click', () => {
+    logout();
+  });
+}
+
 export async function fetchData(id: number): Promise<void> {
   try {
     const response = await fetch(SOURCE_RAW);
     const data = await response.json();
     Object.assign(words, data.rounds[id].words);
     deleteItems(puzzleDiv as HTMLDivElement, '.puzzle-row');
+    deleteItems(sourceField as HTMLDivElement, '.emptyEl');
+    createNav();
     generatePuzzleRows(puzzleDiv as HTMLDivElement);
     generateSourceItem(words, ID_WORD);
     console.log(words);
