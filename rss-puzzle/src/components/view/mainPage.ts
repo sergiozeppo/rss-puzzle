@@ -4,6 +4,8 @@ import './mainPage.css';
 
 const SOURCE_RAW =
   'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel1.json';
+const SOURCE_AUDIO =
+  'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/';
 const PUZZLE_ROWS = 10;
 let PUZZLE_DIV_WIDTH = 750;
 let PUZZLE_DIV_HEIGHT = 500;
@@ -13,6 +15,8 @@ let PERCENT = 0;
 let PERCENT_STEP = 0;
 let textFlag = false;
 let currText = '';
+let audioFlag = false;
+let currAudio = '';
 let isGameOver = false;
 
 const words: Words[] = [];
@@ -190,8 +194,26 @@ function showTextHint(current: string): void {
   }
 }
 
+function clearAudio(): void {
+  if (document.querySelector('.audio-hint-cont'))
+    document.querySelector('.audio-hint-cont')?.remove();
+}
+
+function playAudioHint(current: string): void {
+  if (audioFlag) {
+    clearAudio();
+    const audioHintDiv = createElement('div', ['audio-hint-cont']);
+    const hint = createElement('audio', ['audio-hint']);
+    hint.setAttribute('autoplay', 'true');
+    hint.innerHTML = `<source src="${SOURCE_AUDIO + current}" type="audio/mpeg">`;
+    audioHintDiv.append(hint);
+    body.append(audioHintDiv);
+  }
+}
+
 function generateSourceItem(data: Words[], ID: number): void {
   currText = data[ID].textExampleTranslate;
+  currAudio = data[ID].audioExample;
   const strings = data[ID].textExample.split(' ');
   const dataObject = strings.map((text, id) => ({ text, id, newId: 0 }));
   sourceField.style.width = `${PUZZLE_DIV_WIDTH}px`;
@@ -209,6 +231,7 @@ function generateSourceItem(data: Words[], ID: number): void {
   sourceDiv.append(sourceField, buttonsDiv);
   body.append(sourceDiv);
   showTextHint(currText);
+  // playAudioHint(currAudio);
 }
 
 function fillEmptySourceField(): void {
@@ -262,6 +285,26 @@ function toggleTextHints(): void {
   }
 }
 
+function toggleAudioHints(): void {
+  // const hint: HTMLDivElement | null = document.querySelector('.audio-hint-off');
+  if (!audioFlag) {
+    audioFlag = true;
+    // hint.classList.add('audio-hint-on');
+    // hint.classList.remove('audio-hint-off');
+    playAudioHint(currAudio);
+    audioFlag = false;
+  }
+  // else {
+  //   // const hint2: HTMLDivElement | null = document.querySelector('.audio-hint-on');
+  //   // if (hint2) {
+  //   audioFlag = false;
+  //   // hint2.classList.add('audio-hint-off');
+  //   // hint2.classList.remove('audio-hint-on');
+  //   clearAudio();
+  // }
+}
+// }
+
 function createNav(): void {
   const navbar = createElement('nav', ['navbar'], '');
   const userArr = JSON.parse(localStorage.user);
@@ -271,6 +314,8 @@ function createNav(): void {
   const hintsDiv = createElement('div', ['buttons-div'], '');
   navbar.appendChild(hintsDiv);
   body.appendChild(navbar);
+  const audioHint = createElement('button', ['audio-hint-off'], '', hintsDiv);
+  audioHint.addEventListener('click', toggleAudioHints, false);
   const textHint = createElement('button', ['texthint-off'], '', hintsDiv);
   textHint.addEventListener('click', toggleTextHints, false);
   const logOut = createElement('button', ['exit'], '', hintsDiv);
@@ -279,15 +324,19 @@ function createNav(): void {
   });
 }
 
+function prepareGen(): void {
+  deleteItems(puzzleDiv as HTMLDivElement, '.puzzle-row');
+  deleteItems(sourceField as HTMLDivElement, '.emptyEl');
+  createNav();
+  generatePuzzleRows(puzzleDiv as HTMLDivElement);
+}
+
 export async function fetchData(id: number): Promise<void> {
   try {
     const response = await fetch(SOURCE_RAW);
     const data = await response.json();
     Object.assign(words, data.rounds[id].words);
-    deleteItems(puzzleDiv as HTMLDivElement, '.puzzle-row');
-    deleteItems(sourceField as HTMLDivElement, '.emptyEl');
-    createNav();
-    generatePuzzleRows(puzzleDiv as HTMLDivElement);
+    prepareGen();
     generateSourceItem(words, ID_WORD);
     autoButton.addEventListener('click', () => {
       isGameOver = true;
