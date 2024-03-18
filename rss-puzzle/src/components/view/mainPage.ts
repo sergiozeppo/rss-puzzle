@@ -13,11 +13,11 @@ let ID_WORD = 0;
 let ID_LEVEL = 0;
 let PERCENT = 0;
 let PERCENT_STEP = 0;
-let textFlag = false;
 let currText = '';
-let audioFlag = false;
 let currAudio = '';
 let isGameOver = false;
+let textFlag: boolean;
+let audioFlag: boolean;
 
 const words: Words[] = [];
 
@@ -30,6 +30,22 @@ const buttonsDiv = createElement('div', ['buttons-div']);
 const sourceField = createElement('div', ['source-field']);
 const checkButton = createElement('button', ['check', 'hidden'], 'Check');
 const autoButton = createElement('button', ['autocomplete'], 'Auto-Complete');
+
+function determineLocalFlags(): void {
+  if (!localStorage.getItem('texthint')) {
+    localStorage.setItem('texthint', 'true');
+    textFlag = true;
+  } else {
+    textFlag = JSON.parse(localStorage.texthint);
+  }
+  if (!localStorage.getItem('audiohint')) {
+    localStorage.setItem('audiohint', 'true');
+    audioFlag = true;
+  } else {
+    audioFlag = JSON.parse(localStorage.audiohint);
+  }
+}
+determineLocalFlags();
 
 const generatePuzzleRows = (puzzle: HTMLDivElement): void => {
   for (let i = 0; i < PUZZLE_ROWS; i += 1) {
@@ -187,7 +203,6 @@ function showTextHint(current: string): void {
     clearHints();
     const hintDiv = createElement('div', ['hint-cont']);
     const hintImg = createElement('img', ['hint-img']) as HTMLImageElement;
-    hintImg.src = './src/components/view/buttons/hinticon.svg';
     const hint = createElement('h2', ['hint'], current);
     hintDiv.append(hintImg, hint);
     puzzleCont.prepend(hintDiv);
@@ -205,17 +220,16 @@ function playAudioHint(current: string): void {
     const hintDiv = document.querySelector('.buttons-div');
     const audioHintDiv = createElement('div', ['audio-hint-cont']);
     const hintImg = createElement('img', ['audio-hint-img']) as HTMLImageElement;
-    hintImg.src = './src/components/view/buttons/audiohinticon.png';
     audioHintDiv.append(hintImg);
     if (hintDiv) hintDiv.prepend(audioHintDiv);
     else buttonsDiv.prepend(audioHintDiv);
     audioHintDiv.addEventListener('click', () => {
       const hint = createElement('audio', ['audio-hint'], '', audioHintDiv);
-      hintImg.src = './src/components/view/buttons/audiohinticon-play.gif';
+      hintImg.classList.add('play');
       hint.setAttribute('autoplay', 'true');
       hint.innerHTML = `<source src="${SOURCE_AUDIO + current}" type="audio/mpeg">`;
       hint.addEventListener('ended', () => {
-        hintImg.src = './src/components/view/buttons/audiohinticon.png';
+        hintImg.classList.remove('play');
       });
     });
   }
@@ -266,6 +280,8 @@ export function logout(): void {
     acceptButton.addEventListener('click', () => {
       modal.classList?.remove('visible');
       delete localStorage.user;
+      delete localStorage.audiohint;
+      delete localStorage.texthint;
       const bodyChild = Array.from(document.body.children);
       bodyChild.forEach((child) => document.body.removeChild(child));
       // location.reload();
@@ -281,6 +297,7 @@ function toggleTextHints(): void {
   const hint: HTMLDivElement | null = document.querySelector('.texthint-off');
   if (hint) {
     textFlag = true;
+    localStorage.setItem('texthint', JSON.stringify(textFlag));
     hint.classList.add('texthint-on');
     hint.classList.remove('texthint-off');
     showTextHint(currText);
@@ -288,6 +305,7 @@ function toggleTextHints(): void {
     const hint2: HTMLDivElement | null = document.querySelector('.texthint-on');
     if (hint2) {
       textFlag = false;
+      localStorage.setItem('texthint', JSON.stringify(textFlag));
       hint2.classList.add('texthint-off');
       hint2.classList.remove('texthint-on');
       clearHints();
@@ -296,19 +314,21 @@ function toggleTextHints(): void {
 }
 
 function toggleAudioHints(): void {
-  const hint: HTMLDivElement | null = document.querySelector('.audio-hint-off');
-  if (hint) {
-    audioFlag = true;
-    hint.classList.add('audio-hint-on');
-    hint.classList.remove('audio-hint-off');
-    playAudioHint(currAudio);
+  const hint2: HTMLDivElement | null = document.querySelector('.audio-hint-on');
+  if (hint2) {
+    audioFlag = false;
+    localStorage.setItem('audiohint', 'false');
+    hint2.classList.add('audio-hint-off');
+    hint2.classList.remove('audio-hint-on');
+    clearAudio();
   } else {
-    const hint2: HTMLDivElement | null = document.querySelector('.audio-hint-on');
-    if (hint2) {
-      audioFlag = false;
-      hint2.classList.add('audio-hint-off');
-      hint2.classList.remove('audio-hint-on');
-      clearAudio();
+    const hint: HTMLDivElement | null = document.querySelector('.audio-hint-off');
+    if (hint) {
+      audioFlag = true;
+      localStorage.setItem('audiohint', 'true');
+      hint.classList.add('audio-hint-on');
+      hint.classList.remove('audio-hint-off');
+      playAudioHint(currAudio);
     }
   }
 }
@@ -322,9 +342,14 @@ function createNav(): void {
   const hintsDiv = createElement('div', ['buttons-div'], '');
   navbar.appendChild(hintsDiv);
   body.appendChild(navbar);
-  const audioHint = createElement('button', ['audio-hint-off'], '', hintsDiv);
+  const audioHint = createElement(
+    'button',
+    [`audio-hint-${audioFlag ? 'on' : 'off'}`],
+    '',
+    hintsDiv
+  );
   audioHint.addEventListener('click', toggleAudioHints, false);
-  const textHint = createElement('button', ['texthint-off'], '', hintsDiv);
+  const textHint = createElement('button', [`texthint-${textFlag ? 'on' : 'off'}`], '', hintsDiv);
   textHint.addEventListener('click', toggleTextHints, false);
   const logOut = createElement('button', ['exit'], '', hintsDiv);
   logOut.addEventListener('click', () => {
