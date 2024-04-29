@@ -100,3 +100,35 @@ The signals from these sensors are transmitted through radio modules
 to the cloud server. The web application you see on your screen
 receives the data from the server. Reports and graphs are generated
 from this data.
+
+In these slides, you can see how the sensors for soil monitoring are
+installed. They they can detect soil temperature, moisture and
+conductivity at different depth levels.
+
+And this is soil monitoring Web-application. As you can see, this
+report from the Web Application measures soil temperature at four
+different levels.
+
+Last but not least is the digital farm. This is a project that
+allows using IoT trackers to monitor the movement of animals,
+primarily horses. An IoT tracker is worn around the horse's neck,
+allowing data to be transmitted to the nearest mobile, satellite or
+radio base station.
+
+Today, IoT is being used extensively to lessen the burden on humans,
+to name a few. Iots deployed for smart homes, wearables, watches and
+bracelets, smart cars, smart farming, smart retail, smart grids,
+smart city and smart healthcare. With such a wide spectrum of
+applications, the future of it looks more promising than ever
+before.
+
+In 2018, therewere about 23 billion connected devices, which was
+more than double the world population. According to experts, there
+will be over 80 billion devices by 2025. Hence the conclusion is
+that IoT is the concept of connecting all devices using the
+Internet, which is constantly learning and constantly growing.
+
+Now that you have a picture of what IoT is and how Web Development
+is growing hand-in-hand. If you still have questions, please ask,
+I'd be happy to answer them. In the meantime, it's time to say
+goodbye!
