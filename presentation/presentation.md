@@ -29,3 +29,13 @@ Do you need more examples?
 Your alarm clock has just rung, and the coffee machine has already started brewing your coffee
 A smoke detector sensed the danger and immediately reported to the security company.
 Smart bulbs take into account the level of light around them and adjust their own brightness.
+
+Until recently, access to the Internet was limited via devices like
+the desktop, tablet or smartphone. But now with IoT, practically all
+appliances can be connected to the Internet and monitored remotely.
+
+IoT - It is a system of interconnected devices that transfer and
+exchange data over a wireless network without any human
+intervention. The things in Internet of Things could be the AC,
+mentioned earlier, doorbell, thermostats, smoke detectors, water
+heaters and many other detectors, radiomodules and sensors.
