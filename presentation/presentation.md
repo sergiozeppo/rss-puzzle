@@ -2,11 +2,11 @@
 
 # Video
 
-My presentation video is [here](https://youtu.be/hFzQyLwLxwM)
+My presentation video is [here](https://youtu.be/CGSbz3S8g3U)
 
 # Reveal slide deck
 
-My Reveal slide deck deploy is [here](https://youtu.be/hFzQyLwLxwM)
+My Reveal slide deck deploy is [here](https://sergiozeppo-reveal-js.netlify.app/)
 
 # Transcription
 
