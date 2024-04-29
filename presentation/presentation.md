@@ -86,7 +86,17 @@ soil reduces and so on can be done. In the report could be sent
 over to you over Web-application or on your smartphone over an
 app.
 
-Well, We just covered the basics of IoT, learning how it works.
-Now I suggest we dive into some advanced techniques, and see what
-working IoT prototypes and web applications look like for
-working with this technology.
+We've just covered the basics of IoT and learned how it works. Now I
+suggest we dive into some advanced techniques, and look at working
+IoT prototypes and web applications. I want to tell you about some
+projects such as utility network monitoring, water body level
+monitoring, soil monitoring, digital pasture.
+
+All of the sensors you see on the screen are used to monitor
+utilities. They can determine pressure levels, fluid temperatures,
+humidity, air temperature, and monitoring of well manhole openings.
+
+The signals from these sensors are transmitted through radio modules
+to the cloud server. The web application you see on your screen
+receives the data from the server. Reports and graphs are generated
+from this data.
