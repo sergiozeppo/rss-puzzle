@@ -1,0 +1,250 @@
+.puzzle-div {
+  display: flex;
+  flex-direction: column;
+  width: 75rem;
+  height: 50rem;
+  border: 1px solid white;
+  background-color: #f2e1c2;
+  border-radius: 0.5rem;
+}
+
+.puzzle-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.source-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.buttons-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.next,
+.check {
+  display: flex;
+  justify-content: center;
+  border: none;
+  background-color: #5163a2;
+  border-radius: 0.5rem;
+  color: #fff;
+  width: 20rem;
+  font-size: 2rem;
+}
+
+.autocomplete {
+  display: flex;
+  justify-content: center;
+  border: none;
+  background-color: #f2a0a7;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+  width: 20rem;
+  font-size: 2rem;
+}
+
+.autocomplete:hover {
+  background-color: orange;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+  width: 20rem;
+  font-size: 2rem;
+}
+
+.next.hidden,
+.check.hidden {
+  display: none;
+}
+
+.next.accept {
+  animation-name: checkCont;
+  animation-duration: 2s;
+  background-color: green;
+}
+
+@keyframes checkCont {
+  from {
+    background-color: #4a5b8c;
+  }
+  to {
+    background-color: green;
+  }
+}
+
+.fio-animation {
+  color: #db9cb1;
+  animation-name: fio;
+  animation-duration: 4s;
+}
+
+.filled-row {
+  pointer-events: none;
+}
+
+.puzzle-row-word,
+.source-field-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border: 1px solid white;
+  background-color: #a395c0;
+  color: #1b1a40;
+}
+
+.puzzle-row-word.wrong {
+  border: 3px solid red;
+}
+
+.source-field {
+  display: flex;
+  flex-direction: row;
+  width: 75rem;
+  border: 1px solid white;
+  border-radius: 0.5rem;
+  background-color: #fff3cb;
+}
+
+.source-field-word:hover {
+  background-color: #db9cb1;
+  color: #1c1a42;
+  cursor: pointer;
+}
+
+body {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+body .puzzle-div,
+body .source-field {
+  font-size: 3rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 5rem;
+  height: 5rem;
+  width: 100%;
+  background-color: #1b1a40;
+  color: #fff;
+}
+
+.navbar h2 {
+  font-size: 2rem;
+}
+
+.exit {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/exit.png');
+  background-size: cover;
+}
+
+.puzzle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.hint-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.texthint-on {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/texthint.svg');
+  background-size: cover;
+}
+
+.texthint-off {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/hinticon.svg');
+  background-size: cover;
+}
+
+.hint {
+  text-decoration: dashed;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.hint-img {
+  width: 3rem;
+  height: 3rem;
+  background-image: url('./buttons/hinticon.svg');
+  background-size: cover;
+}
+
+.audio-hint-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.audio-hint-on {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/audiohint-on.png');
+  background-size: cover;
+}
+
+.audio-hint-off {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  background-image: url('./buttons/audiohint-off.png');
+  background-size: cover;
+}
+
+.audio-hint {
+  text-decoration: dashed;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.audio-hint-img {
+  width: 50px;
+  height: 50px;
+  background: url('./buttons/audiohinticon.png');
+  background-size: cover;
+}
+
+.audio-hint-img.play {
+  width: 50px;
+  height: 50px;
+  background-image: url('./buttons/audiohinticon-play.gif');
+  background-size: cover;
+}
